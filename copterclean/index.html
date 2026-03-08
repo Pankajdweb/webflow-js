@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PV Verlustrechner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="pv-calculator">
+        <header class="pv-header">
+            <h1>PV Verlustrechner</h1>
+            <p>
+                Geben Sie Anlagengröße, Eigenverbrauch, Preise und den spezifischen Ertrag an
+                und wählen Sie die Verschmutzung – der Rechner schätzt den Energie- und
+                Geldverlust pro Jahr.
+            </p>
+        </header>
+
+        <main class="pv-layout">
+            <section class="pv-column pv-inputs">
+                <h2>Anlagendaten</h2>
+
+                <div class="pv-field">
+                    <label for="systemSize">Anlagenleistung in kWp</label>
+                    <input data-pv="systemSize" id="systemSize" type="number" min="0" step="0.1" value="10">
+                </div>
+
+                <div class="pv-field">
+                    <label for="feedInTariff">Einspeisevergütung (€/kWh)</label>
+                    <input data-pv="feedInTariff" id="feedInTariff" type="number" min="0" step="0.01" value="0.11">
+                </div>
+
+                <div class="pv-field">
+                    <label for="selfConsumption">Eigenverbrauch (%)</label>
+                    <input data-pv="selfConsumption" id="selfConsumption" type="number" min="0" max="100" step="1" value="50">
+                </div>
+
+                <div class="pv-field">
+                    <label for="electricityPrice">Strompreis (€/kWh)</label>
+                    <input data-pv="electricityPrice" id="electricityPrice" type="number" min="0" step="0.01" value="0.36">
+                </div>
+
+                <div class="pv-field">
+                    <label for="specificYield">Dachlage / spezifischer Ertrag</label>
+                    <select data-pv="specificYield" id="specificYield" class="form-select" name="specificYield">
+                        <option value="900">Mitteleuropa – Dach ≈ 900</option>
+                        <option value="1000" selected>Dach gut ausgerichtet – 1 000</option>
+                        <option value="1100">Freifläche Mitteleuropa – 1 100</option>
+                        <option value="1200">Landwirtschaft / Südeuropa – 1 200</option>
+                        <option value="1500">Mittelmeer / Wüstenrand – 1 500</option>
+                        <option value="2000">Wüstenregion – 2 000</option>
+                    </select>
+                </div>
+
+                <div class="pv-result-small">
+                    <span>Geschätzter Jahresertrag:</span>
+                    <span data-pv="annualProduction">10.000 kWh/Jahr</span>
+                </div>
+            </section>
+
+            <section class="pv-column pv-contamination">
+                <h2>Verschmutzung wählen</h2>
+
+                <fieldset class="pv-radio-group" data-pv="dustGroup" aria-labelledby="dust-legend">
+                    <legend id="dust-legend" class="pv-radio-legend">Allgemeine Verschmutzung wählen</legend>
+                    <div class="pv-radio-grid">
+                        <label class="pv-radio-option">
+                            <input type="radio" data-pv="dustLevel" name="dustLevel" value="0.05" checked>
+                            <span class="pv-radio-thumb pv-thumb-dust pv-dust-5" aria-hidden="true"></span>
+                            <span class="pv-radio-label">Staub 5 %</span>
+                        </label>
+                        <label class="pv-radio-option">
+                            <input type="radio" data-pv="dustLevel" name="dustLevel" value="0.10">
+                            <span class="pv-radio-thumb pv-thumb-dust pv-dust-10" aria-hidden="true"></span>
+                            <span class="pv-radio-label">Staub 10 %</span>
+                        </label>
+                        <label class="pv-radio-option">
+                            <input type="radio" data-pv="dustLevel" name="dustLevel" value="0.20">
+                            <span class="pv-radio-thumb pv-thumb-dust pv-dust-20" aria-hidden="true"></span>
+                            <span class="pv-radio-label">Staub 20 %</span>
+                        </label>
+                        <label class="pv-radio-option">
+                            <input type="radio" data-pv="dustLevel" name="dustLevel" value="0.30">
+                            <span class="pv-radio-thumb pv-thumb-dust pv-dust-30" aria-hidden="true"></span>
+                            <span class="pv-radio-label">Staub 30 %</span>
+                        </label>
+                        <label class="pv-radio-option">
+                            <input type="radio" data-pv="dustLevel" name="dustLevel" value="0.40">
+                            <span class="pv-radio-thumb pv-thumb-dust pv-dust-40" aria-hidden="true"></span>
+                            <span class="pv-radio-label">Staub 40 %</span>
+                        </label>
+                        <label class="pv-radio-option">
+                            <input type="radio" data-pv="dustLevel" name="dustLevel" value="0.50">
+                            <span class="pv-radio-thumb pv-thumb-dust pv-dust-50" aria-hidden="true"></span>
+                            <span class="pv-radio-label">Staub 50 %</span>
+                        </label>
+                        <label class="pv-radio-option">
+                            <input type="radio" data-pv="dustLevel" name="dustLevel" value="0.60">
+                            <span class="pv-radio-thumb pv-thumb-dust pv-dust-60" aria-hidden="true"></span>
+                            <span class="pv-radio-label">Staub 60 %</span>
+                        </label>
+                        <label class="pv-radio-option">
+                            <input type="radio" data-pv="dustLevel" name="dustLevel" value="0.70">
+                            <span class="pv-radio-thumb pv-thumb-dust pv-dust-70" aria-hidden="true"></span>
+                            <span class="pv-radio-label">Staub 70 %</span>
+                        </label>
+                    </div>
+                </fieldset>
+
+                <fieldset class="pv-radio-group" data-pv="lichenGroup" aria-labelledby="lichen-legend">
+                    <legend id="lichen-legend" class="pv-radio-legend">Optional Flechten wählen</legend>
+                    <div class="pv-radio-grid">
+                        <label class="pv-radio-option">
+                            <input type="radio" data-pv="lichenLevel" name="lichenLevel" value="0" checked>
+                            <span class="pv-radio-thumb pv-thumb-lichen pv-lichen-0" aria-hidden="true"></span>
+                            <span class="pv-radio-label">Keine Flechten (0 %)</span>
+                        </label>
+                        <label class="pv-radio-option">
+                            <input type="radio" data-pv="lichenLevel" name="lichenLevel" value="0.05">
+                            <span class="pv-radio-thumb pv-thumb-lichen pv-lichen-5" aria-hidden="true"></span>
+                            <span class="pv-radio-label">Flechten 5 %</span>
+                        </label>
+                        <label class="pv-radio-option">
+                            <input type="radio" data-pv="lichenLevel" name="lichenLevel" value="0.10">
+                            <span class="pv-radio-thumb pv-thumb-lichen pv-lichen-10" aria-hidden="true"></span>
+                            <span class="pv-radio-label">Flechten 10 %</span>
+                        </label>
+                        <label class="pv-radio-option">
+                            <input type="radio" data-pv="lichenLevel" name="lichenLevel" value="0.20">
+                            <span class="pv-radio-thumb pv-thumb-lichen pv-lichen-20" aria-hidden="true"></span>
+                            <span class="pv-radio-label">Flechten 20 %</span>
+                        </label>
+                        <label class="pv-radio-option">
+                            <input type="radio" data-pv="lichenLevel" name="lichenLevel" value="0.30">
+                            <span class="pv-radio-thumb pv-thumb-lichen pv-lichen-30" aria-hidden="true"></span>
+                            <span class="pv-radio-label">Flechten 30 %</span>
+                        </label>
+                        <label class="pv-radio-option">
+                            <input type="radio" data-pv="lichenLevel" name="lichenLevel" value="0.40">
+                            <span class="pv-radio-thumb pv-thumb-lichen pv-lichen-40" aria-hidden="true"></span>
+                            <span class="pv-radio-label">Flechten 40 %</span>
+                        </label>
+                        <label class="pv-radio-option">
+                            <input type="radio" data-pv="lichenLevel" name="lichenLevel" value="0.50">
+                            <span class="pv-radio-thumb pv-thumb-lichen pv-lichen-50" aria-hidden="true"></span>
+                            <span class="pv-radio-label">Flechten 50 %</span>
+                        </label>
+                        <label class="pv-radio-option">
+                            <input type="radio" data-pv="lichenLevel" name="lichenLevel" value="0.60">
+                            <span class="pv-radio-thumb pv-thumb-lichen pv-lichen-60" aria-hidden="true"></span>
+                            <span class="pv-radio-label">Flechten 60 %</span>
+                        </label>
+                    </div>
+                </fieldset>
+
+                <div class="pv-result-small">
+                    <span>Gesamt-Verschmutzungsgrad:</span>
+                    <span data-pv="contaminationPercent">5&nbsp;%</span>
+                </div>
+            </section>
+        </main>
+
+        <section class="pv-loss-summary">
+            <h2>Verlust</h2>
+            <p>Durch Verschmutzung pro Jahr ca.:</p>
+            <div class="pv-loss-main">
+                <span data-pv="totalLossEuro" class="pv-loss-euro">117,50&nbsp;€</span>
+                <span data-pv="totalLossKwh" class="pv-loss-kwh">500 kWh*</span>
+            </div>
+            <div class="pv-loss-breakdown">
+                <div>
+                    <strong>Selbstverbrauch:</strong>
+                    <span data-pv="selfLossKwh">250 kWh</span>
+                    <span data-pv="selfLossEuro">90,00&nbsp;€</span>
+                </div>
+                <div>
+                    <strong>Einspeisung:</strong>
+                    <span data-pv="feedLossKwh">250 kWh</span>
+                    <span data-pv="feedLossEuro">27,50&nbsp;€</span>
+                </div>
+            </div>
+            <p class="pv-footnote">
+                * Alle Angaben ohne Gewähr. Werte gerundet.
+            </p>
+        </section>
+    </div>
+
+    <script>
+        (function () {
+            const root = document.querySelector('.pv-calculator');
+            const q = (attr) => root.querySelector(`[data-pv="${attr}"]`);
+            const qAll = (attr) => root.querySelectorAll(`[data-pv="${attr}"]`);
+
+            const systemSizeInput = q('systemSize');
+            const feedInTariffInput = q('feedInTariff');
+            const selfConsumptionInput = q('selfConsumption');
+            const electricityPriceInput = q('electricityPrice');
+            const specificYieldSelect = q('specificYield');
+            const getDustLevel = () => root.querySelector('input[data-pv="dustLevel"]:checked')?.value ?? '0.05';
+            const getLichenLevel = () => root.querySelector('input[data-pv="lichenLevel"]:checked')?.value ?? '0';
+
+            const annualProductionEl = q('annualProduction');
+            const contaminationPercentEl = q('contaminationPercent');
+
+            const totalLossEuroEl = q('totalLossEuro');
+            const totalLossKwhEl = q('totalLossKwh');
+            const selfLossKwhEl = q('selfLossKwh');
+            const selfLossEuroEl = q('selfLossEuro');
+            const feedLossKwhEl = q('feedLossKwh');
+            const feedLossEuroEl = q('feedLossEuro');
+
+            function clamp(value, min, max) {
+                return Math.min(Math.max(value, min), max);
+            }
+
+            /** Parse number from input; accepts both "0.11" and "0,11" (German decimal). */
+            function parseNum(value) {
+                if (value == null || value === '') return NaN;
+                const normalized = String(value).trim().replace(',', '.');
+                return parseFloat(normalized);
+            }
+
+            function formatNumber(value, fractionDigits) {
+                return value.toLocaleString('de-DE', {
+                    minimumFractionDigits: fractionDigits,
+                    maximumFractionDigits: fractionDigits
+                });
+            }
+
+            function calculate() {
+                // 1) Annual production (kWh/year) = kWp × specific yield
+                const systemSize = parseNum(systemSizeInput.value) || 0;
+                const specificYield = parseNum(specificYieldSelect.value) || 0;
+                const annualProduction = systemSize * specificYield;
+
+                // 2) Loss due to contamination (kWh/year)
+                // Reference: dust + lichen with lichen weighted 1.2× (matches gebaeudereinigung-shop.de)
+                const dust = parseNum(getDustLevel()) || 0;
+                const lichen = parseNum(getLichenLevel()) || 0;
+                const contaminationLevel = Math.min(dust + lichen * 1.2, 1);
+                const lossKwh = annualProduction * contaminationLevel;
+
+                // 3) Split loss into self-consumption vs feed-in by self-consumption %
+                let selfShare = parseNum(selfConsumptionInput.value) || 0;
+                selfShare = clamp(selfShare, 0, 100) / 100;
+                const feedShare = 1 - selfShare;
+                const selfLossKwh = lossKwh * selfShare;
+                const feedLossKwh = lossKwh * feedShare;
+
+                // 4) Financial loss: self-consumed loss valued at electricity price
+                const electricityPrice = parseNum(electricityPriceInput.value) || 0;
+                const selfLossEuro = selfLossKwh * electricityPrice;
+
+                // 5) Financial loss: feed-in loss valued at feed-in tariff
+                const feedInTariff = parseNum(feedInTariffInput.value) || 0;
+                const feedLossEuro = feedLossKwh * feedInTariff;
+
+                // 6) Total financial loss per year
+                const totalLossEuro = selfLossEuro + feedLossEuro;
+
+                annualProductionEl.textContent = `${formatNumber(annualProduction, 0)} kWh/Jahr`;
+                contaminationPercentEl.textContent = `${formatNumber(contaminationLevel * 100, 1)} %`;
+
+                totalLossEuroEl.textContent = `${formatNumber(totalLossEuro, 2)} €`;
+                totalLossKwhEl.textContent = `${formatNumber(lossKwh, 0)} kWh*`;
+
+                selfLossKwhEl.textContent = `${formatNumber(selfLossKwh, 0)} kWh`;
+                selfLossEuroEl.textContent = `${formatNumber(selfLossEuro, 2)} €`;
+
+                feedLossKwhEl.textContent = `${formatNumber(feedLossKwh, 0)} kWh`;
+                feedLossEuroEl.textContent = `${formatNumber(feedLossEuro, 2)} €`;
+            }
+
+            const inputs = [
+                systemSizeInput,
+                feedInTariffInput,
+                selfConsumptionInput,
+                electricityPriceInput,
+                specificYieldSelect
+            ];
+            inputs.forEach((el) => {
+                el.addEventListener('input', calculate);
+                el.addEventListener('change', calculate);
+            });
+            qAll('dustLevel').forEach((radio) => radio.addEventListener('change', calculate));
+            qAll('lichenLevel').forEach((radio) => radio.addEventListener('change', calculate));
+
+            calculate();
+        })();
+    </script>
+</html>
