@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .project-component {
+      grid-column-gap: 1.5rem;
+      grid-row-gap: 1.5rem;
+      perspective: 1000px;
+      flex-flow: column;
+      display: flex;
+      position: relative;
+    }
+
+    .project-wrapper {
+      position: sticky;
+      top: 6.5rem;
+      height: 75vh;
+      background-color: black;
+    }
+
+    .project-wrapper._02 {
+      background-color: red;
+    }
+
+    .spacer {
+      height: 100vh;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="spacer"></div>
+  <div class="project-component">
+    <div class="project-wrapper _01"></div>
+    <div class="project-wrapper _02"></div>
+    <div class="project-wrapper _03"></div>
+    <div class="project-wrapper _04"></div>
+    <div class="project-wrapper _05"></div>
+    <div class="project-wrapper _06"></div>
+    <div class="project-wrapper _07"></div>
+  </div>
+  <div class="spacer"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" integrity="sha512-NcZdtrT77bJr4STcmsGAESr06BYGE8woZdSdEgqnpyqac7sugNO+Tr4bGwGF3MsnEkGKhU2KL2xh6Ec+BqsaHA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" integrity="sha512-P2IDYZfqSwjcSjX0BKeNhwRUH8zRPGlgcWl5n6gBLzdi4Y5/0O4zaXrtO4K9TZK6Hn1BenYpKowuCavNandERg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+
+    gsap.to(".project-wrapper._01", {
+      y: 200,        // move up
+      z: -300,        // move back in 3D
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".project-wrapper._02",
+        start: "top 50%",   // when _02 hits 50% from top
+        end: "top top",     // continue until it reaches top
+        scrub: true,        // smooth scroll-based animation
+        // markers: true     // enable for debugging
+      }
+    });
+  </script>
+</body>
+
+</html>
