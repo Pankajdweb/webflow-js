@@ -1,32 +1,37 @@
 // Script to set today's date in elements with the attribute "set-today-date"
+document.addEventListener("DOMContentLoaded", () => {
+  const todayDate = new Date();
+  const todayDateEls = document.querySelectorAll("[set-today-date]");
 
-const todayDate = new Date();
-
-const todayDateEls = document.querySelectorAll("[set-today-date]");
-
-// Stop script if no elements found
-if (!todayDateEls.length) return;
-
-todayDateEls.forEach(el => {
-  const type = el.getAttribute("set-today-date");
-
-  let options;
-
-  if (type === "month") {
-    options = { month: "long" };
-  } else {
-    options = {
-      weekday: "long",
-      month: type || "long",
-      day: "numeric"
-    };
+  if (!todayDateEls.length) {
+    console.warn("No elements found with [set-today-date]");
+    return;
   }
 
-  const formatted = todayDate
-    .toLocaleDateString("en-US", options)
-    .toUpperCase();
+  todayDateEls.forEach(el => {
+    const type = el.getAttribute("set-today-date");
 
-  el.textContent = formatted;
+    let options;
+
+    if (type === "month") {
+      options = { month: "long" };
+    } else {
+      const validMonthFormats = ["long", "short", "narrow"];
+      const monthFormat = validMonthFormats.includes(type) ? type : "long";
+
+      options = {
+        weekday: "long",
+        month: monthFormat,
+        day: "numeric"
+      };
+    }
+
+    const formatted = todayDate
+      .toLocaleDateString("en-US", options)
+      .toUpperCase();
+
+    el.textContent = formatted;
+  });
 });
 
 // end the script for elements with the attribute "set-today-date" to prevent it from running on other elements
