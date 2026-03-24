@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Webflow Accessibility Checklist</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f4f0;
+      --surface: #ffffff;
+      --border: #e2e0d8;
+      --accent: #2563eb;
+      --accent-light: #eff6ff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #5a5a5a;
+      --text-muted: #9a9a9a;
+      --green: #16a34a;
+      --green-bg: #f0fdf4;
+      --red: #dc2626;
+      --red-bg: #fef2f2;
+      --amber: #d97706;
+      --amber-bg: #fffbeb;
+      --radius: 12px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 0 0 80px;
+    }
+
+    .built-by-top {
+      font-size: 12px;
+      font-family: 'DM Mono', monospace;
+      color: #475569;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .built-by-top span { color: #93c5fd; font-weight: 500; }
+
+    /* HERO */
+    .hero {
+      background: var(--text-primary);
+      color: white;
+      padding: 60px 40px 50px;
+      text-align: center;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #93c5fd;
+      background: rgba(147,197,253,0.12);
+      border: 1px solid rgba(147,197,253,0.2);
+      border-radius: 100px;
+      padding: 5px 14px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+    .hero h1 span { color: #60a5fa; }
+    .hero p {
+      font-size: 16px;
+      color: #94a3b8;
+      max-width: 520px;
+      margin: 0 auto 28px;
+      line-height: 1.6;
+    }
+    .hero-stats {
+      display: inline-flex;
+      gap: 32px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 24px;
+    }
+    .stat { text-align: center; }
+    .stat-num { font-size: 28px; font-weight: 600; color: #60a5fa; display: block; }
+    .stat-label { font-size: 12px; color: #64748b; margin-top: 2px; }
+
+    /* PROGRESS */
+    .progress-bar-wrap {
+      background: #1e293b;
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .progress-label { font-size: 13px; color: #94a3b8; white-space: nowrap; font-family: 'DM Mono', monospace; }
+    .progress-track {
+      flex: 1;
+      height: 6px;
+      background: #334155;
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #3b82f6, #60a5fa);
+      border-radius: 100px;
+      transition: width 0.6s ease;
+    }
+    .progress-count { font-size: 13px; color: #60a5fa; font-family: 'DM Mono', monospace; white-space: nowrap; }
+
+    /* MAIN */
+    .main {
+      max-width: 860px;
+      margin: 40px auto 0;
+      padding: 0 20px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-family: 'DM Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      padding-left: 4px;
+    }
+
+    /* ACCORDION */
+    .accordion { display: flex; flex-direction: column; gap: 10px; }
+
+    .acc-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .acc-item.open {
+      border-color: #bfdbfe;
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.06), var(--shadow);
+    }
+    .acc-item.done .acc-header { background: var(--green-bg); }
+    .acc-item.done .acc-num { background: var(--green); color: white; }
+    .acc-item.done .acc-title { color: var(--green); }
+
+    .acc-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 20px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s ease;
+    }
+    .acc-header:hover { background: #fafaf8; }
+    .acc-item.done .acc-header:hover { background: #dcfce7; }
+
+    .acc-num {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      background: var(--accent-light);
+      color: var(--accent);
+      border-radius: 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .acc-title {
+      flex: 1;
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--text-primary);
+    }
+
+    .acc-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .check-btn {
+      width: 22px;
+      height: 22px;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      background: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+    .check-btn:hover { border-color: var(--green); background: var(--green-bg); }
+    .acc-item.done .check-btn { background: var(--green); border-color: var(--green); }
+    .check-btn svg { display: none; }
+    .acc-item.done .check-btn svg { display: block; }
+
+    .chevron {
+      width: 18px;
+      height: 18px;
+      color: var(--text-muted);
+      transition: transform 0.25s ease;
+      flex-shrink: 0;
+    }
+    .acc-item.open .chevron { transform: rotate(180deg); }
+
+    /* BODY */
+    .acc-body {
+      display: none;
+      border-top: 1px solid var(--border);
+    }
+    .acc-item.open .acc-body { display: block; }
+
+    .acc-body-inner { padding: 24px 20px 24px 62px; display: flex; flex-direction: column; gap: 16px; }
+
+    .info-block {
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      gap: 12px;
+    }
+    .info-block.cause { background: var(--red-bg); border: 1px solid #fecaca; }
+    .info-block.solution { background: var(--green-bg); border: 1px solid #bbf7d0; }
+    .info-block.webflow { background: var(--amber-bg); border: 1px solid #fde68a; }
+
+    .info-icon {
+      font-size: 18px;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .info-content {}
+    .info-label {
+      font-size: 11px;
+      font-family: 'DM Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .info-block.cause .info-label { color: var(--red); }
+    .info-block.solution .info-label { color: var(--green); }
+    .info-block.webflow .info-label { color: var(--amber); }
+    .info-text {
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--text-secondary);
+    }
+    .info-text ol, .info-text ul { padding-left: 18px; margin-top: 6px; }
+    .info-text li { margin-bottom: 4px; }
+    .info-text code {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      background: rgba(0,0,0,0.06);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="built-by-top">Built by <span>TechWise</span></div>
+  <div class="hero-tag">Webflow Accessibility</div>
+  <h1>Accessibility <span>Checklist</span></h1>
+  <p>25 essential checks to ensure your Webflow site is fully accessible, WCAG compliant, and inclusive for all users.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">25</span><span class="stat-label">Total Checks</span></div>
+    <div class="stat"><span class="stat-num" id="doneCount">0</span><span class="stat-label">Completed</span></div>
+    <div class="stat"><span class="stat-num" id="pctCount">0%</span><span class="stat-label">Progress</span></div>
+  </div>
+</div>
+
+<div class="progress-bar-wrap">
+  <span class="progress-label">Completion</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <span class="progress-count" id="progressText">0 / 25</span>
+</div>
+
+<div class="main">
+  <p class="section-label">Click each item to expand details · Check off when resolved</p>
+  <div class="accordion" id="accordion"></div>
+</div>
+
+</div>
+
+<script>
+const items = [
+  {
+    title: "Skip Navigation Link",
+    cause: "Without a skip navigation link, keyboard-only users must tab through every nav link on every page before reaching the main content — creating an exhausting, inaccessible experience.",
+    solution: "Add a visually hidden link as the very first element in the <body> that jumps to the main content area when focused.",
+    webflow: `<ol>
+      <li>In Webflow Designer, add a <strong>Link Block</strong> as the first child of your Body.</li>
+      <li>Set its href to <code>#main-content</code>.</li>
+      <li>Give your main section the ID <code>main-content</code>.</li>
+      <li>Create a class <code>skip-nav</code> with styles: <code>position:absolute; top:-100%; left:0; background:#000; color:#fff; padding:8px 16px; z-index:9999</code>.</li>
+      <li>Add a <code>:focus</code> state on <code>skip-nav</code> that sets <code>top:0</code>. This makes it appear only when tabbed into.</li>
+    </ol>`
+  },
+  {
+    title: "Navbar Marked with &lt;header&gt; Tag",
+    cause: "Without semantic markup, screen readers can't identify page regions. Using a generic <div> instead of <header> means assistive technology users lose the ability to jump directly to the header.",
+    solution: "Ensure your top navbar is wrapped in a <header> element so screen readers expose it as a landmark region.",
+    webflow: `<ol>
+      <li>Select your Navbar element in the Designer.</li>
+      <li>In the element settings panel (⚙️), look for the <strong>Tag</strong> dropdown.</li>
+      <li>Change it from <code>div</code> to <code>header</code>.</li>
+      <li>Confirm in the DOM preview that it renders as <code>&lt;header&gt;</code>.</li>
+    </ol>`
+  },
+  {
+    title: "Navigation Lists with &lt;nav&gt; + &lt;ul&gt; / &lt;ol&gt;",
+    cause: "If nav links are plain divs or spans, screen readers won't identify them as navigation. Users lose the ability to skip directly to nav landmarks or understand the link grouping.",
+    solution: "Wrap navigation link groups in <nav> and structure them as <ul>/<li> lists.",
+    webflow: `<ol>
+      <li>Select your navbar container → change its tag to <code>nav</code>.</li>
+      <li>Inside, use a <strong>List</strong> element (Webflow's native List renders as <code>&lt;ul&gt;</code>).</li>
+      <li>Each nav link should be a <strong>List Item</strong> (<code>&lt;li&gt;</code>) containing a <strong>Link</strong>.</li>
+      <li>For footer nav, repeat the same pattern inside a <code>&lt;footer&gt;</code> tag.</li>
+    </ol>`
+  },
+  {
+    title: "Navbar & Footer Logo aria-label",
+    cause: "Logo images that are also links have no visible text label. Without an aria-label, screen readers announce them as blank or meaningless links, leaving users confused about where they lead.",
+    solution: "Add a descriptive aria-label to logo link elements so screen readers announce them properly.",
+    webflow: `<ol>
+      <li>Select the logo <strong>Link Block</strong> in the Designer.</li>
+      <li>Open the <strong>Element Settings</strong> panel (⚙️ icon).</li>
+      <li>In the <strong>Custom Attributes</strong> section, add: <code>aria-label</code> → <code>Go to homepage – [Brand Name]</code>.</li>
+      <li>Repeat for both the navbar and footer logos.</li>
+    </ol>`
+  },
+  {
+    title: "Contact Info Wrapped in &lt;address&gt;",
+    cause: "Contact details like phone numbers, emails, and physical addresses lose semantic meaning when placed in plain <div>s or <p>s. Search engines and screen readers can't distinguish them as contact information.",
+    solution: "Wrap all contact details in an <address> element to convey semantic meaning.",
+    webflow: `<ol>
+      <li>Add a <strong>DOM element</strong> (Embed or Custom Code block) with <code>&lt;address&gt;</code> tags wrapping your contact info.</li>
+      <li>Alternatively, select the contact container → in <strong>Element Settings</strong>, change the tag to <code>address</code> if Webflow exposes it.</li>
+      <li>Ensure email and phone links use proper <code>mailto:</code> and <code>tel:</code> hrefs inside the address block.</li>
+    </ol>`
+  },
+  {
+    title: "Semantic HTML Instead of &lt;div&gt;-based Layouts",
+    cause: "Over-reliance on <div>s creates a flat, meaningless DOM. Screen readers rely on semantic elements like <main>, <section>, <article>, <aside>, and <footer> to navigate page structure efficiently.",
+    solution: "Replace generic container divs with appropriate semantic HTML5 elements throughout your Webflow build.",
+    webflow: `<ol>
+      <li>Select each major container in the Designer.</li>
+      <li>In <strong>Element Settings</strong> (⚙️), change the <strong>Tag</strong> dropdown to the correct semantic element: <code>main</code>, <code>section</code>, <code>article</code>, <code>aside</code>, or <code>footer</code>.</li>
+      <li>Use <code>main</code> for your primary content area (only one per page).</li>
+      <li>Use <code>section</code> for distinct content regions, each with its own heading.</li>
+    </ol>`
+  },
+  {
+    title: "Correct Heading Structure (H1 → H6)",
+    cause: "Skipping heading levels (e.g., jumping from H1 to H4) or using multiple H1s breaks the page outline. Screen reader users navigate by headings — a broken hierarchy makes the page unusable.",
+    solution: "Ensure one H1 per page followed by a logical, nested heading hierarchy with no skipped levels.",
+    webflow: `<ol>
+      <li>Use Webflow's <strong>Heading</strong> element and set the level (H1–H6) in the settings panel.</li>
+      <li>Run a free audit at <a href="https://wave.webaim.org" target="_blank">wave.webaim.org</a> to visualize your heading structure.</li>
+      <li>Check each page: one <code>H1</code> (page title), <code>H2</code> for sections, <code>H3</code> for sub-sections, and so on.</li>
+      <li>Style headings visually with CSS classes — never change heading levels just to get a different size.</li>
+    </ol>`
+  },
+  {
+    title: "Unique aria-labels on Identical Buttons",
+    cause: "Multiple buttons labeled 'Learn More' or 'Read More' are indistinguishable by screen readers. Users tabbing through controls hear the same label repeatedly and can't know which button does what.",
+    solution: "Give each button a unique, descriptive aria-label that explains its specific action.",
+    webflow: `<ol>
+      <li>Select each repeated button (e.g., card 'Learn More' buttons) in the Designer.</li>
+      <li>Go to <strong>Element Settings</strong> → <strong>Custom Attributes</strong>.</li>
+      <li>Add: <code>aria-label</code> → <code>Learn more about [Product/Feature Name]</code>.</li>
+      <li>If using CMS, use dynamic binding: <code>aria-label</code> → <code>Learn more about {Name}</code> from your CMS collection field.</li>
+    </ol>`
+  },
+  {
+    title: "Hover Interactions Only on Hover-Capable Devices",
+    cause: "Interactions that trigger only on hover are inaccessible to keyboard users and touch screen users. If critical content only appears on hover, it's invisible to many users.",
+    solution: "Ensure hover effects are enhancements only — all functionality must be accessible via keyboard focus or click/tap.",
+    webflow: `<ol>
+      <li>For every Webflow Interaction triggered on <code>Mouse Over</code>, also add a <code>Mouse Click</code> or ensure the same content is available by default or via keyboard.</li>
+      <li>Use CSS <code>:hover</code> + <code>:focus</code> selectors together in Webflow's style panel for consistent behavior.</li>
+      <li>Avoid hiding critical navigation or actions inside hover-only dropdowns without a click fallback.</li>
+    </ol>`
+  },
+  {
+    title: "Decorative Images Marked Properly",
+    cause: "When a decorative image (background texture, divider, icon flourish) has alt text or no alt attribute at all, screen readers announce it unnecessarily, cluttering the experience.",
+    solution: "Mark decorative images with alt=\"\" so screen readers skip them entirely.",
+    webflow: `<ol>
+      <li>Select the decorative image in the Designer.</li>
+      <li>In <strong>Element Settings</strong>, find the <strong>Alt Text</strong> field.</li>
+      <li>Leave the field <strong>empty</strong> (blank, not the word "none" or "image") — Webflow will render <code>alt=""</code>.</li>
+      <li>Alternatively, use CSS background images for purely decorative imagery instead of <code>&lt;img&gt;</code> tags.</li>
+    </ol>`
+  },
+  {
+    title: "Icons Inside Buttons Marked as Decorative",
+    cause: "Icon fonts or SVG icons inside a button that already has a text label will be announced twice (icon name + button label). This creates redundant, confusing announcements for screen reader users.",
+    solution: "Add aria-hidden=\"true\" to icon elements inside labelled buttons.",
+    webflow: `<ol>
+      <li>Select the icon element (SVG or Icon element) inside your button in the Designer.</li>
+      <li>Go to <strong>Element Settings</strong> → <strong>Custom Attributes</strong>.</li>
+      <li>Add: <code>aria-hidden</code> → <code>true</code>.</li>
+      <li>Ensure the button itself has visible text OR an <code>aria-label</code> if icon-only.</li>
+    </ol>`
+  },
+  {
+    title: "Alt Text on All Meaningful Images",
+    cause: "Images without alt text are invisible to screen readers, search engines, and users with images disabled. Missing alt text fails WCAG 1.1.1 (Level A) — the most basic accessibility requirement.",
+    solution: "Write descriptive, concise alt text for every meaningful image. Use tools like Assetflow or Webflow's AI alt text feature.",
+    webflow: `<ol>
+      <li>In the Designer, select any <strong>Image</strong> element → open <strong>Element Settings</strong>.</li>
+      <li>Fill in the <strong>Alt Text</strong> field with a concise description (e.g., "Team members collaborating at a whiteboard").</li>
+      <li>For CMS images, bind the alt text field to a CMS field: Settings → Alt Text → bind to <code>{Alt Text}</code> or <code>{Name}</code> field.</li>
+      <li>Use <strong>Webflow AI</strong> (via Assets panel) to auto-generate alt text for bulk images.</li>
+      <li>Alternatively, use <a href="https://www.assetflow.app" target="_blank">Assetflow</a> for bulk alt text management across your asset library.</li>
+    </ol>`
+  },
+  {
+    title: "Form Autofill Aligned with Design Specs",
+    cause: "When autocomplete attributes are missing or incorrect, browsers show autofill UI overlays that break your design. More importantly, users with cognitive disabilities rely on autofill to complete forms accurately.",
+    solution: "Add correct autocomplete attributes to all form fields to enable browser autofill.",
+    webflow: `<ol>
+      <li>Select each form input in the Designer → <strong>Element Settings</strong> → <strong>Custom Attributes</strong>.</li>
+      <li>Add: <code>autocomplete</code> → appropriate value: <code>name</code>, <code>email</code>, <code>tel</code>, <code>address-line1</code>, <code>postal-code</code>, etc.</li>
+      <li>Reference the <a href="https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill" target="_blank">HTML autofill spec</a> for the full list of valid values.</li>
+    </ol>`
+  },
+  {
+    title: "Form Success, Error & Validation States Tested",
+    cause: "Inaccessible form feedback (e.g., color-only errors, non-announced validations) means users who are blind, colorblind, or using screen readers don't know when or why their submission failed.",
+    solution: "Ensure error messages are programmatically associated with fields and announced by screen readers.",
+    webflow: `<ol>
+      <li>In Webflow's <strong>Form Settings</strong>, customize success and error messages with clear, descriptive text.</li>
+      <li>For custom validation, use <code>aria-describedby</code> on inputs pointing to an error message element ID.</li>
+      <li>Add <code>role="alert"</code> to error message containers so screen readers announce them immediately.</li>
+      <li>Test all states using a screen reader (VoiceOver on Mac, NVDA on Windows).</li>
+    </ol>`
+  },
+  {
+    title: "Input Fields Without Labels Have aria-label",
+    cause: "Inputs with only placeholder text lose their label once a user starts typing. Screen readers often don't announce placeholders as labels, leaving form fields nameless for assistive technology users.",
+    solution: "Every input must have either a visible <label> or an aria-label attribute.",
+    webflow: `<ol>
+      <li>Select the form input → <strong>Element Settings</strong> → <strong>Custom Attributes</strong>.</li>
+      <li>Add: <code>aria-label</code> → <code>Your descriptive label, e.g. "Email address"</code>.</li>
+      <li>Better yet: use Webflow's native <strong>Label</strong> element and connect it via the <code>for</code> attribute matching the input's <code>id</code>.</li>
+      <li>Never rely solely on placeholder text as a label.</li>
+    </ol>`
+  },
+  {
+    title: "Blog Posts & Rich Text Tagged as &lt;article&gt;",
+    cause: "Blog content in generic divs loses its semantic identity. The <article> element tells screen readers, search engines, and RSS parsers that this is a self-contained, independently distributable piece of content.",
+    solution: "Wrap blog post content in <article> elements.",
+    webflow: `<ol>
+      <li>In your Blog Post template, select the main content wrapper.</li>
+      <li><strong>Element Settings</strong> → change the tag to <code>article</code>.</li>
+      <li>Ensure the article contains an <code>H1</code> (the post title) and proper nested headings.</li>
+      <li>For blog listing pages, wrap each post card in its own <code>article</code> tag.</li>
+    </ol>`
+  },
+  {
+    title: "Sidebars, Ads & Popups Tagged as &lt;aside&gt;",
+    cause: "Content that is supplementary to the main page (sidebars, related posts, ad units) should be marked with <aside>. Without it, screen reader users can't distinguish main content from supplementary content.",
+    solution: "Wrap sidebars, related-content panels, and non-critical popups in <aside> elements.",
+    webflow: `<ol>
+      <li>Select your sidebar or related-content container in the Designer.</li>
+      <li><strong>Element Settings</strong> → change the tag to <code>aside</code>.</li>
+      <li>For popups/modals that contain supplementary content (ads, promos), use <code>aside</code> or <code>dialog</code> tags accordingly.</li>
+    </ol>`
+  },
+  {
+    title: "Non-Descriptive Links Have aria-label",
+    cause: "Links that say 'click here', 'read more', or 'learn more' provide zero context when read out of context. Screen reader users often navigate by listing all links on a page — generic labels make this useless.",
+    solution: "Add aria-label or aria-labelledby to non-descriptive links to provide full context.",
+    webflow: `<ol>
+      <li>Select the link in the Designer → <strong>Element Settings</strong> → <strong>Custom Attributes</strong>.</li>
+      <li>Add: <code>aria-label</code> → <code>Read more about [Topic/Article Title]</code>.</li>
+      <li>For CMS-driven links, dynamically bind the aria-label to the CMS field (e.g., <code>Read more about {Title}</code>).</li>
+      <li>Better alternative: rewrite the visible link text to be descriptive so no aria-label is needed.</li>
+    </ol>`
+  },
+  {
+    title: "All Interactive Elements Are Keyboard Accessible",
+    cause: "Custom interactive components (carousels, tabs, accordions, dropdowns) that only work with a mouse exclude keyboard users and users of assistive technology, violating WCAG 2.1.1 (Level A).",
+    solution: "Ensure all interactive elements are focusable, operable with keyboard, and display a visible focus indicator.",
+    webflow: `<ol>
+      <li>Use semantic <code>&lt;button&gt;</code> elements (Webflow's Button element) instead of div click handlers.</li>
+      <li>In Webflow Interactions, add keyboard triggers or ensure the same interaction fires on <code>:focus</code>.</li>
+      <li>Add a visible focus style: <code>:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }</code> in your global CSS.</li>
+      <li>Use <code>tabindex="0"</code> on any custom interactive elements that aren't natively focusable.</li>
+      <li>Tab through your entire page to test every interactive element is reachable.</li>
+    </ol>`
+  },
+  {
+    title: "iframes Have Title Attributes",
+    cause: "Embedded iframes (maps, videos, forms, third-party widgets) without a title attribute are announced as empty or meaningless by screen readers. Users can't know what the iframe contains without a title.",
+    solution: "Add a descriptive title attribute to every iframe element.",
+    webflow: `<ol>
+      <li>Select the <strong>Embed</strong> element in Webflow containing the iframe code.</li>
+      <li>Edit the embed code and add <code>title="Descriptive name, e.g. Google Maps showing our office location"</code> to the <code>&lt;iframe&gt;</code> tag.</li>
+      <li>For YouTube/Vimeo embeds, add <code>title="[Video Title]"</code> directly in the iframe code.</li>
+    </ol>`
+  },
+  {
+    title: "Page Tested at 200% Zoom Level",
+    cause: "Users with low vision often browse at 200%+ zoom. If layouts break, text overflows, or elements overlap at high zoom, it creates a degraded, unusable experience that violates WCAG 1.4.4.",
+    solution: "Test and fix your layout at 200% browser zoom to ensure content remains readable and usable.",
+    webflow: `<ol>
+      <li>In Chrome/Firefox, press <code>Ctrl +</code> (Windows) or <code>Cmd +</code> (Mac) to zoom to 200%.</li>
+      <li>Ensure no text overflows its container — use flexible units (<code>rem</code>, <code>%</code>) over fixed <code>px</code> widths.</li>
+      <li>In Webflow, use <code>min-width</code> and <code>overflow: visible</code> or <code>overflow: auto</code> on containers to handle zoom gracefully.</li>
+      <li>Test all pages at 200% and address any layout breakage.</li>
+    </ol>`
+  },
+  {
+    title: "FAQ Sections Include Structured Data (FAQ Schema)",
+    cause: "FAQ sections without schema markup miss out on Google rich results (expanded FAQ dropdowns in SERPs) and are harder for assistive technologies to process as a distinct Q&A structure.",
+    solution: "Add FAQ schema (JSON-LD) to pages with FAQ sections for both SEO and accessibility.",
+    webflow: `<ol>
+      <li>In Webflow's <strong>Page Settings</strong> → <strong>Custom Code</strong> → <strong>Head Code</strong>, add a JSON-LD script block.</li>
+      <li>Structure it as: <code>&lt;script type="application/ld+json"&gt; { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [...] } &lt;/script&gt;</code>.</li>
+      <li>Each FAQ item should include <code>@type: Question</code>, <code>name</code> (the question), and <code>acceptedAnswer</code>.</li>
+      <li>Use a schema generator like <a href="https://technicalseo.com/tools/schema-markup-generator/" target="_blank">TechnicalSEO.com</a> to build it quickly.</li>
+    </ol>`
+  },
+  {
+    title: "All Functionality Accessible via Keyboard with Focus",
+    cause: "If any feature — navigation, modals, carousels, forms, dropdowns — can only be operated with a mouse, keyboard-only users and switch device users are entirely locked out of that functionality.",
+    solution: "Conduct a full keyboard-only audit of every interactive feature on every page.",
+    webflow: `<ol>
+      <li>Unplug your mouse and navigate your entire site using only <code>Tab</code>, <code>Shift+Tab</code>, <code>Enter</code>, <code>Space</code>, and arrow keys.</li>
+      <li>Every interactive element must receive visible focus and respond to keyboard input.</li>
+      <li>Modals and drawers must trap focus inside when open and restore focus to the trigger element when closed.</li>
+      <li>Use <code>aria-modal="true"</code> and <code>role="dialog"</code> on modal containers in Webflow Embeds.</li>
+      <li>Add <code>aria-expanded</code> to dropdown toggle buttons that control collapsible sections.</li>
+    </ol>`
+  },
+  {
+    title: "Hover-Based Interactions Limited to Hover-Capable Devices",
+    cause: "Content or interactions that only appear on mouse hover are completely inaccessible to touch device users and keyboard users — two large segments of your audience.",
+    solution: "Use CSS media queries to restrict hover effects to devices that support hover input.",
+    webflow: `<ol>
+      <li>In Webflow's <strong>Custom CSS</strong>, wrap hover-only styles in a media query: <code>@media (hover: hover) { .element:hover { ... } }</code>.</li>
+      <li>This ensures hover effects only apply on devices with a true hover input (mouse), not touchscreens.</li>
+      <li>For Webflow Interactions set to "Mouse Over", add a parallel click/tap interaction for touch users.</li>
+    </ol>`
+  },
+  {
+    title: "'Back to Top' Link at Page Bottom",
+    cause: "On long pages, users navigating by keyboard must tab through hundreds of elements to return to the top. A visible 'Back to Top' link dramatically improves keyboard navigation efficiency.",
+    solution: "Add a 'Back to Top' link at the bottom of each long page that becomes visible on focus.",
+    webflow: `<ol>
+      <li>Add a <strong>Link Block</strong> as the last element inside your <code>&lt;footer&gt;</code> or at the bottom of the Body.</li>
+      <li>Set its href to <code>#</code> or to the ID of your top element (e.g., <code>#hero</code>).</li>
+      <li>Set the link text to "Back to top".</li>
+      <li>Style it to be visible on focus: create a class with <code>position: fixed; bottom: 24px; right: 24px;</code> that transitions from <code>opacity: 0</code> to <code>opacity: 1</code> on <code>:focus</code>.</li>
+      <li>Optionally add a Webflow Scroll interaction to show the button after scrolling 300px down the page.</li>
+    </ol>`
+  }
+];
+
+const accordion = document.getElementById('accordion');
+let doneItems = new Set(JSON.parse(localStorage.getItem('a11y-done') || '[]'));
+
+function updateProgress() {
+  const done = doneItems.size;
+  const total = items.length;
+  const pct = Math.round((done / total) * 100);
+  document.getElementById('doneCount').textContent = done;
+  document.getElementById('pctCount').textContent = pct + '%';
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = done + ' / ' + total;
+  localStorage.setItem('a11y-done', JSON.stringify([...doneItems]));
+}
+
+items.forEach((item, i) => {
+  const el = document.createElement('div');
+  el.className = 'acc-item' + (doneItems.has(i) ? ' done' : '');
+  el.innerHTML = `
+    <div class="acc-header">
+      <div class="acc-num">${String(i + 1).padStart(2, '0')}</div>
+      <div class="acc-title">${item.title}</div>
+      <div class="acc-right">
+        <button class="check-btn" title="Mark as done" aria-label="Mark '${item.title}' as complete">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <div class="info-block cause">
+          <div class="info-icon">⚠️</div>
+          <div class="info-content">
+            <div class="info-label">Why It Matters / The Problem</div>
+            <div class="info-text">${item.cause}</div>
+          </div>
+        </div>
+        <div class="info-block webflow">
+          <div class="info-icon">🔧</div>
+          <div class="info-content">
+            <div class="info-label">How to Fix in Webflow</div>
+            <div class="info-text">${item.webflow}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Toggle accordion
+  el.querySelector('.acc-header').addEventListener('click', (e) => {
+    if (e.target.closest('.check-btn')) return;
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.acc-item.open').forEach(x => x.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
+  });
+
+  // Check button
+  el.querySelector('.check-btn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (doneItems.has(i)) { doneItems.delete(i); el.classList.remove('done'); }
+    else { doneItems.add(i); el.classList.add('done'); }
+    updateProgress();
+  });
+
+  accordion.appendChild(el);
+});
+
+updateProgress();
+</script>
+</body>
+</html>
