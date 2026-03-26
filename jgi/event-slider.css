@@ -1,0 +1,159 @@
+
+  [book-slide] {
+    position: absolute;
+    left: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    /* active dimensions — used as reference */
+    --w: 76%;
+  --h: 65vh; 
+    --top: 13%;
+    transition:
+      width 0.88s cubic-bezier(0.76, 0, 0.16, 1),
+      height 0.88s cubic-bezier(0.76, 0, 0.16, 1),
+      top 0.88s cubic-bezier(0.76, 0, 0.16, 1),
+      transform 0.88s cubic-bezier(0.76, 0, 0.16, 1),
+      box-shadow 0.88s cubic-bezier(0.76, 0, 0.16, 1),
+      opacity 0.45s ease;
+  }
+
+  [book-slide]::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 5%, rgba(255, 255, 255, 0.4) 35%, rgba(255, 255, 255, 0.65) 50%, rgba(255, 255, 255, 0.4) 65%, transparent 95%);
+    z-index: 6;
+    pointer-events: none;
+  }
+
+  /* ── ACTIVE ── */
+  [book-slide][data-state='active'] {
+    width: 76%;
+   height: 65vh;
+    top: 13%;
+    transform: translateX(-50%) perspective(900px) rotateX(-3deg);
+    box-shadow:
+      5px 5px 0 2px rgba(170, 170, 165, 0.5),
+      2px 2px 0 1px rgba(190, 190, 185, 0.35),
+      0 22px 55px rgba(0, 0, 0, 0.16);
+    z-index: 10;
+  }
+
+  [book-slide][data-state='active'] [slider-bg] {
+    filter: brightness(1) saturate(1);
+    transform: scale(1);
+  }
+
+  [book-slide][data-state='behind-1'] {
+    width: 73%;
+   height: 65vh;
+    top: 10.2%;
+    transform: translateX(-50%) perspective(900px) rotateX(-3deg) scale(0.975);
+    box-shadow: 3px 3px 0 2px rgba(170, 170, 165, 0.35);
+    z-index: 9;
+  }
+
+  [book-slide][data-state='behind-1'] [slider-bg] {
+    filter: brightness(0.6) saturate(0.3);
+    transform: scale(1.04);
+  }
+
+  /* ── BEHIND-2 ── */
+  [book-slide][data-state='behind-2'] {
+    width: 70%;
+   height: 65vh;
+    top: 7.8%;
+    transform: translateX(-50%) perspective(900px) rotateX(-3deg) scale(0.95);
+    box-shadow: 2px 2px 0 1px rgba(170, 170, 165, 0.22);
+    z-index: 8;
+  }
+  [book-slide][data-state='behind-2'] [slider-bg] {
+    filter: brightness(0.42) saturate(0.18);
+    transform: scale(1.07);
+  }
+
+  /* ── BEHIND-3 ── */
+  [book-slide][data-state='behind-3'] {
+    width: 67%;
+  height: 65vh; 
+    top: 5.8%;
+    transform: translateX(-50%) perspective(900px) rotateX(-3deg) scale(0.925);
+    box-shadow: none;
+    z-index: 7;
+  }
+
+  [book-slide][data-state='behind-3'] [slider-bg] {
+    filter: brightness(0.28) saturate(0.1);
+    transform: scale(1.1);
+  }
+
+   /* ── NEXT-1: very slim strip below active — ~18px tall visible ── */
+ 
+  [book-slide][data-state="next"] {
+    width: 73%;
+ height: 65vh; 
+    /* position so only top ~18px shows below active card 
+    top: calc(13% + 65vh - 14px);
+    transform: translateX(-50%) perspective(900px) rotateX(9deg) scaleX(.975);
+    box-shadow: 0 -1px 0 1px rgba(160,160,155,.4);*/
+        top: calc(10% + 65vh - 14px);
+    transform: translateX(-50%) perspective(2500px) rotateX(-38deg) scaleX(1);
+    z-index: 99;
+  }
+  [book-slide][data-state="next"] [slider-bg] {
+    filter: brightness(.48) saturate(.22);
+    transform: scale(1.04);
+  }
+
+    /* ── NEXT-2: even thinner, barely visible ── */
+  [book-slide][data-state="next-2"] {
+    width: 70%;
+height: 65vh;
+    top: calc(13% + 65vh + 6px);
+    transform: translateX(-50%) perspective(2500px) rotateX(-38deg) scaleX(1);
+    box-shadow: none;
+    z-index: 8;
+  }
+  [book-slide][data-state="next-2"] [slider-bg] {
+    filter: brightness(.3) saturate(.1);
+    transform: scale(1.07);
+  }
+
+  /* ── HIDDEN ── */
+  [book-slide][data-state="hidden"] {
+    width: 76%;
+ height: 65vh; 
+    top: 115%;
+    transform: translateX(-50%) perspective(900px) rotateX(-3deg);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  [new-blur-property] {
+    -webkit-backdrop-filter: blur(9px);
+    backdrop-filter: blur(9px);
+    transition-property: all;
+    transition-duration: .3s;
+    transition-timing-function: ease;
+     -webkit-mask-image: linear-gradient(#0000 0%, #00000080 25%, #000 50% 100%);
+    mask-image: linear-gradient(#0000 0%, #00000080 25%, #000 50% 100%);
+}
+ [data-state]{
+   opacity:0;
+ }
+  [data-state="behind-3"],
+  [data-state="behind-2"],
+[data-state="behind-1"],
+[data-state="active"],
+[data-state="next"]{
+  opacity:1;
+}
+
+[data-btn].disabled {
+opacity: 0.5;
+pointer-events: none;
+}
