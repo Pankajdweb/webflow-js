@@ -23,7 +23,7 @@ const STAGGER_MS = 150;
         obs.unobserve(target);
         reveal(target, colIndex(target) * STAGGER_MS);
       });
-    }, { threshold: 0.35 });
+    }, { threshold: 0.45 });
  
     cards.forEach(c => obs.observe(c));
   });
