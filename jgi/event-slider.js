@@ -32,10 +32,15 @@
     const num   = String(i + 1).padStart(2, '0');
     barMeta.classList.remove('anim');
     void barMeta.offsetWidth;
-    barEyebrow.textContent = `${num} — ${slide.getAttribute('data-header-line') || ''}`;
+    // barEyebrow.textContent = `${num} — ${slide.getAttribute('data-header-line') || ''}`;
+    barEyebrow.textContent = slide.getAttribute('data-header-line')  || '';
     barTitle.textContent   = slide.getAttribute('data-title') || '';
-    barLink.textContent    = slide.getAttribute('data-link')  || '';
-    barMeta.classList.add('anim');
+    // barLink.textContent    = slide.getAttribute('data-link')  || '';
+    //barLink.href           = slide.getAttribute('data-link')  || '#';  
+
+    const vieweventLink = slide.getAttribute('data-link');
+    barLink.href = `/main-event/${vieweventLink}`;
+    barMeta.classList.add('anim');  
   }
  
   function updateArrows() {
