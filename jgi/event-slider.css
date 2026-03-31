@@ -8,11 +8,11 @@
   --h: 65vh;
   --top: 13%;
   transition:
-    width 0.2s cubic-bezier(0.76, 0, 0.16, 1),
-    height 0.2s cubic-bezier(0.76, 0, 0.16, 1),
-    top 0.2s cubic-bezier(0.76, 0, 0.16, 1),
-    transform 0.2s cubic-bezier(0.76, 0, 0.16, 1),
-    box-shadow 0.2s cubic-bezier(0.76, 0, 0.16, 1),
+    width 0.4s ease-in-out,
+    height 0.4s ease-in-out,
+    top 0.4s ease-in-out,
+    transform 0.4s ease-in-out,
+    box-shadow 0.4s ease-in-out,
     opacity 0.2s ease;
 }
 
