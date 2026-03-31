@@ -140,13 +140,17 @@
 }
 
 [new-blur-property] {
-  -webkit-backdrop-filter: blur(9px);
-  backdrop-filter: blur(9px);
+
+      background-color: white;
+    filter: blur(50px);
+    height: 30rem;
+    
+
+
   transition-property: all;
   transition-duration: 0.2s;
   transition-timing-function: ease;
-  -webkit-mask-image:  linear-gradient(#000000 0%, #00000080 25%, #000 50% 100%);
-  mask-image:  linear-gradient(#000000 0%, #00000080 25%, #000 50% 100%);
+
 }
 [data-state] {
   opacity: 0;
