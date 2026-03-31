@@ -1,4 +1,4 @@
- const slides     = [...document.querySelectorAll('[book-slide]')];
+const slides     = [...document.querySelectorAll('[book-slide]')];
   const btnUp      = document.querySelector('[data-btn="up"]');
   const btnDown    = document.querySelector('[data-btn="down"]');
   const barMeta    = document.querySelector('[data-bar-meta]');
@@ -33,14 +33,14 @@
     barMeta.classList.remove('anim');
     void barMeta.offsetWidth;
     // barEyebrow.textContent = `${num} — ${slide.getAttribute('data-header-line') || ''}`;
-    barEyebrow.textContent = slide.getAttribute('data-header-line')  || '';
+    barEyebrow.textContent = slide.getAttribute('data-header-line') || '';
     barTitle.textContent   = slide.getAttribute('data-title') || '';
-    // barLink.textContent    = slide.getAttribute('data-link')  || '';
-    //barLink.href           = slide.getAttribute('data-link')  || '#';  
-
+    // barLink.textContent = slide.getAttribute('data-link') || '';
+    // barLink.href        = slide.getAttribute('data-link') || '#';
+ 
     const vieweventLink = slide.getAttribute('data-link');
     barLink.href = `/main-event/${vieweventLink}`;
-    barMeta.classList.add('anim');  
+    barMeta.classList.add('anim');
   }
  
   function updateArrows() {
@@ -57,7 +57,20 @@
     assignStates();
     updateBar(current);
     updateArrows();
-    setTimeout(() => { isAnim = false; }, 1150);
+ 
+    // Clear lock as soon as the active slide finishes transitioning
+    const activeSlide = slides[current];
+    const onEnd = () => {
+      isAnim = false;
+      activeSlide.removeEventListener('transitionend', onEnd);
+    };
+    activeSlide.addEventListener('transitionend', onEnd);
+ 
+    // Fallback in case transitionend doesn't fire
+    setTimeout(() => {
+      isAnim = false;
+      activeSlide.removeEventListener('transitionend', onEnd);
+    }, 500);
   }
  
   slides.forEach(s => {
