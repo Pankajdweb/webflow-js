@@ -219,6 +219,13 @@
   top: 115%;
 
 }
+
+[new-blur-property] {
+    filter: blur(20px);
+
+}
+
+  
 }
 
 [data-btn].disabled {
