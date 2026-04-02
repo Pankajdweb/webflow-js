@@ -140,17 +140,12 @@
 }
 
 [new-blur-property] {
-
       background-color: white;
     filter: blur(50px);
-    height: 30rem;
-    
-
-
+    height: 30rem;  
   transition-property: all;
   transition-duration: 0.2s;
   transition-timing-function: ease;
-
 }
 [data-state] {
   opacity: 0;
@@ -161,6 +156,69 @@
 [data-state="active"],
 [data-state="next"] {
   opacity: 1;
+}
+@media (max-width: 767px) {
+[book-slide] {
+
+  --w: 100%;
+  --h: 65vh;
+  --top: 13%;
+
+}
+
+
+
+/* ── ACTIVE ── */
+[book-slide][data-state="active"] {
+  width: 100%;
+  top: 13%;
+
+}
+
+
+
+[book-slide][data-state="behind-1"] {
+  width: 100%;
+
+}
+
+
+
+/* ── BEHIND-2 ── */
+[book-slide][data-state="behind-2"] {
+  width: 100%;
+
+}
+
+
+/* ── BEHIND-3 ── */
+[book-slide][data-state="behind-3"] {
+  width: 100%;
+ 
+}
+
+
+
+/* ── NEXT-1: very slim strip below active — ~18px tall visible ── */
+
+[book-slide][data-state="next"] {
+  width: 100%;
+
+}
+
+/* ── NEXT-2: even thinner, barely visible ── */
+[book-slide][data-state="next-2"] {
+  width: 100%;
+
+}
+
+
+/* ── HIDDEN ── */
+[book-slide][data-state="hidden"] {
+  width: 100%;
+  top: 115%;
+
+}
 }
 
 [data-btn].disabled {
