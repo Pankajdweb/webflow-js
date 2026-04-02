@@ -178,7 +178,8 @@
 
 
 [book-slide][data-state="behind-1"] {
-  width: 100%;
+  width: 96%;
+  top:-20px;
 
 }
 
@@ -186,7 +187,8 @@
 
 /* ── BEHIND-2 ── */
 [book-slide][data-state="behind-2"] {
-  width: 100%;
+  width: 92%;
+  top:-40px;
 
 }
 
