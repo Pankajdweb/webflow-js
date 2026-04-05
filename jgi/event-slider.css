@@ -7,13 +7,9 @@
   --w: 76%;
   --h: 65vh;
   --top: 13%;
-  transition:
-    width 0.4s ease-in-out,
-    height 0.4s ease-in-out,
-    top 0.4s ease-in-out,
-    transform 0.4s ease-in-out,
-    box-shadow 0.4s ease-in-out,
-    opacity 0.2s ease;
+  transition: width 0.4s ease-in-out, height 0.4s ease-in-out,
+    top 0.4s ease-in-out, transform 0.4s ease-in-out,
+    box-shadow 0.4s ease-in-out, opacity 0.2s ease;
 }
 
 [book-slide]::before {
@@ -140,9 +136,9 @@
 }
 
 [new-blur-property] {
-      background-color: white;
-    filter: blur(50px);
-    height: 30rem;  
+  background-color: white;
+  filter: blur(50px);
+  height: 30rem;
   transition-property: all;
   transition-duration: 0.2s;
   transition-timing-function: ease;
@@ -158,74 +154,55 @@
   opacity: 1;
 }
 @media (max-width: 767px) {
-[book-slide] {
+  [book-slide] {
+    --w: 100%;
+  }
 
-  --w: 100%;
+  /* ── ACTIVE ── */
+  [book-slide][data-state="active"] {
+    width: 100%;
+    top: 0%;
+  }
 
-}
+  [book-slide][data-state="behind-1"] {
+    width: 96%;
+    top: -20px;
+  }
 
+  /* ── BEHIND-2 ── */
+  [book-slide][data-state="behind-2"] {
+    width: 92%;
+    top: -40px;
+  }
 
+  /* ── BEHIND-3 ── */
+  [book-slide][data-state="behind-3"] {
+    width: 100%;
+  }
 
-/* ── ACTIVE ── */
-[book-slide][data-state="active"] {
-  width: 100%;
-  top: 0%;
+  /* ── NEXT-1: very slim strip below active — ~18px tall visible ── */
 
-}
+  [book-slide][data-state="next"] {
+    width: 100%;
+    opacity: 0;
+  }
 
+  /* ── NEXT-2: even thinner, barely visible ── */
+  [book-slide][data-state="next-2"] {
+    width: 100%;
+  }
 
+  /* ── HIDDEN ── */
+  [book-slide][data-state="hidden"] {
+    width: 100%;
+    top: 115%;
+  }
 
-[book-slide][data-state="behind-1"] {
-  width: 96%;
-  top:-20px;
-
-}
-
-
-
-/* ── BEHIND-2 ── */
-[book-slide][data-state="behind-2"] {
-  width: 92%;
-  top:-40px;
-
-}
-
-
-/* ── BEHIND-3 ── */
-[book-slide][data-state="behind-3"] {
-  width: 100%;
- 
-}
-
-
-
-/* ── NEXT-1: very slim strip below active — ~18px tall visible ── */
-
-[book-slide][data-state="next"] {
-  width: 100%;
-
-}
-
-/* ── NEXT-2: even thinner, barely visible ── */
-[book-slide][data-state="next-2"] {
-  width: 100%;
-
-}
-
-
-/* ── HIDDEN ── */
-[book-slide][data-state="hidden"] {
-  width: 100%;
-  top: 115%;
-
-}
-
-[new-blur-property] {
+  [new-blur-property] {
     filter: blur(20px);
-
-}
-
-  
+    width: 150vw;
+    transform: translate(-50vw, 0px);
+  }
 }
 
 [data-btn].disabled {
