@@ -59,6 +59,28 @@
       pointer-events: none;
     }
 
+    .vp-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--vp-radius);
+  background: #151820;
+  isolation: isolate;
+  aspect-ratio: 16 / 9;
+}
+
+.vp-wrapper::before {
+  content: "";
+  display: block;
+  
+}
+
+
+.vp-container {
+  position: absolute;
+  inset: 0;
+}
+
     .hero h1 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: clamp(2rem, 5vw, 3.5rem);
