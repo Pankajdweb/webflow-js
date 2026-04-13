@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Universal Video Player — a lightweight vanilla JS library that auto-detects YouTube, Vimeo, MP4, WebM URLs and renders an accessible, customizable player.">
+  <title>Universal Video Player — Demo</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+
+  <!-- Video Player CSS -->
+  <!-- Page Styles -->
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #0d0f14;
+      color: #e8eaf0;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 80px 24px 60px;
+      border-bottom: 1px solid #1e2230;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 0%, rgba(230, 160, 32, 0.07), transparent 60%),
+        radial-gradient(ellipse at 70% 100%, rgba(56, 189, 248, 0.05), transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    .hero h1 span {
+      color: #e6a020;
+    }
+
+    .hero p {
+      color: #6b7280;
+      font-size: 1.1rem;
+      max-width: 560px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(230, 160, 32, 0.1);
+      color: #e6a020;
+      border: 1px solid rgba(230, 160, 32, 0.2);
+      margin-bottom: 20px;
+    }
+
+    /* Sections */
+    .demos {
+      padding: 60px 0;
+    }
+
+    .demo-section {
+      margin-bottom: 64px;
+    }
+
+    .demo-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+
+    .demo-header h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .demo-desc {
+      color: #6b7280;
+      font-size: 0.875rem;
+      margin-bottom: 16px;
+    }
+
+    /* Code block */
+    .code-section {
+      border-top: 1px solid #1e2230;
+      padding: 60px 0;
+    }
+
+    .code-section h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .code-block {
+      background: #151820;
+      border: 1px solid #1e2230;
+      border-radius: 12px;
+      padding: 24px;
+      overflow-x: auto;
+    }
+
+    .code-block pre {
+      font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+      font-size: 13px;
+      color: #9ca3af;
+      line-height: 1.7;
+      white-space: pre;
+    }
+
+    .code-block pre .tag {
+      color: #38bdf8;
+    }
+
+    .code-block pre .attr {
+      color: #e6a020;
+    }
+
+    .code-block pre .val {
+      color: #34d399;
+    }
+
+    .code-block pre .comment {
+      color: #4b5563;
+    }
+
+    /* Props grid */
+    .props-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .prop-card {
+      background: #151820;
+      border: 1px solid #1e2230;
+      border-radius: 10px;
+      padding: 16px;
+    }
+
+    .prop-card code {
+      font-family: 'SF Mono', Consolas, monospace;
+      font-size: 12px;
+      color: #38bdf8;
+    }
+
+    .prop-card p {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+
+    /* External button area */
+    .ext-btn-area {
+      margin-bottom: 16px;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-top: 22px;
+    }
+    .tablist {
+      display: inline-flex;
+      gap: 6px;
+      padding: 6px;
+      border-radius: 999px;
+      background: rgba(21, 24, 32, 0.8);
+      border: 1px solid #1e2230;
+      backdrop-filter: blur(8px);
+    }
+    .tab-btn {
+      appearance: none;
+      border: none;
+      background: transparent;
+      color: #9ca3af;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .tab-btn[aria-selected="true"] {
+      background: rgba(230, 160, 32, 0.12);
+      color: #e6a020;
+      border: 1px solid rgba(230, 160, 32, 0.22);
+    }
+    .tab-panel[hidden] { display: none !important; }
+
+    /* Minimal Video Player CSS (current build) */
+:root {
+  --vp-primary: #e6a020;
+  --vp-primary-hover: #f0b040;
+  --vp-primary-glow: rgba(230, 160, 32, 0.25);
+  --vp-radius: 12px;
+  --vp-aspect-padding: 56.25%;
+  --vp-text: #e8eaf0;
+}
+
+.vp-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--vp-radius);
+  background: #151820;
+  isolation: isolate;
+  aspect-ratio: 16 / 9;
+}
+
+.vp-wrapper::before {
+  content: "";
+  display: block;
+  
+}
+
+.vp-container {
+  position: absolute;
+  inset: 0;
+}
+
+.vp-container video,
+.vp-container iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.vp-container video { object-fit: cover; }
+
+/* YouTube/Vimeo: scale 16:9 embed like object-fit: cover (matches native video behavior) */
+.vp-wrapper.vp-embed-cover {
+  container-name: vp;
+  container-type: size;
+}
+.vp-wrapper.vp-embed-cover .vp-container {
+  overflow: hidden;
+} 
+
+@container vp (min-aspect-ratio: 16/9) {
+  .vp-container iframe {
+    inset: auto;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    height: calc(100cqw * 9 / 16);
+    transform: translate(-50%, -50%);
+  }
+}
+
+@container vp (max-aspect-ratio: 16/9) {
+  .vp-container iframe {
+    inset: auto;
+    left: 50%;
+    top: 50%;
+    height: 100%;
+    width: calc(100cqh * 16 / 9);
+    transform: translate(-50%, -50%);
+  }
+}
+
+.vp-wrapper:fullscreen.vp-embed-cover .vp-container iframe,
+.vp-wrapper:-webkit-full-screen.vp-embed-cover .vp-container iframe {
+  inset: 0;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  transform: none;
+}
+
+.vp-click-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  cursor: pointer;
+}
+
+/* Center play button */
+.vp-center-button {
+  position: absolute;
+  z-index: 20;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: var(--vp-primary);
+  box-shadow: 0 8px 32px var(--vp-primary-glow);
+  transition: transform 0.2s ease, background 0.2s ease, opacity 0.2s ease;
+}
+
+.vp-center-button:hover {
+  background: var(--vp-primary-hover);
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.vp-center-button svg {
+  width: 28px;
+  height: 28px;
+  fill: #0d0f14;
+}
+
+.vp-center-button .pause-icon { display: none; }
+.vp-center-button.is-playing .play-icon { display: none; }
+.vp-center-button.is-playing .pause-icon { display: block; }
+
+.vp-center-button.is-playing { opacity: 0; }
+.vp-wrapper:hover .vp-center-button.is-playing { opacity: 1; }
+
+/* Controls (hidden until started; then appear on hover/focus) */
+.vp-controls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  padding: 12px 12px 10px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.70) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.vp-wrapper.vp-started:hover .vp-controls,
+.vp-wrapper.vp-started:focus-within .vp-controls {
+  opacity: 1;
+}
+
+/* Progress */
+.vp-progress-wrapper {
+  width: 100%;
+  padding: 6px 0;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.vp-progress-bar {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+
+.vp-progress-wrapper:hover .vp-progress-bar { height: 6px; }
+
+.vp-progress-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  height: 100%;
+  width: 0%;
+  background: var(--vp-primary);
+  border-radius: 2px;
+}
+
+.vp-progress-handle {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  width: 14px;
+  height: 14px;
+  background: var(--vp-primary);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px var(--vp-primary-glow);
+}
+
+/* Controls row */
+.vp-controls-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.vp-control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--vp-text);
+  transition: color 0.2s ease, transform 0.15s ease;
+}
+
+.vp-control-btn:hover {
+  color: var(--vp-primary);
+  transform: scale(1.15);
+}
+
+.vp-control-btn:focus-visible {
+  outline: 2px solid var(--vp-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.vp-control-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.vp-time {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+  color: rgba(232, 234, 240, 0.72);
+  user-select: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.vp-spacer { flex: 1; }
+
+/* Volume */
+.vp-volume-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vp-volume-slider {
+  position: relative;
+  width: 84px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.vp-volume-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 100%;
+  height: 100%;
+  background: var(--vp-primary);
+  border-radius: 2px;
+}
+
+/* Fullscreen adjustments */
+.vp-wrapper:fullscreen,
+.vp-wrapper:-webkit-full-screen {
+  border-radius: 0;
+}
+
+.vp-wrapper:fullscreen .vp-container video { object-fit: contain; }
+  </style>
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Universal Video Player",
+    "applicationCategory": "MultimediaApplication",
+    "description": "Lightweight vanilla JS video player supporting YouTube, Vimeo, MP4, WebM with auto-thumbnails, custom controls, and full accessibility.",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0" }
+  }
+  </script>
+</head>
+
+<body>
+
+  <!-- Hero -->
+  <header class="hero" role="banner">
+    <div class="badge">Universal Video Player</div>
+    <h1>One Script. <span>Every Source.</span></h1>
+    <p>Pass any video URL via data attributes — YouTube, Vimeo, MP4, WebM — and get a beautiful, accessible player with
+      zero dependencies.</p>
+
+    <div class="tabs" aria-label="Page tabs">
+      <div class="tablist" role="tablist" aria-label="Demo and documentation tabs">
+        <button class="tab-btn" id="tab-demo" role="tab" aria-selected="true" aria-controls="panel-demo" type="button">Demo</button>
+        <button class="tab-btn" id="tab-docs" role="tab" aria-selected="false" aria-controls="panel-docs" type="button">Documentation</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Demo Tab -->
+  <main class="demos container tab-panel" id="panel-demo" role="tabpanel" aria-labelledby="tab-demo">
+
+    <!-- 1. MP4 Default -->
+    <section class="demo-section" aria-label="MP4 Default Demo">
+      <div class="demo-header">
+        <span class="badge">MP4</span>
+        <h2>MP4</h2>
+      </div>
+      <p class="demo-desc">Auto-detects MP4, generates a smart thumbnail (skips black frames), shows full controls with
+        center play button.</p>
+      <div class="vp-wrapper"
+        data-video-url="https://cdn.jsdelivr.net/gh/NotAnother-NZ/na13-tuc@main/assets/videos/tuc-pci-trailer.webm"
+        data-title="Big Buck Bunny" aria-label="Big Buck Bunny video player">
+        <div class="vp-container"></div>
+      </div>
+    </section>
+
+    <!-- 2. MP4 Autoplay -->
+    <section class="demo-section" aria-label="MP4 Autoplay Demo">
+      <div class="demo-header">
+        <span class="badge">Autoplay</span>
+        <h2>MP4 — Autoplay</h2>
+      </div>
+      <p class="demo-desc">Perfect for hero backgrounds. Autoplays muted with loop, controls hidden.</p>
+      <div class="vp-wrapper"
+        data-video-url="https://cdn.jsdelivr.net/gh/NotAnother-NZ/na13-tuc@main/assets/videos/tuc-pci-trailer.webm"
+        data-autoplay data-title="Hero Background" aria-label="Hero background video">
+        <div class="vp-container"></div>
+      </div>
+    </section>
+
+    <!-- 5. YouTube -->
+    <section class="demo-section" aria-label="YouTube Demo">
+      <div class="demo-header">
+        <span class="badge">YouTube</span>
+        <h2>YouTube Video</h2>
+      </div>
+      <p class="demo-desc">Automatically detects YouTube URLs, fetches the high-res thumbnail, embeds the player on
+        click.</p>
+      <div class="vp-wrapper" data-video-url="https://youtu.be/gSoyOSvjuWw?si=Ag2n56SJxtHXpAXs"
+        data-title="YouTube Demo" aria-label="YouTube video player">
+        <div class="vp-container"></div>
+      </div>
+    </section>
+
+    <!-- 6. Vimeo -->
+    <section class="demo-section" aria-label="Vimeo Demo">
+      <div class="demo-header">
+        <span class="badge">Vimeo</span>
+        <h2>Vimeo Video</h2>
+      </div>
+      <p class="demo-desc">Detects Vimeo URLs, fetches thumbnail via oEmbed API, embeds on play.</p>
+      <div class="vp-wrapper" data-video-url="https://vimeo.com/1115490186" data-title="Vimeo Demo"
+        aria-label="Vimeo video player">
+        <div class="vp-container"></div>
+      </div>
+    </section>
+    
+  
+  </main>
+
+  <!-- Documentation Tab -->
+  <section class="tab-panel" id="panel-docs" role="tabpanel" aria-labelledby="tab-docs" hidden>
+  <!-- Usage Section -->
+  <section class="code-section" aria-label="Usage guide">
+    <div class="container">
+      <h2>Quick Usage</h2>
+      <div class="code-block">
+        <pre><span class="comment">&lt;!-- 1. Include CSS &amp; JS --&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"stylesheet"</span> <span class="attr">href</span>=<span class="val">"video-player.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="val">"video-player.js"</span> <span class="attr">defer</span><span class="tag">&gt;&lt;/script&gt;</span>
+
+<span class="comment">&lt;!-- 2. Add a player (YouTube / Vimeo / MP4 / WebM) --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"vp-wrapper"</span>
+     <span class="attr">data-video-url</span>=<span class="val">"https://youtube.com/watch?v=..."</span>
+     <span class="attr">data-title</span>=<span class="val">"My Video"</span>
+     <span class="attr">aria-label</span>=<span class="val">"My Video player"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"vp-container"</span><span class="tag">&gt;&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- Autoplay hero --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"vp-wrapper"</span>
+     <span class="attr">data-video-url</span>=<span class="val">"/hero.mp4"</span>
+     <span class="attr">data-autoplay</span>
+     <span class="attr">data-hide-controls</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"vp-container"</span><span class="tag">&gt;&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+      </div>
+
+      <div class="props-grid">
+        <div class="prop-card"><code>data-video-url</code>
+          <p><strong>Required.</strong> Any video URL (YouTube, Vimeo, MP4/WebM)</p>
+        </div>
+        <div class="prop-card"><code>data-title</code>
+          <p>Optional. Accessible title (falls back to <code>aria-label</code>)</p>
+        </div>
+        <div class="prop-card"><code>data-autoplay</code>
+          <p>Optional. Autoplays <strong>muted</strong> and <strong>loops</strong> (controls hidden)</p>
+        </div>
+        <div class="prop-card"><code>data-hide-controls</code>
+          <p>Optional. Hides the custom controls</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Keyboard Shortcuts -->
+  <section style="border-top:1px solid #1e2230;padding:40px 0 60px;" aria-label="Keyboard shortcuts">
+    <div class="container">
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:1.25rem;font-weight:700;margin-bottom:16px;">Keyboard
+        Shortcuts</h2>
+      <div class="props-grid">
+        <div class="prop-card"><code>Space / Enter</code>
+          <p>Play / Pause</p>
+        </div>
+        <div class="prop-card"><code>← / →</code>
+          <p>Seek -10s / +10s</p>
+        </div>
+        <div class="prop-card"><code>M</code>
+          <p>Toggle mute</p>
+        </div>
+        <div class="prop-card"><code>F</code>
+          <p>Toggle fullscreen</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  </section>
+
+  <!-- Video Player JS -->
+  <script>
+    /**
+ * Minimal Video Player — Vanilla JS
+ * Features:
+ * - data-video-url="..." (required)
+ * - data-autoplay (optional; will be muted)
+ * - centered play button
+ * - only one non-autoplay video plays at a time
+ */
+(function (window) {
+  "use strict";
+
+  // If another script redefines things, still keep ours isolated.
+  // Also helps diagnose "script not working" situations.
+  if (!window || !window.document) return;
+
+  // ============================================================================
+  // Provider SDK loaders (needed for YouTube/Vimeo progress/volume/time)
+  // ============================================================================
+  var YT_API_PROMISE = null;
+  function loadYouTubeAPI() {
+    if (YT_API_PROMISE) return YT_API_PROMISE;
+    YT_API_PROMISE = new Promise(function (resolve, reject) {
+      if (window.YT && window.YT.Player) return resolve(window.YT);
+      var tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      tag.async = true;
+      tag.onerror = function () { reject(new Error("Failed to load YouTube Iframe API")); };
+      var prev = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = function () {
+        try { if (typeof prev === "function") prev(); } catch (e) {}
+        resolve(window.YT);
+      };
+      document.head.appendChild(tag);
+    });
+    return YT_API_PROMISE;
+  }
+
+  var VIMEO_API_PROMISE = null;
+  function loadVimeoAPI() {
+    if (VIMEO_API_PROMISE) return VIMEO_API_PROMISE;
+    VIMEO_API_PROMISE = new Promise(function (resolve, reject) {
+      if (window.Vimeo && window.Vimeo.Player) return resolve(window.Vimeo);
+      var tag = document.createElement("script");
+      tag.src = "https://player.vimeo.com/api/player.js";
+      tag.async = true;
+      tag.onload = function () {
+        if (window.Vimeo && window.Vimeo.Player) resolve(window.Vimeo);
+        else reject(new Error("Vimeo Player API loaded but Vimeo.Player missing"));
+      };
+      tag.onerror = function () { reject(new Error("Failed to load Vimeo Player API")); };
+      document.head.appendChild(tag);
+    });
+    return VIMEO_API_PROMISE;
+  }
+
+  var PLAYERS = [];
+  function register(p) { PLAYERS.push(p); }
+  function pauseOthers(active) {
+    for (var i = 0; i < PLAYERS.length; i++) {
+      var p = PLAYERS[i];
+      if (!p || p === active) continue;
+      if (p.autoplay) continue; // keep autoplay running
+      p.pause();
+    }
+  }
+
+  function describeEl(el) {
+    try {
+      if (!el || !el.tagName) return String(el);
+      var s = el.tagName.toLowerCase();
+      if (el.id) s += "#" + el.id;
+      if (el.className && typeof el.className === "string") {
+        var cls = el.className.trim().split(/\s+/).slice(0, 3).join(".");
+        if (cls) s += "." + cls;
+      }
+      var url = el.getAttribute && el.getAttribute("data-video-url");
+      if (url) s += ' [data-video-url="' + url + '"]';
+      return s;
+    } catch (e) { return "vp-wrapper"; }
+  }
+
+  function warn(wrapper, msg, extra) {
+    try {
+      if (extra !== undefined) console.warn("[VideoPlayer]", msg, describeEl(wrapper), wrapper, extra);
+      else console.warn("[VideoPlayer]", msg, describeEl(wrapper), wrapper);
+    } catch (e) {}
+  }
+
+  function error(wrapper, msg, extra) {
+    try {
+      if (extra !== undefined) console.error("[VideoPlayer]", msg, describeEl(wrapper), wrapper, extra);
+      else console.error("[VideoPlayer]", msg, describeEl(wrapper), wrapper);
+    } catch (e) {}
+  }
+
+  function parseAutoplayAttr(wrapper) {
+    if (!wrapper.hasAttribute("data-autoplay")) return false;
+    var v = wrapper.getAttribute("data-autoplay");
+    if (v === "false") return false;
+    return true;
+  }
+
+  function extractYouTubeId(url) {
+    var m =
+      url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/) ||
+      url.match(/youtube\.com\/.*[?&]v=([^&\n?#]+)/);
+    return m ? m[1] : null;
+  }
+
+  function extractVimeoId(url) {
+    var m = url.match(/vimeo\.com\/(\d+)/) || url.match(/vimeo\.com\/.*\/(\d+)/);
+    return m ? m[1] : null;
+  }
+
+  function formatTime(s) {
+    if (!s || !isFinite(s)) return "0:00";
+    var m = Math.floor(s / 60);
+    var sec = Math.floor(s % 60);
+    return m + ":" + (sec < 10 ? "0" : "") + sec;
+  }
+
+  function detectSource(url) {
+    if (!url) return { type: null, id: null };
+    var yt = extractYouTubeId(url);
+    if (yt) return { type: "youtube", id: yt };
+    var vm = extractVimeoId(url);
+    if (vm) return { type: "vimeo", id: vm };
+    return { type: "native", id: url };
+  }
+
+  var ICONS = {
+    play: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>',
+    pause: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>',
+    volumeOn: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>',
+    volumeOff: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>',
+    fullscreen: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>',
+    exitFullscreen: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></svg>',
+  };
+
+  function VideoPlayer(wrapper) {
+    this.wrapper = wrapper;
+    if (!this.wrapper || !this.wrapper.getAttribute) {
+      throw new Error("Invalid wrapper element");
+    }
+    this.container = wrapper.querySelector(".vp-container");
+    if (!this.container) {
+      // Required in your markup; we create it but log so you can fix HTML.
+      error(wrapper, 'Missing required element: child ".vp-container". Creating one automatically.');
+      this.container = document.createElement("div");
+      this.container.className = "vp-container";
+      wrapper.appendChild(this.container);
+    }
+    this.url = wrapper.getAttribute("data-video-url") || "";
+    if (!this.url) error(wrapper, 'Missing required attribute: data-video-url="..."');
+    this.source = detectSource(this.url);
+    this.autoplay = parseAutoplayAttr(wrapper);
+    this.showControls = !wrapper.hasAttribute("data-hide-controls") && !this.autoplay;
+    this.title = wrapper.getAttribute("data-title") || wrapper.getAttribute("aria-label") || "Video";
+
+    this.started = false;
+    this.isPlaying = false;
+    this.videoEl = null;
+    this.iframeEl = null;
+    this.providerPlayer = null; // YT.Player or Vimeo.Player
+
+    this.centerBtn = null;
+    this.clickOverlay = null;
+    this.controlsBar = null;
+    this.playBtn = null;
+    this.progressWrapper = null;
+    this.progressFill = null;
+    this.progressHandle = null;
+    this.timeLabel = null;
+    this.volumeContainer = null;
+    this.volumeSlider = null;
+    this.volumeFill = null;
+    this.volumeBtn = null;
+    this.fsBtn = null;
+
+    this.duration = 0;
+    this.currentTime = 0;
+    this.volume = 1;
+    this.isMuted = false;
+    this.isFullscreen = false;
+
+    this._tickTimer = 0;
+    this._suppressToggleUntil = 0;
+
+    this.init();
+    register(this);
+  }
+
+  VideoPlayer.prototype.init = function () {
+    var self = this;
+
+    this.wrapper.classList.add("vp-min");
+    if (this.source.type === "youtube" || this.source.type === "vimeo") {
+      this.wrapper.classList.add("vp-embed-cover");
+    }
+    this.wrapper.setAttribute("tabindex", "0");
+    this.wrapper.classList.remove("vp-started");
+    this.wrapper.setAttribute("aria-label", this.title);
+
+    this.buildCenterButton();
+    if (this.showControls) this.buildControls();
+    this.wrapper.addEventListener("click", function () {
+      // Prevent wrapper toggle after scrubbing/dragging controls
+      if (Date.now() < self._suppressToggleUntil) return;
+      self.toggle();
+    });
+    this.wrapper.addEventListener("keydown", function (e) {
+      if (e.key === " " || e.key === "Enter") {
+        e.preventDefault();
+        self.toggle();
+      }
+    });
+
+    if (this.autoplay) this.play();
+  };
+
+  VideoPlayer.prototype.buildCenterButton = function () {
+    var self = this;
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "vp-center-button";
+    btn.setAttribute("aria-label", "Play video");
+    btn.innerHTML =
+      '<span class="play-icon">' + ICONS.play + "</span>" +
+      '<span class="pause-icon">' + ICONS.pause + "</span>";
+    this.centerBtn = btn;
+    this.container.appendChild(btn);
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      self.toggle();
+    });
+    this.updateCenterButton();
+  };
+
+  VideoPlayer.prototype.buildControls = function () {
+    var self = this;
+    var wrap = document.createElement("div");
+    wrap.className = "vp-controls";
+    wrap.innerHTML =
+      '<div class="vp-progress-wrapper" aria-label="Video progress" tabindex="0">' +
+        '<div class="vp-progress-bar">' +
+          '<div class="vp-progress-fill"></div>' +
+          '<div class="vp-progress-handle"></div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="vp-controls-bar">' +
+        '<button type="button" class="vp-control-btn vp-play-toggle" aria-label="Play">' +
+          ICONS.play +
+        '</button>' +
+        '<span class="vp-time">0:00 / 0:00</span>' +
+        '<div class="vp-spacer"></div>' +
+        '<div class="vp-volume-container">' +
+          '<button type="button" class="vp-control-btn vp-volume-toggle" aria-label="Mute">' +
+            ICONS.volumeOn +
+          '</button>' +
+          '<div class="vp-volume-slider">' +
+            '<div class="vp-volume-fill" style="width:100%"></div>' +
+          '</div>' +
+        '</div>' +
+        '<button type="button" class="vp-control-btn vp-fs-toggle" aria-label="Fullscreen">' +
+          ICONS.fullscreen +
+        '</button>' +
+      '</div>';
+
+    this.controlsBar = wrap;
+    this.container.appendChild(wrap);
+
+    this.progressWrapper = wrap.querySelector(".vp-progress-wrapper");
+    this.progressFill = wrap.querySelector(".vp-progress-fill");
+    this.progressHandle = wrap.querySelector(".vp-progress-handle");
+    this.playBtn = wrap.querySelector(".vp-play-toggle");
+    this.timeLabel = wrap.querySelector(".vp-time");
+    this.volumeContainer = wrap.querySelector(".vp-volume-container");
+    this.volumeSlider = wrap.querySelector(".vp-volume-slider");
+    this.volumeFill = wrap.querySelector(".vp-volume-fill");
+    this.volumeBtn = wrap.querySelector(".vp-volume-toggle");
+    this.fsBtn = wrap.querySelector(".vp-fs-toggle");
+
+    wrap.addEventListener("click", function (e) { e.stopPropagation(); });
+
+    if (this.playBtn) {
+      this.playBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        self.toggle();
+      });
+    }
+
+    if (this.progressWrapper) {
+      var onSeekAtEvent = function (clientX) {
+        if (!self.duration) return;
+        var rect = self.progressWrapper.getBoundingClientRect();
+        var pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+        self.seek(self.duration * pct);
+      };
+      this.progressWrapper.addEventListener("click", function (e) {
+        e.stopPropagation();
+        onSeekAtEvent(e.clientX);
+      });
+      // Drag support
+      this.progressWrapper.addEventListener("pointerdown", function (e) {
+        if (!self.duration) return;
+        e.preventDefault();
+        e.stopPropagation();
+        self._suppressToggleUntil = Date.now() + 600;
+        try { self.progressWrapper.setPointerCapture(e.pointerId); } catch (err) {}
+        onSeekAtEvent(e.clientX);
+        var onMove = function (ev) { onSeekAtEvent(ev.clientX); };
+        var onUp = function () {
+          self._suppressToggleUntil = Date.now() + 600;
+          self.progressWrapper.removeEventListener("pointermove", onMove);
+          self.progressWrapper.removeEventListener("pointerup", onUp);
+          self.progressWrapper.removeEventListener("pointercancel", onUp);
+        };
+        self.progressWrapper.addEventListener("pointermove", onMove);
+        self.progressWrapper.addEventListener("pointerup", onUp);
+        self.progressWrapper.addEventListener("pointercancel", onUp);
+      });
+    }
+
+    if (this.volumeBtn) {
+      this.volumeBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        self.toggleMute();
+      });
+    }
+
+    if (this.volumeSlider) {
+      var onVolumeAtEvent = function (clientX) {
+        var rect = self.volumeSlider.getBoundingClientRect();
+        var pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+        self.setVolume(pct);
+      };
+      this.volumeSlider.addEventListener("click", function (e) {
+        e.stopPropagation();
+        onVolumeAtEvent(e.clientX);
+      });
+      // Drag support
+      this.volumeSlider.addEventListener("pointerdown", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        self._suppressToggleUntil = Date.now() + 600;
+        try { self.volumeSlider.setPointerCapture(e.pointerId); } catch (err) {}
+        onVolumeAtEvent(e.clientX);
+        var onMove = function (ev) { onVolumeAtEvent(ev.clientX); };
+        var onUp = function () {
+          self._suppressToggleUntil = Date.now() + 600;
+          self.volumeSlider.removeEventListener("pointermove", onMove);
+          self.volumeSlider.removeEventListener("pointerup", onUp);
+          self.volumeSlider.removeEventListener("pointercancel", onUp);
+        };
+        self.volumeSlider.addEventListener("pointermove", onMove);
+        self.volumeSlider.addEventListener("pointerup", onUp);
+        self.volumeSlider.addEventListener("pointercancel", onUp);
+      });
+    }
+
+    if (this.fsBtn) {
+      this.fsBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        self.toggleFullscreen();
+      });
+    }
+
+    this.updateControls();
+  };
+
+  VideoPlayer.prototype.updateControls = function () {
+    if (!this.showControls) return;
+    if (this.playBtn) {
+      if (this.isPlaying) {
+        this.playBtn.setAttribute("aria-label", "Pause");
+        this.playBtn.innerHTML = ICONS.pause;
+      } else {
+        this.playBtn.setAttribute("aria-label", "Play");
+        this.playBtn.innerHTML = ICONS.play;
+      }
+    }
+    if (this.progressFill && this.duration) {
+      var pct = Math.max(0, Math.min(1, this.currentTime / this.duration));
+      this.progressFill.style.width = (pct * 100) + "%";
+      if (this.progressHandle) this.progressHandle.style.left = (pct * 100) + "%";
+    }
+    if (this.timeLabel) {
+      var cur = formatTime(this.currentTime || 0);
+      var dur = formatTime(this.duration || 0);
+      this.timeLabel.textContent = cur + " / " + dur;
+    }
+    if (this.volumeFill) {
+      this.volumeFill.style.width = (this.isMuted ? 0 : this.volume * 100) + "%";
+    }
+    if (this.volumeBtn) {
+      this.volumeBtn.innerHTML = this.isMuted ? ICONS.volumeOff : ICONS.volumeOn;
+      this.volumeBtn.setAttribute("aria-label", this.isMuted ? "Unmute" : "Mute");
+    }
+    if (this.fsBtn) {
+      this.fsBtn.innerHTML = this.isFullscreen ? ICONS.exitFullscreen : ICONS.fullscreen;
+      this.fsBtn.setAttribute("aria-label", this.isFullscreen ? "Exit fullscreen" : "Fullscreen");
+    }
+  };
+
+  VideoPlayer.prototype.updateCenterButton = function () {
+    if (!this.centerBtn) return;
+    if (this.autoplay) {
+      this.centerBtn.style.display = "none";
+      return;
+    }
+    this.centerBtn.style.display = "";
+    if (this.isPlaying) {
+      this.centerBtn.classList.add("is-playing");
+      this.centerBtn.setAttribute("aria-label", "Pause video");
+    } else {
+      this.centerBtn.classList.remove("is-playing");
+      this.centerBtn.setAttribute("aria-label", "Play video");
+    }
+  };
+
+  VideoPlayer.prototype.createEmbed = function () {
+    var self = this;
+    if (this.source.type === "youtube") {
+      if (!this.source.id) {
+        error(this.wrapper, "Invalid YouTube URL (cannot extract video id).", this.url);
+        return;
+      }
+      var originPart = "";
+      try {
+        if (location.protocol === "http:" || location.protocol === "https:") {
+          originPart = "&origin=" + encodeURIComponent(location.origin);
+        } else {
+          warn(this.wrapper, "YouTube controls may be limited on file://. Use a local server for full API support.");
+        }
+      } catch (e) {}
+      var loopPart = this.autoplay ? "&loop=1&playlist=" + encodeURIComponent(this.source.id) : "";
+      var params =
+        "autoplay=1&mute=" + (this.autoplay ? 1 : 0) +
+        "&controls=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1" +
+        originPart + loopPart;
+      var iframe = document.createElement("iframe");
+      iframe.src = "https://www.youtube.com/embed/" + this.source.id + "?" + params;
+      iframe.allow = "autoplay; encrypted-media; picture-in-picture";
+      iframe.allowFullscreen = true;
+      iframe.style.cssText = "position:absolute;border:0;";
+      this.container.insertBefore(iframe, this.container.firstChild);
+      this.iframeEl = iframe;
+
+      // overlay to catch clicks (iframe eats clicks)
+      var ov = document.createElement("div");
+      ov.className = "vp-click-overlay";
+      this.container.appendChild(ov);
+      this.clickOverlay = ov;
+      ov.addEventListener("click", function (e) {
+        e.stopPropagation();
+        self.toggle();
+      });
+
+      // Attach YouTube API for time/volume/progress
+      loadYouTubeAPI().then(function (YT) {
+        try {
+          self.providerPlayer = new YT.Player(iframe, {
+            events: {
+              onReady: function () {
+                // initial state
+                try {
+                  self.duration = self.providerPlayer.getDuration() || 0;
+                  self.isMuted = self.providerPlayer.isMuted && self.providerPlayer.isMuted();
+                  self.volume = (self.providerPlayer.getVolume ? self.providerPlayer.getVolume() / 100 : 100) / 100;
+                } catch (e) {}
+                self.startTicking();
+                self.updateControls();
+              },
+              onStateChange: function (ev) {
+                // 1 playing, 2 paused, 0 ended
+                self.isPlaying = ev && ev.data === 1;
+                self.updateCenterButton();
+                self.updateControls();
+              }
+            }
+          });
+        } catch (e) {
+          error(self.wrapper, "Failed to initialize YouTube API player.", e);
+        }
+      }).catch(function (e) {
+        error(self.wrapper, "YouTube API failed to load. Progress/volume/time disabled.", e && e.message);
+      });
+      return;
+    }
+
+    if (this.source.type === "vimeo") {
+      if (!this.source.id) {
+        error(this.wrapper, "Invalid Vimeo URL (cannot extract video id).", this.url);
+        return;
+      }
+      var loopPart2 = this.autoplay ? "&loop=1" : "";
+      var params2 = "autoplay=1&muted=" + (this.autoplay ? 1 : 0) + "&controls=0&api=1&dnt=1" + loopPart2;
+      var iframe2 = document.createElement("iframe");
+      iframe2.src = "https://player.vimeo.com/video/" + this.source.id + "?" + params2;
+      iframe2.allow = "autoplay; fullscreen; picture-in-picture";
+      iframe2.allowFullscreen = true;
+      iframe2.style.cssText = "position:absolute;border:0;";
+      this.container.insertBefore(iframe2, this.container.firstChild);
+      this.iframeEl = iframe2;
+
+      var ov2 = document.createElement("div");
+      ov2.className = "vp-click-overlay";
+      this.container.appendChild(ov2);
+      this.clickOverlay = ov2;
+      ov2.addEventListener("click", function (e) {
+        e.stopPropagation();
+        self.toggle();
+      });
+
+      // Attach Vimeo API for time/volume/progress
+      loadVimeoAPI().then(function (Vimeo) {
+        try {
+          self.providerPlayer = new Vimeo.Player(iframe2);
+          self.providerPlayer.getDuration().then(function (d) {
+            self.duration = d || 0;
+            self.updateControls();
+          }).catch(function () {});
+          self.providerPlayer.getVolume().then(function (v) {
+            self.volume = typeof v === "number" ? v : 1;
+            self.isMuted = self.volume === 0;
+            self.updateControls();
+          }).catch(function () {});
+
+          self.providerPlayer.on("play", function () {
+            self.isPlaying = true;
+            self.updateCenterButton();
+            self.updateControls();
+          });
+          self.providerPlayer.on("pause", function () {
+            self.isPlaying = false;
+            self.updateCenterButton();
+            self.updateControls();
+          });
+          self.providerPlayer.on("timeupdate", function (data) {
+            if (!data) return;
+            if (typeof data.seconds === "number") self.currentTime = data.seconds;
+            if (typeof data.duration === "number") self.duration = data.duration;
+            self.updateControls();
+          });
+          self.startTicking();
+        } catch (e) {
+          error(self.wrapper, "Failed to initialize Vimeo API player.", e);
+        }
+      }).catch(function (e) {
+        error(self.wrapper, "Vimeo API failed to load. Progress/volume/time disabled.", e && e.message);
+      });
+      return;
+    }
+
+    var video = document.createElement("video");
+    video.src = this.source.id;
+    video.playsInline = true;
+    video.muted = this.autoplay; // autoplay must be muted
+    video.loop = !!this.autoplay; // requirement: autoplay always loops
+    video.controls = false;
+    video.style.cssText = "position:absolute;inset:0;width:100%;height:100%;object-fit:cover;";
+    this.container.insertBefore(video, this.container.firstChild);
+    this.videoEl = video;
+
+    video.addEventListener("play", function () {
+      self.isPlaying = true;
+      self.isMuted = video.muted;
+      self.updateCenterButton();
+      self.updateControls();
+    });
+    video.addEventListener("pause", function () {
+      self.isPlaying = false;
+      self.updateCenterButton();
+      self.updateControls();
+    });
+    video.addEventListener("loadedmetadata", function () {
+      self.duration = video.duration || 0;
+      self.updateControls();
+    });
+    video.addEventListener("timeupdate", function () {
+      self.currentTime = video.currentTime || 0;
+      self.updateControls();
+    });
+  };
+
+  // Provider control helpers
+  VideoPlayer.prototype.providerPlay = function () {
+    if (this.videoEl) return this.videoEl.play();
+    if (!this.providerPlayer) return;
+    try {
+      if (this.source.type === "youtube" && this.providerPlayer.playVideo) this.providerPlayer.playVideo();
+      if (this.source.type === "vimeo" && this.providerPlayer.play) this.providerPlayer.play();
+    } catch (e) {}
+  };
+
+  VideoPlayer.prototype.providerPause = function () {
+    if (this.videoEl) return this.videoEl.pause();
+    if (!this.providerPlayer) return;
+    try {
+      if (this.source.type === "youtube" && this.providerPlayer.pauseVideo) this.providerPlayer.pauseVideo();
+      if (this.source.type === "vimeo" && this.providerPlayer.pause) this.providerPlayer.pause();
+    } catch (e) {}
+  };
+
+  VideoPlayer.prototype.play = function () {
+    if (!this.url) return;
+    if (!this.autoplay) pauseOthers(this);
+    if (!this.started) {
+      this.started = true;
+      this.createEmbed();
+    }
+    if (!this.videoEl && !this.iframeEl) {
+      // createEmbed failed (invalid URL etc.)
+      return;
+    }
+    this.wrapper.classList.add("vp-started");
+    if (this.videoEl) this.videoEl.play().catch(function () {});
+    if (this.iframeEl) this.providerPlay();
+    this.isPlaying = true;
+    this.updateCenterButton();
+    this.updateControls();
+    this.startTicking();
+  };
+
+  VideoPlayer.prototype.pause = function () {
+    if (this.autoplay) return;
+    if (this.videoEl) this.videoEl.pause();
+    if (this.iframeEl) this.providerPause();
+    this.isPlaying = false;
+    this.updateCenterButton();
+    this.updateControls();
+  };
+
+  VideoPlayer.prototype.toggle = function () {
+    if (this.autoplay) return;
+    if (!this.started || !this.isPlaying) this.play();
+    else this.pause();
+  };
+
+  VideoPlayer.prototype.seek = function (time) {
+    if (this.videoEl) {
+      this.videoEl.currentTime = Math.max(0, Math.min(time, this.duration || time));
+      this.currentTime = this.videoEl.currentTime;
+      this.updateControls();
+      return;
+    }
+    if (!this.providerPlayer) return;
+    try {
+      if (this.source.type === "youtube" && this.providerPlayer.seekTo) this.providerPlayer.seekTo(time, true);
+      if (this.source.type === "vimeo" && this.providerPlayer.setCurrentTime) this.providerPlayer.setCurrentTime(time);
+    } catch (e) {}
+  };
+
+  VideoPlayer.prototype.toggleMute = function () {
+    if (this.videoEl) {
+      this.isMuted = !this.isMuted;
+      this.videoEl.muted = this.isMuted;
+      this.updateControls();
+      return;
+    }
+    if (!this.providerPlayer) return;
+    try {
+      if (this.source.type === "youtube") {
+        if (this.providerPlayer.isMuted && this.providerPlayer.isMuted()) this.providerPlayer.unMute();
+        else if (this.providerPlayer.mute) this.providerPlayer.mute();
+        this.isMuted = this.providerPlayer.isMuted ? this.providerPlayer.isMuted() : !this.isMuted;
+      } else if (this.source.type === "vimeo") {
+        var nextMuted = !this.isMuted;
+        this.providerPlayer.setVolume(nextMuted ? 0 : (this.volume || 1));
+        this.isMuted = nextMuted;
+      }
+    } catch (e) {}
+    this.updateControls();
+  };
+
+  VideoPlayer.prototype.setVolume = function (v) {
+    this.volume = Math.max(0, Math.min(1, v));
+    this.isMuted = this.volume === 0;
+    if (this.videoEl) {
+      this.videoEl.volume = this.volume;
+      this.videoEl.muted = this.isMuted;
+      this.updateControls();
+      return;
+    }
+    if (!this.providerPlayer) return;
+    try {
+      if (this.source.type === "youtube" && this.providerPlayer.setVolume) this.providerPlayer.setVolume(Math.round(this.volume * 100));
+      if (this.source.type === "vimeo" && this.providerPlayer.setVolume) this.providerPlayer.setVolume(this.volume);
+    } catch (e) {}
+    this.updateControls();
+  };
+
+  VideoPlayer.prototype.toggleFullscreen = function () {
+    var self = this;
+    var el = this.wrapper;
+    if (!document.fullscreenElement && el.requestFullscreen) {
+      el.requestFullscreen().then(function () {
+        self.isFullscreen = true;
+        self.updateControls();
+      }).catch(function () {});
+    } else if (document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen().then(function () {
+        self.isFullscreen = false;
+        self.updateControls();
+      }).catch(function () {});
+    }
+  };
+
+  VideoPlayer.prototype.startTicking = function () {
+    var self = this;
+    if (this._tickTimer) return;
+    // Poll YT (no reliable timeupdate without full API callbacks).
+    this._tickTimer = window.setInterval(function () {
+      if (!self.started) return;
+      if (self.videoEl) return; // native uses events
+      if (!self.providerPlayer) return;
+      try {
+        if (self.source.type === "youtube") {
+          if (self.providerPlayer.getCurrentTime) self.currentTime = self.providerPlayer.getCurrentTime() || 0;
+          if (self.providerPlayer.getDuration) self.duration = self.providerPlayer.getDuration() || self.duration;
+          if (self.providerPlayer.getVolume) self.volume = (self.providerPlayer.getVolume() || 0) / 100;
+          if (self.providerPlayer.isMuted) self.isMuted = self.providerPlayer.isMuted();
+          self.updateControls();
+        }
+      } catch (e) {}
+    }, 250);
+  };
+
+  function initAllPlayers() {
+    // If another script has already initialized wrappers, we won't double-init.
+    var wrappers = document.querySelectorAll(".vp-wrapper");
+    for (var i = 0; i < wrappers.length; i++) {
+      if (wrappers[i]._vpInitialized) continue;
+      wrappers[i]._vpInitialized = true;
+      try {
+        new VideoPlayer(wrappers[i]);
+      } catch (e) {
+        // Never let one broken wrapper stop the page.
+        try { console.error("[VideoPlayer] Failed to initialize player for element", wrappers[i], e); } catch (err) {}
+      }
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initAllPlayers);
+  } else {
+    initAllPlayers();
+  }
+
+  window.VideoPlayerInit = initAllPlayers;
+})(window);
+
+  </script>
+
+  <!-- Tabs JS -->
+  <script>
+    (function () {
+      function setTab(which) {
+        var tabDemo = document.getElementById('tab-demo');
+        var tabDocs = document.getElementById('tab-docs');
+        var panelDemo = document.getElementById('panel-demo');
+        var panelDocs = document.getElementById('panel-docs');
+        if (!tabDemo || !tabDocs || !panelDemo || !panelDocs) return;
+
+        var isDemo = which === 'demo';
+        tabDemo.setAttribute('aria-selected', isDemo ? 'true' : 'false');
+        tabDocs.setAttribute('aria-selected', isDemo ? 'false' : 'true');
+        if (isDemo) {
+          panelDemo.removeAttribute('hidden');
+          panelDocs.setAttribute('hidden', '');
+        } else {
+          panelDocs.removeAttribute('hidden');
+          panelDemo.setAttribute('hidden', '');
+        }
+      }
+
+      function onTabKeydown(e) {
+        var key = e.key;
+        if (key !== 'ArrowLeft' && key !== 'ArrowRight' && key !== 'Home' && key !== 'End') return;
+        var tabs = [document.getElementById('tab-demo'), document.getElementById('tab-docs')].filter(Boolean);
+        if (!tabs.length) return;
+        var idx = tabs.indexOf(document.activeElement);
+        if (idx < 0) idx = 0;
+        if (key === 'ArrowLeft') idx = (idx - 1 + tabs.length) % tabs.length;
+        if (key === 'ArrowRight') idx = (idx + 1) % tabs.length;
+        if (key === 'Home') idx = 0;
+        if (key === 'End') idx = tabs.length - 1;
+        tabs[idx].focus();
+        e.preventDefault();
+      }
+
+      var tabDemo = document.getElementById('tab-demo');
+      var tabDocs = document.getElementById('tab-docs');
+      if (tabDemo) tabDemo.addEventListener('click', function () { setTab('demo'); });
+      if (tabDocs) tabDocs.addEventListener('click', function () { setTab('docs'); });
+      if (tabDemo) tabDemo.addEventListener('keydown', onTabKeydown);
+      if (tabDocs) tabDocs.addEventListener('keydown', onTabKeydown);
+      setTab('demo');
+    })();
+  </script>
+</body>
+
+</html>
