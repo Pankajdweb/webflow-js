@@ -235,10 +235,11 @@
                 const annualProduction = systemSize * specificYield;
 
                 // 2) Loss due to contamination (kWh/year)
-                // Reference: dust + lichen with lichen weighted 1.2× (matches gebaeudereinigung-shop.de)
+                // Multiplicative formula: total loss = 1 - ((1 - dust) × (1 - biofilm))
+                // Example: 5% dust + 5% biofilm = 1 - (0.95 × 0.95) = 9.75%
                 const dust = parseNum(getDustLevel()) || 0;
                 const lichen = parseNum(getLichenLevel()) || 0;
-                const contaminationLevel = Math.min(dust + lichen * 1.2, 1);
+                const contaminationLevel = 1 - ((1 - dust) * (1 - lichen));
                 const lossKwh = annualProduction * contaminationLevel;
 
                 // 3) Split loss into self-consumption vs feed-in by self-consumption %
