@@ -4,6 +4,7 @@ document.addEventListener("click", function (e) {
     if (!btn) return;
 
     const popupatr = btn.getAttribute("popup-trigger");
+    console.log(popupatr);
     if (!popupatr || popupatr === "undefined") return;
 
     const popup = document.querySelector(`[popup-data="${popupatr}"]`);
