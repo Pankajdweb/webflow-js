@@ -9,7 +9,8 @@ const slides     = [...document.querySelectorAll('[book-slide]')];
   // Dynamically assign data-index based on DOM order — no manual markup needed
   slides.forEach((s, i) => s.setAttribute('data-index', i));
  
-  let current = 2;
+  //let current = 2;
+let current = Math.min(2, total - 1);
   let isAnim  = false;
   const total = slides.length;
  
