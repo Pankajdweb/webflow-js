@@ -44,12 +44,20 @@ const slides     = [...document.querySelectorAll('[book-slide]')];
     barMeta.classList.add('anim');
   }
  
-  function updateArrows() {
-    btnUp.classList.toggle('disabled', current === 0);
-    btnDown.classList.toggle('disabled', current === total - 1);
-    btnUp.disabled   = current === 0;
-    btnDown.disabled = current === total - 1;
-  }
+  // function updateArrows() {
+  //   btnUp.classList.toggle('disabled', current === 0);
+  //   btnDown.classList.toggle('disabled', current === total - 1);
+  //   btnUp.disabled   = current === 0;
+  //   btnDown.disabled = current === total - 1;
+  // }
+
+function updateArrows() {
+  btnUp.classList.toggle('disabled', current === 0);
+  btnDown.classList.toggle('disabled', current === total - 1 || total <= 3);
+  btnUp.disabled   = current === 0;
+  btnDown.disabled = current === total - 1 || total <= 3;
+}
+
  
   function goTo(index) {
     if (isAnim || index === current || index < 0 || index >= total) return;
