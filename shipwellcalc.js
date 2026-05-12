@@ -307,10 +307,10 @@ function renderOutputs(r) {
     "early-detections-monthly",
     formatNumber(r.earlyDetectionsPerMonth_F35),
   );
-  setOutput(
-    "early-detections-annual",
-    formatNumber(r.earlyDetectionsPerMonth_F35 * 12),
-  );
+  // setOutput(
+  //   "early-detections-annual",
+  //   formatNumber(r.earlyDetectionsPerMonth_F35 * 12),
+  // );
   setOutput(
     "cost-avoided-per-shipment",
     formatCurrency(r.costAvoidedPerShipment_F36),
