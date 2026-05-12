@@ -87,7 +87,7 @@ function calculateAll(inputs) {
 
   // Hours recovered per month = (touchesAutomatedPerMonth × B11) ÷ 60
   const hoursRecoveredPerMonth =
-    (numTTFtes * LC_Ampmt_B11) / 60;
+    (touchesAutomatedPerMonth * LC_Ampmt_B11) / 60;
 
   // Hours recovered annually
   const hoursRecoveredAnnual = hoursRecoveredPerMonth * 12;
@@ -111,7 +111,7 @@ function calculateAll(inputs) {
 
   // Hours recovered from inquiries = (inquiriesAvoidedPerMonth × B16) ÷ 60
   const inquiryHoursRecoveredPerMonth =
-    (inquiriesAvoidedPerMonth * LC_Ampi_B16) / 60;
+    (numTTFtes * LC_Ampi_B16) / 60;
 
   // Labor savings from inquiry deflection per month = inquiryHoursRecoveredPerMonth × B13
   const inquiryLaborSavingsMonthly =
