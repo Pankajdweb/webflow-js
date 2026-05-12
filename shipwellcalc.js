@@ -15,11 +15,11 @@
    ──────────────────────────────────────────────────────────────────────── */
 
 // ── Shipment Volume section (non-dynamic) ──
-const SV_AtpS_B7       = 6;     // Calls + emails + portal checks per shipment lifecycle
-const SV_PctExc_B8  = 0.15;  // Benchmark: 15-22% for FTL/LTL
+const SV_AtpS_B7       = 5;     // Calls + emails + portal checks per shipment lifecycle
+const SV_PctExc_B8  = 0.10;  // Benchmark: 15-22% for FTL/LTL
 
 // ── Labor Costs section (non-dynamic) ──
-const LC_Ampmt_B11       = 8;     // Benchmark: 8-15 min per touch
+const LC_Ampmt_B11       = 3;     // Benchmark: 8-15 min per touch
 const LC_Hblr_B13         = 32;    // Fully-loaded rate, ~1,950 working hrs/FTE annually
 const LC_Ampi_B16           = 8;     // Research, respond, and log time
 
@@ -29,8 +29,8 @@ const EC_Acple_B19    = 350;   // Includes rebooking, expediting, penalties, cha
 // ── AI Performance & Impact Assumptions ──
 const AI_Ar_B23              = 0.70;  // Benchmark: 70-90% structured T&T workflows
 const AI_Pip_B24       = 0.70;  // Benchmark: 70-85% reduction in WISMO inquiries
-const AI_Pede_B25= 0.70;  // Benchmark: 70-90% earlier vs manual tracking
-const AI_Pcaed_B26   = 0.30;  // Benchmark: 30-50% cost reduction via early intervention
+const AI_Pede_B25= 0.50;  // Benchmark: 70-90% earlier vs manual tracking
+const AI_Pcaed_B26   = 0.15;  // Benchmark: 30-50% cost reduction via early intervention
 
 // ── Derived constant: FTE annual working hours ──
 const ANNUAL_Whpf = 1950;
