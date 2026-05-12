@@ -27,10 +27,10 @@ const LC_Ampi_B16           = 8;     // Research, respond, and log time
 const EC_Acple_B19    = 350;   // Includes rebooking, expediting, penalties, chargebacks
 
 // ── AI Performance & Impact Assumptions ──
-const AI_Ar_B23              = 0.70;  // Benchmark: 70-90% structured T&T workflows
-const AI_Pip_B24       = 0.70;  // Benchmark: 70-85% reduction in WISMO inquiries
-const AI_Pede_B25= 0.50;  // Benchmark: 70-90% earlier vs manual tracking
-const AI_Pcaed_B26   = 0.15;  // Benchmark: 30-50% cost reduction via early intervention
+const AI_Ar_B21              = 0.70;  // Benchmark: 70-90% structured T&T workflows
+const AI_Pip_B22       = 0.70;  // Benchmark: 70-85% reduction in WISMO inquiries
+const AI_Pede_B23= 0.50;  // Benchmark: 70-90% earlier vs manual tracking
+const AI_Pcaed_B24   = 0.15;  // Benchmark: 30-50% cost reduction via early intervention
 
 // ── Derived constant: FTE annual working hours ──
 const ANNUAL_Whpf = 1950;
@@ -80,7 +80,7 @@ function calculateAll(inputs) {
 
   // Touches automated per month = totalManualTouchesPerMonth × AI automation rate (B23)
   const touchesAutomatedPerMonth =
-    totalManualTouchesPerMonth * AI_Ar_B23;
+    totalManualTouchesPerMonth * AI_Ar_B21;
 
   // Annual touches automated
   const touchesAutomatedAnnual = touchesAutomatedPerMonth * 12;
@@ -107,7 +107,7 @@ function calculateAll(inputs) {
 
   // Inquiries avoided per month = B15 × B24
   const inquiriesAvoidedPerMonth =
-    inboundInquiriesPerMonth * AI_Pip_B24;
+    inboundInquiriesPerMonth * AI_Pip_B22;
 
   // Hours recovered from inquiries = (inquiriesAvoidedPerMonth × B16) ÷ 60
   const inquiryHoursRecoveredPerMonth =
@@ -128,11 +128,11 @@ function calculateAll(inputs) {
 
   // Early detections per month = exceptionsPerMonth × B25
   const earlyDetectionsPerMonth =
-    exceptionsPerMonth * AI_Pede_B25;
+    exceptionsPerMonth * AI_Pip_B22;
 
   // Cost avoided per early-detected shipment = B19 × B26
   const costAvoidedPerShipment =
-    EC_Acple_B19 * AI_Pcaed_B26;
+    EC_Acple_B19 * AI_Pcaed_B24;
 
   // Cost avoided per month = earlyDetectionsPerMonth × costAvoidedPerShipment
   const exceptionCostAvoidedMonthly =
@@ -153,7 +153,7 @@ function calculateAll(inputs) {
   /* ── Section: Summary KPIs ── */
 
   // Manual workload reduction % = AI automation rate (fixed at 70%)
-  const workloadReductionPct = AI_Ar_B23 * 100;
+  const workloadReductionPct = AI_Ar_B21 * 100;
 
   return {
     // Labor Productivity Impact
@@ -235,9 +235,9 @@ function renderOutputs(r) {
   setOutput('exception-cost-annual',        formatCurrency(r.exceptionCostAvoidedAnnual));
 
   // ── Assumption rate display (hidden, for Webflow binding) ──
-  setOutput('ai-automation-rate-display',       formatPct(AI_Ar_B23 * 100));
-  setOutput('inquiry-prevention-rate-display',  formatPct(AI_Pip_B24 * 100));
-  setOutput('exception-detection-rate-display', formatPct(AI_Pede_B25 * 100));
+  setOutput('ai-automation-rate-display',       formatPct(AI_Ar_B21 * 100));
+  setOutput('inquiry-prevention-rate-display',  formatPct(AI_Pip_B22 * 100));
+  setOutput('exception-detection-rate-display', formatPct(AI_Pede_B23 * 100));
 
   // ── Financial Table ──
   setOutput('labor-automation-monthly',      formatCurrency(r.laborCostRecoveredMonthly));
