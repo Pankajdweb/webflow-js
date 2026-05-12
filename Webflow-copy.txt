@@ -1,0 +1,67 @@
+<!--  
+1. Open Webflow Designer in Chrome
+2. Press F12 → go to Console tab
+3. Paste this code and press Enter:
+Script to getting payload JSON
+document.addEventListener('copy', (e) => {
+  const json = e.clipboardData.getData('application/json');
+  if (json) {
+    console.log(json);
+  }
+});
+4.Now click on your element in canvas → press Ctrl+C
+5.The JSON appears in console
+6. Right click on it → Copy string contents
+7. Save it somewhere (Notepad, VS Code, anywhere)
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>My Component Library</title>
+</head>
+<body>
+
+  <!-- STEP 1: Store JSON payload here -->
+  <script type="application/json" id="payload-footer">
+    {"type":"@webflow/XscpData","payload":{...your json...}}
+  </script>
+
+  <!-- STEP 2: Button pointing to payload -->
+  <button
+    data-copy-btn
+    data-component-name="Footer"
+    data-payload-id="payload-footer">
+    Copy Footer
+  </button>
+
+  <!-- STEP 3: Copy engine -->
+  <script>
+  (function () {
+    var currentPayload = '';
+    var hiddenTrigger = document.createElement('button');
+    hiddenTrigger.contentEditable = 'true';
+    hiddenTrigger.style.cssText = 'position:fixed;clip:rect(1px,1px,1px,1px);overflow:hidden;height:1px;width:1px;padding:0;border:0;';
+    document.body.appendChild(hiddenTrigger);
+
+    hiddenTrigger.addEventListener('copy', function (e) {
+      e.clipboardData.setData('application/json', currentPayload);
+      e.preventDefault();
+    });
+
+    document.querySelectorAll('[data-copy-btn]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = btn.getAttribute('data-payload-id');
+        currentPayload = document.getElementById(id).textContent.trim();
+        hiddenTrigger.focus();
+        document.execCommand('copy');
+        btn.textContent = '✅ Copied!';
+        setTimeout(function(){ btn.textContent = 'Copy Footer'; }, 2000);
+      });
+    });
+  })();
+  </script>
+
+</body>
+</html>
