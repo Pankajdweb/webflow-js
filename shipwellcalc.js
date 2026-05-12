@@ -111,7 +111,7 @@ function calculateAll(inputs) {
 
   // Hours recovered from inquiries = (inquiriesAvoidedPerMonth × B16) ÷ 60
   const inquiryHoursRecoveredPerMonth =
-    (inboundInquiriesPerMonth * LC_Ampi_B16) / 60;
+    (inquiriesAvoidedPerMonth * LC_Ampi_B16) / 60;
 
   // Labor savings from inquiry deflection per month = inquiryHoursRecoveredPerMonth × B13
   const inquiryLaborSavingsMonthly =
