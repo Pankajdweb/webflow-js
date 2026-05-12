@@ -87,7 +87,7 @@ function calculateAll(inputs) {
 
   // Hours recovered per month = (touchesAutomatedPerMonth × B11) ÷ 60
   const hoursRecoveredPerMonth =
-    (touchesAutomatedPerMonth * LC_Ampmt_B11) / 60;
+    (numTTFtes * LC_Ampmt_B11) / 60;
 
   // Hours recovered annually
   const hoursRecoveredAnnual = hoursRecoveredPerMonth * 12;
