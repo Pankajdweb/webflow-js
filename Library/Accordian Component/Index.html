@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accordion — FAQ Component Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal-50:#e1f5ee; --teal-100:#9fe1cb; --teal-600:#0f6e56; --teal-800:#085041;
+      --bg:#f7f6f2; --bg-card:#ffffff; --bg-code:#f0ede7;
+      --border:rgba(0,0,0,0.09); --border-strong:rgba(0,0,0,0.15);
+      --text-primary:#1a1a18; --text-secondary:#5a5a56; --text-muted:#9a9a94;
+      --accent:#0f6e56; --accent-light:#e1f5ee;
+    }
+    html { scroll-behavior:smooth; }
+    body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text-primary); min-height:100vh; font-size:15px; line-height:1.6; }
+
+    /* ── Layout ── */
+    .layout { display:grid; grid-template-columns:220px 1fr; min-height:100vh; }
+
+    /* ── Sidebar ── */
+    .sidebar { position:sticky; top:0; height:100vh; overflow-y:auto; background:var(--bg-card); border-right:1px solid var(--border); padding:2rem 0; display:flex; flex-direction:column; }
+    .sidebar-logo { padding:0 1.5rem 1.75rem; border-bottom:1px solid var(--border); margin-bottom:1.5rem; }
+    .logo-tag { font-family:'DM Mono',monospace; font-size:10px; color:var(--accent); background:var(--accent-light); padding:3px 8px; border-radius:4px; display:inline-block; margin-bottom:8px; letter-spacing:.06em; }
+    .sidebar-logo h1 { font-family:'Fraunces',serif; font-size:18px; font-weight:600; color:var(--text-primary); line-height:1.2; }
+    .sidebar-logo p { font-size:12px; color:var(--text-muted); margin-top:4px; }
+    .sidebar-nav { padding:0 1rem; flex:1; }
+    .nav-group-title { font-size:10px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); padding:0 .5rem; margin:1.25rem 0 .5rem; }
+    .nav-link { display:flex; align-items:center; gap:8px; padding:6px 10px; border-radius:7px; font-size:13px; color:var(--text-secondary); text-decoration:none; transition:all .15s; margin-bottom:2px; }
+    .nav-link:hover { background:var(--bg); color:var(--text-primary); }
+    .nav-link.active { background:var(--accent-light); color:var(--accent); font-weight:500; }
+    .nav-link svg { width:14px; height:14px; opacity:.7; flex-shrink:0; }
+    .nav-link.sub { padding-left:26px; font-size:12px; }
+    .sidebar-footer { padding:1.25rem 1.5rem 0; border-top:1px solid var(--border); margin-top:auto; }
+    .version-badge { font-family:'DM Mono',monospace; font-size:11px; color:var(--text-muted); }
+
+    /* ── Main ── */
+    .main { padding:3.5rem 3.5rem 6rem; min-width:0; }
+
+    /* ── Page header ── */
+    .page-header { margin-bottom:3.5rem; padding-bottom:2.5rem; border-bottom:1px solid var(--border); animation:fadeUp .5s ease both; }
+    .eyebrow { font-family:'DM Mono',monospace; font-size:11px; color:var(--accent); letter-spacing:.08em; margin-bottom:.75rem; }
+    .page-header h2 { font-family:'Fraunces',serif; font-size:38px; font-weight:600; line-height:1.15; color:var(--text-primary); margin-bottom:1rem; }
+    .page-header h2 em { font-style:italic; font-weight:300; color:var(--accent); }
+    .page-header > p { font-size:16px; color:var(--text-secondary); max-width:620px; line-height:1.75; }
+    .pill-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:1.5rem; }
+    .pill { display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--text-secondary); background:var(--bg-card); border:1px solid var(--border); border-radius:99px; padding:4px 12px; }
+    .pill svg { width:12px; height:12px; }
+
+    /* ── Sections ── */
+    section { margin-bottom:3.5rem; animation:fadeUp .5s ease both; }
+    section:nth-child(2){ animation-delay:.06s; }
+    section:nth-child(3){ animation-delay:.12s; }
+    section:nth-child(4){ animation-delay:.18s; }
+    .section-header { display:flex; align-items:center; gap:10px; margin-bottom:1.25rem; }
+    .section-number { font-family:'DM Mono',monospace; font-size:11px; color:var(--text-muted); background:var(--bg); border:1px solid var(--border); width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .section-header h3 { font-family:'Fraunces',serif; font-size:20px; font-weight:600; color:var(--text-primary); }
+    .prose { font-size:15px; color:var(--text-secondary); line-height:1.8; margin-bottom:1.25rem; }
+    code { font-family:'DM Mono',monospace; font-size:12.5px; background:var(--bg-code); padding:2px 6px; border-radius:4px; color:var(--accent); }
+
+    /* ── Live demo shell ── */
+    .demo-shell { background:var(--bg-card); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+    .demo-topbar { background:var(--bg); border-bottom:1px solid var(--border); padding:10px 16px; display:flex; align-items:center; gap:10px; }
+    .demo-dots { display:flex; gap:6px; }
+    .demo-dot { width:10px; height:10px; border-radius:50%; }
+    .demo-dot.r{background:#fca5a5;} .demo-dot.y{background:#fcd34d;} .demo-dot.g{background:#6ee7b7;}
+    .demo-label { font-family:'DM Mono',monospace; font-size:11px; color:var(--text-muted); margin-left:auto; }
+    .demo-inner { padding:1.75rem; background:#f9f8f5; }
+    .demo-inner [accordian-list] { display:flex; flex-direction:column; gap:10px; }
+    .demo-inner [accordian] { background:#fff; border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+    .demo-inner [accordian-head] { width:100%; display:flex; justify-content:space-between; align-items:center; gap:12px; padding:1.1rem 1.4rem; background:transparent; border:none; cursor:pointer; color:var(--accent); text-align:left; font-family:'DM Sans',sans-serif; }
+    .demo-inner .acc-q { font-size:14px; font-weight:500; line-height:1.4; }
+    .demo-inner .acc-icon { width:28px; height:28px; border-radius:50%; background:var(--accent-light); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:transform .35s cubic-bezier(.4,0,.2,1); }
+    .demo-inner .acc-icon svg { width:12px; height:12px; stroke:var(--teal-600); }
+    .demo-inner [accordian-head].open .acc-icon { transform:rotate(45deg); }
+    .demo-inner .acc-body-inner { padding:.25rem 1.4rem 1.2rem; font-size:13.5px; color:var(--text-secondary); line-height:1.75; }
+
+    /* ── Step blocks ── */
+    .step-wrap { margin-bottom:2rem; }
+    .step-head { display:flex; align-items:flex-start; gap:14px; margin-bottom:1.25rem; }
+    .step-pip { font-family:'DM Mono',monospace; font-size:11px; font-weight:500; color:var(--bg-card); background:var(--accent); width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+    .step-title { font-family:'Fraunces',serif; font-size:17px; font-weight:600; color:var(--text-primary); line-height:1.3; }
+    .step-sub { font-size:13px; color:var(--text-muted); margin-top:2px; }
+    .step-sub code { font-size:11.5px; }
+
+    /* ── CDN card ── */
+    .cdn-card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+    .cdn-card-header { background:var(--bg); border-bottom:1px solid var(--border); padding:8px 14px; display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-muted); }
+    .cdn-card-header .dot { width:8px; height:8px; border-radius:50%; background:var(--border-strong); }
+    .cdn-body { padding:.9rem 1.25rem; display:flex; align-items:center; gap:12px; }
+    .cdn-code { font-family:'DM Mono',monospace; font-size:12.5px; color:var(--text-primary); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .cdn-code .ctag{color:#0f6e56;} .cdn-code .cattr{color:#8b5cf6;} .cdn-code .cval{color:#b45309;}
+    .copy-btn { display:inline-flex; align-items:center; gap:6px; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; color:var(--accent); background:var(--accent-light); border:none; border-radius:8px; padding:6px 14px; cursor:pointer; transition:all .15s; white-space:nowrap; flex-shrink:0; }
+    .copy-btn:hover{background:var(--teal-100);} .copy-btn.done{color:#059669;background:#d1fae5;}
+
+    /* ── Source details (collapsible) ── */
+    .source-details { border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:0; }
+    .source-details summary { list-style:none; display:flex; align-items:center; gap:8px; padding:10px 16px; font-size:13px; font-weight:500; color:var(--text-secondary); cursor:pointer; user-select:none; background:var(--bg); }
+    .source-details summary::-webkit-details-marker { display:none; }
+    .source-details summary::before { content:''; display:inline-block; width:7px; height:7px; border-right:1.5px solid var(--text-muted); border-bottom:1.5px solid var(--text-muted); transform:rotate(-45deg); transition:transform .2s; margin-right:2px; flex-shrink:0; }
+    .source-details[open] summary::before { transform:rotate(45deg); }
+    .source-details pre { border-radius:0; }
+
+    /* ── Tabs ── */
+    .tabs-wrap { background:var(--bg-card); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+    .tabs-nav { display:flex; border-bottom:1px solid var(--border); background:var(--bg); padding:0 1rem; }
+    .tab-btn { font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; color:var(--text-muted); background:transparent; border:none; border-bottom:2px solid transparent; padding:12px 16px; cursor:pointer; transition:all .15s; margin-bottom:-1px; }
+    .tab-btn:hover{color:var(--text-primary);} .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+    .tab-panel { display:none; padding:1.75rem; }
+    .tab-panel.active { display:block; }
+
+    /* ── Webflow preview ── */
+    .wf-preview-shell { border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+    .wf-preview-bar { background:var(--bg); border-bottom:1px solid var(--border); padding:9px 16px; display:flex; align-items:center; gap:10px; }
+    .wf-preview-label { font-family:'DM Mono',monospace; font-size:11px; color:var(--text-muted); margin-left:auto; display:flex; align-items:center; gap:5px; }
+    .wf-preview-inner { padding:2rem; background:#f9f8f5; }
+
+    /* Webflow accordion preview styles (mirrors original Webflow classes) */
+    .wf-home-faq-list { display:flex; flex-direction:column; gap:10px; }
+    .wf-accordian { background:#fff; border-radius:12px; overflow:hidden; border:1px solid var(--border); }
+    .wf-accordian-head { width:100%; display:flex; justify-content:space-between; align-items:center; gap:12px; padding:1.25rem 1.5rem; background:transparent; border:none; cursor:pointer; color:var(--teal-600); text-align:left; font-family:'DM Sans',sans-serif; }
+    .wf-faq-question { font-size:15px; font-weight:600; line-height:1.4; }
+    .wf-accordian-icon-wrap { aspect-ratio:1; background:var(--accent-light); border-radius:100%; display:flex; justify-content:center; align-items:center; width:2.5rem; flex-shrink:0; transition:transform .4s; }
+    .wf-accordian-icon { display:flex; width:14px; color:var(--teal-800); }
+    .wf-accordian-head.open .wf-accordian-icon-wrap { transform:rotate(45deg); }
+    .wf-accordian-body { overflow:hidden; transition:height .3s ease; }
+    .wf-accordian-body-content { padding:.5rem 1.5rem 1.5rem; }
+    .wf-accordian-richtext { font-size:14px; color:var(--text-secondary); line-height:1.75; }
+    .wf-accordian-richtext p { margin-bottom:.6rem; }
+    .wf-accordian-richtext p:last-child { margin-bottom:0; }
+    .wf-accordian-richtext ul { padding-left:1.25rem; margin-top:.4rem; }
+    .wf-accordian-richtext li { margin-bottom:.3rem; }
+    .wf-accordian-richtext code { font-size:11.5px; }
+
+    /* Copy bar */
+    .wf-copy-bar { background:var(--bg-card); border-top:1px solid var(--border); padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .wf-copy-hint { font-size:12px; color:var(--text-muted); display:flex; align-items:center; gap:7px; }
+    .wf-copy-hint svg { flex-shrink:0; }
+    .wf-copy-el-btn { display:inline-flex; align-items:center; gap:8px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; color:#fff; background:var(--accent); border:none; border-radius:9px; padding:9px 20px; cursor:pointer; transition:all .15s; white-space:nowrap; }
+    .wf-copy-el-btn:hover { background:var(--teal-800); }
+    .wf-copy-el-btn.done { background:#059669; }
+
+    /* ── Code blocks ── */
+    .code-wrap { position:relative; margin-bottom:1.5rem; }
+    .code-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); margin-bottom:6px; }
+    pre { background:#1c1c1a; border-radius:10px; padding:1.25rem 1.5rem; overflow-x:auto; font-family:'DM Mono',monospace; font-size:12px; line-height:1.9; color:#d4d0c8; position:relative; }
+    pre .kw{color:#7dd3fc;} pre .tag{color:#86efac;} pre .attr{color:#fbbf24;} pre .val{color:#f9a8d4;} pre .cm{color:#6b7280;font-style:italic;} pre .sel{color:#c4b5fd;} pre .prop{color:#7dd3fc;} pre .str{color:#f9a8d4;}
+    .pre-copy { position:absolute; top:10px; right:12px; font-family:'DM Sans',sans-serif; font-size:11px; color:#6b7280; background:#2a2a28; border:1px solid #3a3a38; border-radius:6px; padding:3px 10px; cursor:pointer; transition:all .15s; }
+    .pre-copy:hover{background:#333331;color:#d4d0c8;} .pre-copy.done{color:#34d399;}
+
+    /* ── Attribute table ── */
+    h4.sub-heading { font-family:'Fraunces',serif; font-size:16px; font-weight:600; color:var(--text-primary); margin:2rem 0 1rem; }
+    .attr-table { width:100%; border-collapse:collapse; font-size:13px; margin-bottom:1.75rem; background:var(--bg); border-radius:10px; overflow:hidden; border:1px solid var(--border); }
+    .attr-table th { text-align:left; font-size:10.5px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--text-muted); padding:10px 14px; background:var(--bg-card); border-bottom:1px solid var(--border); }
+    .attr-table td { padding:11px 14px; border-bottom:1px solid var(--border); vertical-align:top; line-height:1.65; color:var(--text-secondary); }
+    .attr-table tr:last-child td{border-bottom:none;} .attr-table tr:hover td{background:rgba(15,110,86,.03);}
+    .attr-chip { font-family:'DM Mono',monospace; font-size:11.5px; color:var(--accent); background:var(--accent-light); padding:3px 8px; border-radius:5px; display:inline-block; white-space:nowrap; }
+    .badge-req { display:inline-block; font-size:10px; font-weight:600; padding:2px 7px; border-radius:99px; }
+    .badge-req.req{background:#fee2e2;color:#b91c1c;}
+
+    /* ── Tip boxes ── */
+    .tip-box { display:flex; gap:10px; align-items:flex-start; border-radius:10px; padding:12px 16px; font-size:13px; line-height:1.7; margin-bottom:1.5rem; }
+    .tip-box.teal{background:var(--accent-light);color:var(--teal-800);border:1px solid var(--teal-100);}
+    .tip-box.amber{background:#fffbeb;color:#92400e;border:1px solid #fde68a;}
+    .tip-box svg{width:15px;height:15px;flex-shrink:0;margin-top:1px;}
+    .tip-box code{background:rgba(0,0,0,.06);padding:1px 5px;border-radius:3px;}
+
+    /* schema badges */
+    .schema-attrs { display:flex; flex-wrap:wrap; gap:8px; margin:1rem 0 1.5rem; }
+    .schema-badge { font-family:'DM Mono',monospace; font-size:11px; background:#1c1c1a; color:#fbbf24; padding:4px 10px; border-radius:6px; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+    ::-webkit-scrollbar{width:5px;height:5px;} ::-webkit-scrollbar-track{background:transparent;} ::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:99px;}
+    @media(max-width:768px){.layout{grid-template-columns:1fr;} .sidebar{position:relative;height:auto;} .main{padding:2rem 1.5rem 4rem;}}
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-tag">component</div>
+      <h1>Accordion</h1>
+      <p>FAQ Library Docs</p>
+    </div>
+    <nav class="sidebar-nav" aria-label="Page sections">
+      <div class="nav-group-title">Getting Started</div>
+      <a href="#introduction" class="nav-link active">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 7v4M8 5.5v.5"/></svg>
+        Introduction
+      </a>
+      <a href="#demo" class="nav-link">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5,3 13,8 5,13"/></svg>
+        Live Demo
+      </a>
+      <div class="nav-group-title">Implementation</div>
+      <a href="#implementation" class="nav-link">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 4L2 8l3 4M11 4l3 4-3 4M8 3l-1 10"/></svg>
+        Implementation
+      </a>
+      <a href="#implementation" class="nav-link sub">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="12" height="8" rx="1.5"/><path d="M5 5V4a3 3 0 0 1 6 0v1"/></svg>
+        Step 1 — Script
+      </a>
+      <a href="#implementation" class="nav-link sub">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 5h12M2 9h8M2 13h10"/></svg>
+        Step 2 — HTML
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="version-badge">v1.0.0 · MIT License</div>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <main class="main">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header" id="introduction">
+      <p class="eyebrow">// FAQ Component Library</p>
+      <h2>Accordion <em>Component</em></h2>
+      <p>A lightweight, accessible accordion for FAQ sections. Pure vanilla JS — no dependencies. Smooth height transitions, ARIA roles, keyboard navigation, and semantic FAQ schema markup out of the box.</p>
+      <div class="pill-row">
+        <span class="pill"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 1l1.5 3H11l-2.8 2 1 3L6 7.5 2.8 9l1-3L1 4h3.5z"/></svg>Zero dependencies</span>
+        <span class="pill"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="10" height="10" rx="1.5"/><path d="M4 6h4M6 4v4"/></svg>ARIA accessible</span>
+        <span class="pill"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h3l2-4 2 8 2-4h1"/></svg>Smooth transitions</span>
+        <span class="pill"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="10" height="7" rx="1"/><path d="M4 3V2a2 2 0 0 1 4 0v1"/></svg>Keyboard nav</span>
+        <span class="pill"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="5"/><path d="M4 6l1.5 1.5L8 4"/></svg>FAQ schema markup</span>
+        <span class="pill"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h8M2 6h5M2 10h7"/></svg>Multiple groups</span>
+      </div>
+    </div>
+
+    <!-- ── SECTION 1: INTRODUCTION ── -->
+    <section id="intro-body">
+      <div class="section-header">
+        <div class="section-number">1</div>
+        <h3>Introduction</h3>
+      </div>
+      <p class="prose">The Accordion component is an accessible, attribute-driven UI pattern for FAQ sections, product help pages, and anywhere you need to show-or-hide content. It initialises entirely from <code>HTML attributes</code> — no extra classes, no config objects — making it trivial to drop into Webflow, plain HTML, or any CMS.</p>
+      <p class="prose">Each <code>[accordian-list]</code> wrapper creates an isolated group. When a user opens one item, the others in the same group close automatically. Multiple lists on a page are fully independent. The JS handles smooth <code>height</code> animation, <code>aria-expanded</code> state, and the <code>inert</code> attribute to block focus on collapsed panels.</p>
+      <div class="tip-box teal">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 7v4M8 5.2v.5"/></svg>
+        <span>Note: The attribute spelling is intentionally <code>accordian</code> (not <em>accordion</em>) to match the original Webflow implementation. Keep spelling consistent across your HTML and JS.</span>
+      </div>
+    </section>
+
+    <!-- ── SECTION 2: LIVE DEMO ── -->
+    <section id="demo">
+      <div class="section-header">
+        <div class="section-number">2</div>
+        <h3>Live Demo</h3>
+      </div>
+      <p class="prose">Click a question to expand its answer. Powered by the real library JS and attributes, with full Schema.org FAQ markup.</p>
+
+      <div class="demo-shell">
+        <div class="demo-topbar">
+          <div class="demo-dots"><div class="demo-dot r"></div><div class="demo-dot y"></div><div class="demo-dot g"></div></div>
+          <span class="demo-label">live preview — real library attributes + schema markup</span>
+        </div>
+        <div class="demo-inner">
+          <div itemscope="" itemtype="https://schema.org/FAQPage" accordian-list="" id="demoList">
+
+            <div itemscope="" itemprop="mainEntity" itemtype="https://schema.org/Question" accordian="">
+              <button accordian-head=""><span itemprop="name" class="acc-q">What is the accordion component?</span>
+                <span class="acc-icon"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10"/></svg></span>
+              </button>
+              <div itemscope="" itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" accordian-body="">
+                <div itemprop="text" class="acc-body-inner">The accordion is a UI pattern that shows one expanded content panel at a time. Ideal for FAQs, settings menus, and content-heavy pages.</div>
+              </div>
+            </div>
+
+            <div itemscope="" itemprop="mainEntity" itemtype="https://schema.org/Question" accordian="">
+              <button accordian-head=""><span itemprop="name" class="acc-q">Does it support keyboard navigation?</span>
+                <span class="acc-icon"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10"/></svg></span>
+              </button>
+              <div itemscope="" itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" accordian-body="">
+                <div itemprop="text" class="acc-body-inner">Yes. <strong>Enter</strong> or <strong>Space</strong> on a focused head toggles it. The body uses <code>inert</code> when collapsed to prevent focus trapping.</div>
+              </div>
+            </div>
+
+            <div itemscope="" itemprop="mainEntity" itemtype="https://schema.org/Question" accordian="">
+              <button accordian-head=""><span itemprop="name" class="acc-q">Can I have multiple independent groups?</span>
+                <span class="acc-icon"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10"/></svg></span>
+              </button>
+              <div itemscope="" itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" accordian-body="">
+                <div itemprop="text" class="acc-body-inner">Yes. Each <code>[accordian-list]</code> wrapper is fully isolated — items in different lists never affect each other.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 3: IMPLEMENTATION ── -->
+    <section id="implementation">
+      <div class="section-header">
+        <div class="section-number">3</div>
+        <h3>Implementation</h3>
+      </div>
+      <p class="prose">Two steps to get the accordion running on any project.</p>
+
+      <!-- STEP 1 -->
+      <div class="step-wrap">
+        <div class="step-head">
+          <span class="step-pip">1</span>
+          <div>
+            <div class="step-title">Add the script</div>
+            <div class="step-sub">CDN link — paste once before <code>&lt;/body&gt;</code></div>
+          </div>
+        </div>
+
+        <div class="code-wrap" style="margin-bottom:.75rem">
+          <div class="cdn-card">
+            <div class="cdn-card-header">
+              <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+              <span style="margin-left:8px;">CDN link</span>
+            </div>
+            <div class="cdn-body">
+              <span class="cdn-code"><span class="ctag">&lt;script</span> <span class="cattr">src</span>="<span class="cval">https://jswebflow.netlify.app/Library/Accordian%20Component/accordian.js</span>"&gt;&lt;/script&gt;</span>
+              <button class="copy-btn" id="cdn-btn" onclick="doCopy('cdn-btn','&lt;script src=&quot;https://jswebflow.netlify.app/Library/Accordian%20Component/accordian.js&quot;&gt;&lt;/script&gt;')">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8" height="8" rx="1.5"/><path d="M3 11V3h8"/></svg>
+                Copy
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <details class="source-details">
+          <summary>Or copy full JS source to self-host</summary>
+          <pre id="pre-js"><button class="pre-copy" onclick="copyPre('pre-js',this)">Copy</button><span class="cm">// accordion.min.js — self-initialising, zero dependencies</span>
+(<span class="kw">function</span> () {
+  <span class="kw">function</span> <span class="attr">initAccordion</span>() {
+    <span class="kw">var</span> groups = document.querySelectorAll(<span class="str">"[accordian-list]"</span>);
+    groups.forEach(<span class="kw">function</span>(group, gi) {
+      <span class="kw">var</span> items = group.querySelectorAll(<span class="str">"[accordian]"</span>);
+      items.forEach(<span class="kw">function</span>(item, ii) {
+        <span class="kw">var</span> head = item.querySelector(<span class="str">"[accordian-head]"</span>);
+        <span class="kw">var</span> body = item.querySelector(<span class="str">"[accordian-body]"</span>);
+        <span class="kw">if</span> (!head || !body) <span class="kw">return</span>;
+        head.id = <span class="str">"faq-head-"</span> + gi + <span class="str">"-"</span> + ii;
+        body.id = <span class="str">"faq-panel-"</span> + gi + <span class="str">"-"</span> + ii;
+        head.setAttribute(<span class="str">"aria-controls"</span>, body.id);
+        head.setAttribute(<span class="str">"aria-expanded"</span>, <span class="str">"false"</span>);
+        body.setAttribute(<span class="str">"role"</span>, <span class="str">"region"</span>);
+        body.setAttribute(<span class="str">"aria-labelledby"</span>, head.id);
+        body.style.overflow   = <span class="str">"hidden"</span>;
+        body.style.transition = <span class="str">"height 0.3s ease"</span>;
+        body.style.height     = <span class="str">"0px"</span>;
+        body.setAttribute(<span class="str">"inert"</span>, <span class="str">""</span>);
+        head.addEventListener(<span class="str">"click"</span>, <span class="kw">function</span>() { toggle(items, head, body); });
+        head.addEventListener(<span class="str">"keydown"</span>, <span class="kw">function</span>(e) {
+          <span class="kw">if</span> (e.key === <span class="str">"Enter"</span> || e.key === <span class="str">" "</span>) { e.preventDefault(); toggle(items, head, body); }
+        });
+      });
+    });
+  }
+  <span class="kw">function</span> toggle(items, head, body) {
+    <span class="kw">var</span> isOpen = head.getAttribute(<span class="str">"aria-expanded"</span>) === <span class="str">"true"</span>;
+    items.forEach(<span class="kw">function</span>(i) {
+      <span class="kw">var</span> h = i.querySelector(<span class="str">"[accordian-head]"</span>);
+      <span class="kw">var</span> b = i.querySelector(<span class="str">"[accordian-body]"</span>);
+      h.classList.remove(<span class="str">"open"</span>); h.setAttribute(<span class="str">"aria-expanded"</span>, <span class="str">"false"</span>);
+      b.style.height = <span class="str">"0px"</span>; b.setAttribute(<span class="str">"inert"</span>, <span class="str">""</span>);
+    });
+    <span class="kw">if</span> (!isOpen) {
+      head.classList.add(<span class="str">"open"</span>); head.setAttribute(<span class="str">"aria-expanded"</span>, <span class="str">"true"</span>);
+      body.style.height = body.scrollHeight + <span class="str">"px"</span>; body.removeAttribute(<span class="str">"inert"</span>);
+    }
+  }
+  document.readyState === <span class="str">"loading"</span>
+    ? document.addEventListener(<span class="str">"DOMContentLoaded"</span>, initAccordion)
+    : initAccordion();
+})();</pre>
+        </details>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-wrap">
+        <div class="step-head">
+          <span class="step-pip">2</span>
+          <div>
+            <div class="step-title">Add the HTML</div>
+            <div class="step-sub">Copy the Webflow component or build the structure from scratch</div>
+          </div>
+        </div>
+
+        <div class="tabs-wrap">
+          <div class="tabs-nav">
+            <button class="tab-btn active" onclick="switchTab(event,'wf')">Copy Webflow Component</button>
+            <button class="tab-btn" onclick="switchTab(event,'scratch')">Build from scratch</button>
+          </div>
+
+          <!-- ── TAB: COPY WEBFLOW COMPONENT ── -->
+          <div class="tab-panel active" id="tab-wf">
+            <p class="prose" style="margin-top:0">Preview the component below, then click <strong>Copy Element</strong> — the full Webflow-ready HTML is copied to your clipboard. Paste it directly into the Webflow Designer.</p>
+
+            <div class="wf-preview-shell">
+              <div class="wf-preview-bar">
+                <div class="demo-dots"><div class="demo-dot r"></div><div class="demo-dot y"></div><div class="demo-dot g"></div></div>
+                <span class="wf-preview-label">
+                  <svg width="14" height="10" viewBox="0 0 28 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.37 19.4L5.76 10.97l-2.6 8.43H0L4.3.6h3.25l4.86 9.57L14.97.6h3.25L22.82 19.4h-3.17l-2.6-8.43-4.68 8.43zm10.8 0V.6h3.17v18.8z" fill="#146EF5"/></svg>
+                  Webflow component preview
+                </span>
+              </div>
+
+              <div class="wf-preview-inner">
+                <div itemscope="" itemtype="https://schema.org/FAQPage" accordian-list="" class="wf-home-faq-list" id="wfPreviewList">
+
+                 
+
+                  <div itemscope="" itemprop="mainEntity" itemtype="https://schema.org/Question" accordian="" class="wf-accordian">
+                    <button accordian-head="" class="wf-accordian-head">
+                      <h3 itemprop="name" class="wf-faq-question">How does the accordion script work?</h3>
+                      <div class="wf-accordian-icon-wrap"><div class="wf-accordian-icon">
+                        <svg width="100%" height="100%" viewBox="0 0 14 14" fill="none"><path d="M14 8H8V14H6V8H0V6H6V0H8V6H14V8Z" fill="currentColor"/></svg>
+                      </div></div>
+                    </button>
+                    <div itemscope="" itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" accordian-body="" class="wf-accordian-body">
+                      <div itemprop="text" class="wf-accordian-body-content"><div class="wf-accordian-richtext">
+                        <p>The script reads the <code>accordian-list</code>, <code>accordian</code>, <code>accordian-head</code>, and <code>accordian-body</code> attributes and wires up smooth animation, ARIA states, and keyboard support automatically — no configuration needed.</p>
+                      </div></div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="wf-copy-bar">
+                <div class="wf-copy-hint">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 7v4M8 5.2v.5"/></svg>
+                  Copy full component structure and paste directly into Webflow Designer
+                </div>
+                <button class="wf-copy-el-btn" id="wf-copy-el" onclick="copyWebflowElement()">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8" height="8" rx="1.5"/><path d="M3 11V3h8"/></svg>
+                  Copy Element
+                </button>
+              </div>
+            </div>
+
+            <div class="tip-box teal" style="margin-top:1.25rem;margin-bottom:0">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 7v4M8 5.2v.5"/></svg>
+              <span>After pasting in the Designer, style with the <code>.accordian</code>, <code>.accordian-head</code>, <code>.accordian-body</code>, and <code>.accordian-icon-wrap</code> classes in Webflow's style panel.</span>
+            </div>
+          </div>
+
+          <!-- ── TAB: BUILD FROM SCRATCH ── -->
+          <div class="tab-panel" id="tab-scratch">
+            <p class="prose" style="margin-top:0">Build from plain HTML + CSS. The component is driven entirely by HTML attributes — no class-based JS hooks needed.</p>
+
+            <h4 class="sub-heading">Accordion attribute reference</h4>
+            <table class="attr-table">
+              <thead><tr><th>Attribute</th><th>Element</th><th>Required</th><th>What it does</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><span class="attr-chip">accordian-list</span></td>
+                  <td>Wrapper <code style="font-size:11px">&lt;div&gt;</code></td>
+                  <td><span class="badge-req req">Required</span></td>
+                  <td>Marks the accordion group. JS scopes the "close others" logic <em>per group</em> — multiple lists on a page are fully independent.</td>
+                </tr>
+                <tr>
+                  <td><span class="attr-chip">accordian</span></td>
+                  <td>Item <code style="font-size:11px">&lt;div&gt;</code></td>
+                  <td><span class="badge-req req">Required</span></td>
+                  <td>Marks one accordion item. JS queries all <code style="font-size:11px">[accordian]</code> elements inside the parent list. Add one per Q&amp;A pair.</td>
+                </tr>
+                <tr>
+                  <td><span class="attr-chip">accordian-head</span></td>
+                  <td><code style="font-size:11px">&lt;button&gt;</code></td>
+                  <td><span class="badge-req req">Required</span></td>
+                  <td>The clickable trigger. JS attaches click/keydown listeners, manages <code style="font-size:11px">aria-expanded</code>, and toggles <code style="font-size:11px">.open</code> to animate the icon via CSS.</td>
+                </tr>
+                <tr>
+                  <td><span class="attr-chip">accordian-body</span></td>
+                  <td>Collapsible <code style="font-size:11px">&lt;div&gt;</code></td>
+                  <td><span class="badge-req req">Required</span></td>
+                  <td>The panel that expands. JS animates <code style="font-size:11px">height</code> from <code style="font-size:11px">0</code> to <code style="font-size:11px">scrollHeight</code> on open. Toggles <code style="font-size:11px">inert</code> to block keyboard focus when collapsed.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h4 class="sub-heading">Schema.org FAQ attribute reference</h4>
+            <p class="prose">Add these alongside accordion attributes to enable Google FAQ rich results in search.</p>
+            <div class="schema-attrs">
+              <span class="schema-badge">itemscope=""</span>
+              <span class="schema-badge">itemtype="…/FAQPage"</span>
+              <span class="schema-badge">itemprop="mainEntity"</span>
+              <span class="schema-badge">itemtype="…/Question"</span>
+              <span class="schema-badge">itemprop="name"</span>
+              <span class="schema-badge">itemprop="acceptedAnswer"</span>
+              <span class="schema-badge">itemtype="…/Answer"</span>
+              <span class="schema-badge">itemprop="text"</span>
+            </div>
+            <table class="attr-table">
+              <thead><tr><th>Attribute</th><th>Goes on</th><th>What it does</th></tr></thead>
+              <tbody>
+                <tr><td><span class="attr-chip">itemscope=""</span></td><td>List wrapper, each item, each body</td><td>Declares this element describes a schema item. Required on every schema-typed element.</td></tr>
+                <tr><td><span class="attr-chip">itemtype="…/FAQPage"</span></td><td>List wrapper</td><td>Tells Google this is an FAQ page container — enables the rich result feature in search.</td></tr>
+                <tr><td><span class="attr-chip">itemprop="mainEntity"</span></td><td>Each <code style="font-size:11px">[accordian]</code></td><td>Links each question to the FAQPage. Pair with <code style="font-size:11px">itemtype="…/Question"</code> on the same element.</td></tr>
+                <tr><td><span class="attr-chip">itemprop="name"</span></td><td><code style="font-size:11px">&lt;h3&gt;</code> inside button</td><td>Marks the question text Google displays in the rich result snippet.</td></tr>
+                <tr><td><span class="attr-chip">itemprop="acceptedAnswer"</span></td><td><code style="font-size:11px">[accordian-body]</code></td><td>Links the answer to its question. Pair with <code style="font-size:11px">itemtype="…/Answer"</code>.</td></tr>
+                <tr><td><span class="attr-chip">itemprop="text"</span></td><td>Content div inside body</td><td>Marks the actual answer text Google extracts for the rich result.</td></tr>
+              </tbody>
+            </table>
+
+            <h4 class="sub-heading">Full HTML skeleton — accordion + schema</h4>
+            <div class="code-wrap">
+              <pre id="pre-sk"><button class="pre-copy" onclick="copyPre('pre-sk',this)">Copy</button><span class="tag">&lt;div</span>
+  <span class="attr">itemscope</span>=<span class="val">""</span>
+  <span class="attr">itemtype</span>=<span class="val">"https://schema.org/FAQPage"</span>
+  <span class="attr">accordian-list</span>=<span class="val">""</span>
+  <span class="attr">class</span>=<span class="val">"home-faq-list"</span>
+<span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span>
+    <span class="attr">itemscope</span>=<span class="val">""</span>
+    <span class="attr">itemprop</span>=<span class="val">"mainEntity"</span>
+    <span class="attr">itemtype</span>=<span class="val">"https://schema.org/Question"</span>
+    <span class="attr">accordian</span>=<span class="val">""</span>
+    <span class="attr">class</span>=<span class="val">"accordian"</span>
+  <span class="tag">&gt;</span>
+    <span class="tag">&lt;button</span> <span class="attr">accordian-head</span>=<span class="val">""</span> <span class="attr">class</span>=<span class="val">"accordian-head"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;h3</span> <span class="attr">itemprop</span>=<span class="val">"name"</span> <span class="attr">class</span>=<span class="val">"faq-question"</span><span class="tag">&gt;</span>Your question here<span class="tag">&lt;/h3&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"accordian-icon-wrap"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"accordian-icon w-embed"</span><span class="tag">&gt;</span>
+          <span class="tag">&lt;svg</span> <span class="attr">width</span>=<span class="val">"100%"</span> <span class="attr">height</span>=<span class="val">"100%"</span> <span class="attr">viewBox</span>=<span class="val">"0 0 14 14"</span> <span class="attr">fill</span>=<span class="val">"none"</span><span class="tag">&gt;</span>
+            <span class="tag">&lt;path</span> <span class="attr">d</span>=<span class="val">"M14 8H8V14H6V8H0V6H6V0H8V6H14V8Z"</span> <span class="attr">fill</span>=<span class="val">"black"</span><span class="tag">/&gt;</span>
+          <span class="tag">&lt;/svg&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;/button&gt;</span>
+    <span class="tag">&lt;div</span>
+      <span class="attr">itemscope</span>=<span class="val">""</span>
+      <span class="attr">itemprop</span>=<span class="val">"acceptedAnswer"</span>
+      <span class="attr">itemtype</span>=<span class="val">"https://schema.org/Answer"</span>
+      <span class="attr">accordian-body</span>=<span class="val">""</span>
+      <span class="attr">class</span>=<span class="val">"accordian-body"</span>
+    <span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">itemprop</span>=<span class="val">"text"</span> <span class="attr">class</span>=<span class="val">"accordian-body-content"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;p&gt;</span>Answer content goes here.<span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+  <span class="cm">&lt;!-- Repeat for each Q&amp;A pair --&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+            </div>
+
+            <h4 class="sub-heading">Minimum CSS</h4>
+            <div class="code-wrap">
+              <pre id="pre-css"><button class="pre-copy" onclick="copyPre('pre-css',this)">Copy</button><span class="cm">/* Body starts collapsed — JS animates height */</span>
+<span class="sel">.accordian-body</span> {
+  <span class="prop">overflow</span>: <span class="str">hidden</span>;
+  <span class="prop">transition</span>: <span class="str">height 0.3s ease</span>;
+  <span class="prop">height</span>: <span class="str">0</span>;
+}
+<span class="cm">/* Rotate the + icon to × when open */</span>
+<span class="sel">[accordian-head].open .accordian-icon-wrap</span> {
+  <span class="prop">transform</span>: <span class="str">rotate(45deg)</span>;
+  <span class="prop">transition</span>: <span class="str">transform 0.3s ease</span>;
+}</pre>
+            </div>
+
+            <div class="tip-box teal" style="margin-bottom:0">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13z"/><path d="M8 5.5v5M5.5 8h5"/></svg>
+              <span>That's all the CSS needed. The JS handles all <code>height</code> toggling via inline styles — your stylesheet only needs the <code>transition</code> and initial <code>height: 0</code>.</span>
+            </div>
+          </div>
+
+        </div><!-- /tabs-wrap -->
+      </div><!-- /step-wrap step 2 -->
+
+    </section>
+
+  </main>
+</div>
+
+<script>
+  /* ── Tab switcher ── */
+  function switchTab(e, name) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    e.currentTarget.classList.add('active');
+    document.getElementById('tab-' + name).classList.add('active');
+  }
+
+  /* ── Copy helpers ── */
+  function doCopy(btnId, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById(btnId);
+      const orig = btn.innerHTML;
+      btn.innerHTML = '✓ Copied!';
+      btn.classList.add('done');
+      setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('done'); }, 2000);
+    });
+  }
+  function copyPre(preId, btn) {
+    const text = document.getElementById(preId).innerText.replace(/^Copy\n?/, '').trim();
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = '✓ Copied!';
+      btn.classList.add('done');
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('done'); }, 2000);
+    });
+  }
+
+  /* ── Active nav on scroll ── */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        const match = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { threshold: 0.35 });
+  document.querySelectorAll('section, .page-header').forEach(s => observer.observe(s));
+</script>
+<script src="https://jswebflow.netlify.app/Library/Accordian%20Component/accordian.js"></script>
+</body>
+</html>
