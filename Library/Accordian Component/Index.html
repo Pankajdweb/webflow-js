@@ -436,7 +436,7 @@
                   <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 7v4M8 5.2v.5"/></svg>
                   Copy full component structure and paste directly into Webflow Designer
                 </div>
-                <button class="wf-copy-el-btn" id="wf-copy-el" onclick="copyWebflowElement()">
+                <button class="wf-copy-el-btn" id="wf-copy-el" data-component-name="accordian" data-copy-btn data-payload-id="payload-accordian"> 
                   <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8" height="8" rx="1.5"/><path d="M3 11V3h8"/></svg>
                   Copy Element
                 </button>
@@ -578,6 +578,10 @@
   </main>
 </div>
 
+
+<script type="application/json" id="payload-accordian">
+{"type":"@webflow/XscpData","payload":{"nodes":[{"_id":"ef2abb50-bf0e-a103-d2d4-b70c35130de0","type":"Block","tag":"div","classes":["71d6f590-45af-3b38-fc8b-a38a20784038"],"children":["f84d9c77-4499-9480-2e9f-6a3448ba1a5e"],"data":{"tag":"div","text":false,"xattr":[{"name":"itemscope","value":""},{"name":"itemtype","value":"https://schema.org/FAQPage"},{"name":"accordian-list","value":""}],"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"f84d9c77-4499-9480-2e9f-6a3448ba1a5e","type":"Block","tag":"div","classes":["d920a04d-372e-6566-70cb-3b24b3536a47"],"children":["23ede3b5-8b7b-0664-677f-9ffaae535ebb","099d04f7-5d39-b201-8d78-6054e7560da7"],"data":{"tag":"div","text":false,"xattr":[{"name":"itemtype","value":"https://schema.org/Question"},{"name":"accordian","value":""},{"name":"itemscope","value":""},{"name":"itemprop","value":"mainEntity"}],"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"23ede3b5-8b7b-0664-677f-9ffaae535ebb","type":"DOM","tag":"div","classes":["6f8ed22e-5d5a-b21a-4f59-df6f8563a470"],"children":["dc943745-ac1a-e089-2af5-de04f7b19c3e","816a15bb-5d9c-12b8-3ee3-2149f87828bc"],"data":{"tag":"button","attributes":[{"name":"accordian-head","value":""}],"text":false,"slot":"","visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"dc943745-ac1a-e089-2af5-de04f7b19c3e","type":"Paragraph","tag":"p","classes":["9111458a-3251-7ff1-1385-9b06d02afe59"],"children":["0d44b92e-01ad-7a03-04da-ac37e790ba9c"],"data":{"xattr":[{"name":"itemprop","value":"name"}],"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"0d44b92e-01ad-7a03-04da-ac37e790ba9c","text":true,"v":"What is the accordion component?"},{"_id":"816a15bb-5d9c-12b8-3ee3-2149f87828bc","type":"Block","tag":"div","classes":["f32cebc1-4bf7-b8fc-0004-457813ba916f"],"children":["4c7a49c8-461b-3553-a10a-e2e89e1c44f0"],"data":{"tag":"div","text":false,"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"xattr":[],"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"4c7a49c8-461b-3553-a10a-e2e89e1c44f0","type":"Image","tag":"img","classes":["102ce57f-e70f-6e73-8810-1f80b9d53baa"],"children":[],"data":{"attr":{"src":"https://cdn.prod.website-files.com/61c6dd98689f180cfcafdb4c/6a02fe6b055c5d11ed957aae_cross.svg","loading":"lazy","width":"auto","height":"auto","alt":"__wf_reserved_inherit","id":""},"img":{"id":"6a02fe6b055c5d11ed957aae"},"srcsetDisabled":false,"sizes":[],"devlink":{"runtimeProps":{},"slot":""},"displayName":"","xattr":[],"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"099d04f7-5d39-b201-8d78-6054e7560da7","type":"Block","tag":"div","classes":["60d8c410-f6b3-9906-4ef9-fc81059bdeb2"],"children":["be2bea0d-0887-6170-fc8a-2bbf2c4956c0"],"data":{"tag":"div","text":false,"xattr":[{"name":"itemtype","value":"https://schema.org/Answer"},{"name":"accordian-body","value":""},{"name":"itemscope","value":""},{"name":"itemprop","value":"acceptedAnswer"}],"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"be2bea0d-0887-6170-fc8a-2bbf2c4956c0","type":"Block","tag":"div","classes":["dd034625-3d26-0112-9e5f-23db5a5893ab"],"children":["3865077b-b0c9-31c5-70bd-13e5446ee0f2"],"data":{"tag":"div","text":false,"xattr":[{"name":"itemprop","value":"text"}],"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"3865077b-b0c9-31c5-70bd-13e5446ee0f2","type":"RichText","tag":"div","classes":["3dd977aa-e1d2-8098-40ce-8b856407f532"],"children":["27108cc0-2bf0-e944-964a-4fced2e3023b"],"data":{"rich":true,"tag":"div","slot":"","devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"xattr":[],"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"27108cc0-2bf0-e944-964a-4fced2e3023b","type":"Paragraph","tag":"p","classes":[],"children":["fbc7fe3a-d3d3-1ed3-f5ca-48af73800422"],"data":{"text":false,"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"xattr":[],"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"fbc7fe3a-d3d3-1ed3-f5ca-48af73800422","text":true,"v":"The accordion is a UI pattern that shows one expanded content panel at a time. Ideal for FAQs, settings menus, and content-heavy pages."}],"styles":[{"_id":"d920a04d-372e-6566-70cb-3b24b3536a47","fake":false,"type":"class","name":"accordian","namespace":"","comb":"","styleLess":"overflow: hidden; width: 100%; border-top-style: solid; border-top-width: 1px; border-top-color: rgba(0, 0, 0, 0.09); border-right-style: solid; border-right-width: 1px; border-right-color: rgba(0, 0, 0, 0.09); border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: rgba(0, 0, 0, 0.09); border-left-style: solid; border-left-width: 1px; border-left-color: rgba(0, 0, 0, 0.09); border-top-left-radius: 1rem; border-top-right-radius: 1rem; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; background-color: hsla(0, 0.00%, 100.00%, 1.00);","variants":{"small":{"styleLess":"border-top-left-radius: 0.875rem; border-top-right-radius: 0.875rem; border-bottom-left-radius: 0.875rem; border-bottom-right-radius: 0.875rem;"}},"children":[],"createdBy":"6011897b8bfd70358f986658","origin":null,"selector":null},{"_id":"102ce57f-e70f-6e73-8810-1f80b9d53baa","fake":false,"type":"class","name":"accordian-icon","namespace":"","comb":"","styleLess":"width: 1rem; transition-property: all; transition-duration: 300ms; transition-timing-function: ease;","variants":{},"children":[],"createdBy":"6011897b8bfd70358f986658","origin":null,"selector":null},{"_id":"60d8c410-f6b3-9906-4ef9-fc81059bdeb2","fake":false,"type":"class","name":"accordian-body","namespace":"","comb":"","styleLess":"overflow: hidden; width: 100%;","variants":{},"children":[],"createdBy":"6011897b8bfd70358f986658","origin":null,"selector":null},{"_id":"6f8ed22e-5d5a-b21a-4f59-df6f8563a470","fake":false,"type":"class","name":"accordian-head","namespace":"","comb":"","styleLess":"display: flex; width: 100%; padding-top: 1.25rem; padding-right: 1.5rem; padding-bottom: 1.25rem; padding-left: 1.5rem; justify-content: space-between; align-items: center; grid-column-gap: 1rem; grid-row-gap: 1rem; background-color: hsla(0, 0.00%, 94.12%, 0.00); text-align: left;","variants":{"small":{"styleLess":"padding-top: 1rem; padding-right: 1.25rem; padding-bottom: 1rem; padding-left: 1.25rem;"}},"children":[],"createdBy":"6011897b8bfd70358f986658","origin":null,"selector":null},{"_id":"71d6f590-45af-3b38-fc8b-a38a20784038","fake":false,"type":"class","name":"accordian-list","namespace":"","comb":"","styleLess":"","variants":{},"children":[],"createdBy":"6011897b8bfd70358f986658","origin":null,"selector":null},{"_id":"9111458a-3251-7ff1-1385-9b06d02afe59","fake":false,"type":"class","name":"accordian-question","namespace":"","comb":"","styleLess":"width: 100%; max-width: 90%; color: #0f6e56; font-size: 1.25rem; line-height: 1.5; font-weight: 700;","variants":{"small":{"styleLess":"font-size: 1rem;"}},"children":[],"createdBy":"6011897b8bfd70358f986658","origin":null,"selector":null},{"_id":"f32cebc1-4bf7-b8fc-0004-457813ba916f","fake":false,"type":"class","name":"accordian-icon-wrap","namespace":"","comb":"","styleLess":"display: flex; overflow: hidden; width: 2.5rem; justify-content: center; align-items: center; aspect-ratio: 1/1; border-top-left-radius: 100%; border-top-right-radius: 100%; border-bottom-left-radius: 100%; border-bottom-right-radius: 100%; background-color: #e1f5ee;","variants":{"small":{"styleLess":"width: 2.25rem;"}},"children":[],"createdBy":"6011897b8bfd70358f986658","origin":null,"selector":null},{"_id":"3dd977aa-e1d2-8098-40ce-8b856407f532","fake":false,"type":"class","name":"accordian-richtext","namespace":"","comb":"","styleLess":"color: #5a5a56;","variants":{},"children":["83b9d888-26f4-d599-e820-f794543223e9","613e1b48-6bc4-0d34-4b11-51dd139dbdd1","ba713138-7bd0-f47c-1ab9-9cfa7f2d2503","36fe2ec4-b9de-b938-34f5-200b86ef1d14","cd63bd96-0c7f-09fb-74c8-7858e3961d35","0580aac6-08dc-0ecd-9271-69091a404c07","0347b070-8692-fd28-05cc-803ac0f10b8f","3710751f-6f1d-d3f9-0486-83e16d6a6aac","8c01d940-bbfe-ba44-2a16-b773499ca6a6","0d4fd075-3102-738b-ee07-e3ce4de340c1","bc958119-f622-d278-2f59-b2ef88199d0d","f13e7ca2-5103-4993-c982-da895f0a735b","59475095-c042-c725-28e7-e8b992496fb1","b37ee7c0-dc09-d78c-888b-81fdbe109b92"],"createdBy":"6011897b8bfd70358f986658","origin":null,"selector":null},{"_id":"dd034625-3d26-0112-9e5f-23db5a5893ab","fake":false,"type":"class","name":"accordian-body-content","namespace":"","comb":"","styleLess":"padding-right: 1.5rem; padding-bottom: 1.25rem; padding-left: 1.5rem;","variants":{"small":{"styleLess":"padding-right: 1.25rem; padding-bottom: 1rem; padding-left: 1.25rem;"}},"children":[],"createdBy":"6011897b8bfd70358f986658","origin":null,"selector":null}],"assets":[{"cdnUrl":"https://cdn.prod.website-files.com/61c6dd98689f180cfcafdb4c/6a02fe6b055c5d11ed957aae_cross.svg","siteId":"61c6dd98689f180cfcafdb4c","width":150,"isHD":false,"height":150,"fileName":"6a02fe6b055c5d11ed957aae_cross.svg","createdOn":"2026-05-12T10:18:19.409Z","origFileName":"cross.svg","fileHash":"a173c0e3f42bb97a87e59a78d6477509","translationLoading":false,"variants":[],"mimeType":"image/svg+xml","isFromWellKnownFolder":false,"s3Url":"https://s3.amazonaws.com/webflow-prod-assets/61c6dd98689f180cfcafdb4c/6a02fe6b055c5d11ed957aae_cross.svg","thumbUrl":"https://cdn.prod.website-files.com/61c6dd98689f180cfcafdb4c/6a02fe6b055c5d11ed957aae_cross.svg","_id":"6a02fe6b055c5d11ed957aae","updatedOn":"2026-05-12T10:18:19.409Z","fileSize":148,"localizedSettings":{}}],"ix1":[],"ix2":{"interactions":[],"events":[],"actionLists":[]}},"meta":{"droppedLinks":0,"dynBindRemovedCount":0,"dynListBindRemovedCount":0,"paginationRemovedCount":0,"universalBindingsRemovedCount":0,"unlinkedSymbolCount":0,"codeComponentsRemovedCount":0,"richTextComponentsStripped":false}}
+</script>
 <script>
   /* ── Tab switcher ── */
   function switchTab(e, name) {
@@ -618,6 +622,54 @@
     });
   }, { threshold: 0.35 });
   document.querySelectorAll('section, .page-header').forEach(s => observer.observe(s));
+</script>
+  <script>
+(function () {
+
+  var currentPayload = '';
+
+  // Hidden button trick — same as Finsweet/Flowbase
+  // Bypasses Chrome clipboard focus restriction
+  var hiddenTrigger = document.createElement('button');
+  hiddenTrigger.contentEditable = 'true';
+  hiddenTrigger.setAttribute('aria-hidden', 'true');
+  hiddenTrigger.style.cssText = 'position:fixed;top:0;left:0;clip:rect(1px,1px,1px,1px);overflow:hidden;height:1px;width:1px;padding:0;border:0;pointer-events:none;';
+  document.body.appendChild(hiddenTrigger);
+
+  // Step A: When copy fires on hidden button, inject Webflow JSON
+  hiddenTrigger.addEventListener('copy', function (e) {
+    e.clipboardData.setData('application/json', currentPayload);
+    e.preventDefault();
+    console.log('✅ Copied to clipboard!');
+  });
+
+  // Step B: Read JSON from <script type="application/json"> tag
+  function getPayload(btn) {
+    var id = btn.getAttribute('data-payload-id');
+    var tag = document.getElementById(id);
+    return tag ? tag.textContent.trim() : '';
+  }
+
+  // Step C: Wire up every copy button
+  document.querySelectorAll('[data-copy-btn]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      currentPayload = getPayload(btn);
+      if (!currentPayload) return alert('Payload not found!');
+
+      // Focus hidden button then trigger copy
+      hiddenTrigger.focus();
+      document.execCommand('copy');
+
+      // Visual feedback on button
+      var original = btn.textContent;
+      btn.textContent = '✅ Copied!';
+      setTimeout(function () {
+        btn.textContent = original;
+      }, 2000);
+    });
+  });
+
+})();
 </script>
 <script src="https://jswebflow.netlify.app/Library/Accordian%20Component/accordian.js"></script>
 </body>
