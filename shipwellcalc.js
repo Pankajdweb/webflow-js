@@ -13,6 +13,7 @@
    Do NOT change unless the underlying model changes.
    ──────────────────────────────────────────────────────────────────────── */
 const locationcost = document.querySelector("[location-cost]");
+
 // ── Shipment Volume section (non-dynamic) ──
 const SV_AtpS_B7 = 5; // Calls + emails + portal checks per shipment lifecycle
 const SV_PctExc_B8 = 0.1; // Benchmark: 15-22% for FTL/LTL
@@ -20,9 +21,12 @@ const SV_PctExc_B8 = 0.1; // Benchmark: 15-22% for FTL/LTL
 // ── Labor Costs section (non-dynamic) ──
 const LC_Ampmt_B11 = 3; // Benchmark: 8-15 min per touch
 let LC_Hblr_B13 = Number(locationcost.value); // Fully-loaded rate, ~1,950 working hrs/FTE annually
+console.log(LC_Hblr_B13);
  locationcost.addEventListener("change", function () {
     LC_Hblr_B13 = Number(this.value);
+    console.log(LC_Hblr_B13);
   });
+console.log(LC_Hblr_B13);
 
 // ── Exception & Delay Costs section ──
 const EC_Acple_B18 = 350; // Includes rebooking, expediting, penalties, chargebacks
