@@ -25,6 +25,7 @@ console.log(LC_Hblr_B13);
  locationcost.addEventListener("change", function () {
     LC_Hblr_B13 = Number(this.value);
     console.log(LC_Hblr_B13);
+    recalculate();
   });
 console.log(LC_Hblr_B13);
 
