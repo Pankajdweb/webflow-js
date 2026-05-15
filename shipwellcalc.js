@@ -31,6 +31,7 @@ console.log(LC_Hblr_B13);
 
 // ── Exception & Delay Costs section ──
 const EC_Acple_B18 = 350; // Includes rebooking, expediting, penalties, chargebacks
+const numTTFtes_B15 = 1; 
 
 // ── AI Performance & Impact Assumptions ──
 const AI_Ar_B21 = 0.7; // Benchmark: 70-90% structured T&T workflows
@@ -59,7 +60,7 @@ function getInputs() {
     // B6 — Total monthly shipments tracked
     totalMonthlyShipments_B6: parse("total-monthly-shipments", 0),
     // B14 — No. of T&T FTEs (current manual team)
-    numTTFtes_B15: parse("num-tt-ftes", 1),
+    // numTTFtes_B15: parse("num-tt-ftes", 1),
     // B15 — Inbound shipment status inquiries per month
     inboundInquiriesPerMonth_B14: parse("inbound-inquiries", 0),
   };
@@ -72,7 +73,7 @@ function getInputs() {
 function calculateAll(inputs) {
   const {
     totalMonthlyShipments_B6, // B6
-    numTTFtes_B15, // B14
+    // numTTFtes_B15, // B14
     inboundInquiriesPerMonth_B14, // B15
   } = inputs;
 
