@@ -204,7 +204,7 @@ function formatNumber(value, decimals = 0) {
 
 function formatFTE(value) {
   if (isNaN(value)) return "—";
-  return Number(value).toFixed(2);
+  return Number(value).toFixed(1);
 }
 
 function formatPct(value) {
@@ -230,7 +230,7 @@ function renderOutputs(r) {
   );
   setOutput(
     "capacity-unlocked-ftes-raw",
-    r.equivalentFTECapacityUnlocked_G24.toFixed(6),
+    r.equivalentFTECapacityUnlocked_G24.toFixed(1),
   );
   setOutput("workload-reduction-pct", Math.round(r.workloadReductionPct));
   setOutput("workload-reduction-display", formatPct(r.workloadReductionPct));
@@ -271,8 +271,8 @@ function renderOutputs(r) {
   );
   setOutput("total-impact-monthly", formatCurrency(r.totalImpactMonthly));
   setOutput("total-impact-annual", formatCurrency(r.totalImpactAnnual));
-  setOutput("total-impact-monthly-raw", r.totalImpactMonthly.toFixed(2));
-  setOutput("total-impact-annual-raw", r.totalImpactAnnual.toFixed(2));
+  setOutput("total-impact-monthly-raw", r.totalImpactMonthly.toFixed(1));
+  setOutput("total-impact-annual-raw", r.totalImpactAnnual.toFixed(1));
 
   // ── Detailed stat boxes ──
   setOutput("total-manual-touches", formatNumber(r.totalManualTouchesPerMonth_F20));
@@ -299,7 +299,7 @@ function renderOutputs(r) {
   );
   setOutput(
     "inquiry-hours-recovered-monthly",
-    formatNumber(r.inquiryHoursRecoveredPerMonth_F29, 2),
+    formatNumber(r.inquiryHoursRecoveredPerMonth_F29, 1),
   );
   setOutput(
     "inquiry-labor-savings-monthly",
@@ -334,7 +334,7 @@ function renderOutputs(r) {
   );
   setOutput(
     "exception-cost-annual-raw",
-    r.exceptionCostAvoidedAnnual_G37.toFixed(2),
+    r.exceptionCostAvoidedAnnual_G37.toFixed(1),
   );
 }
 
