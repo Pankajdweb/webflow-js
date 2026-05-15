@@ -59,7 +59,7 @@ function getInputs() {
     // B6 — Total monthly shipments tracked
     totalMonthlyShipments_B6: parse("total-monthly-shipments", 0),
     // B14 — No. of T&T FTEs (current manual team)
-    numTTFtes_B15: parse("num-tt-ftes", 0),
+    numTTFtes_B15: parse("num-tt-ftes", 1),
     // B15 — Inbound shipment status inquiries per month
     inboundInquiriesPerMonth_B14: parse("inbound-inquiries", 0),
   };
