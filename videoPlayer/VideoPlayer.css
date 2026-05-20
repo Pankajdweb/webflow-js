@@ -11,6 +11,13 @@
     border: none;
   }
 
+.vp-wrapper {
+     aspect-ratio: 16 / 9;
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
   .vp-container video {
     object-fit: cover;
   }
