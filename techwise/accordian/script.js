@@ -94,6 +94,3 @@
   }
 })();
 
-$(document).ready(function () {
-  $("[tw-accordion='trigger']").first().trigger("click");
-});
