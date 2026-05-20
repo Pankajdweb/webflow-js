@@ -1,14 +1,13 @@
-	
- (function () {
+(function () {
   function initAccordion() {
-    const groups = document.querySelectorAll("[tw-accordian-element='list']");
+    const groups = document.querySelectorAll("[tw-accordion='wrapper']");
 
     groups.forEach((group, groupIndex) => {
-      const items = group.querySelectorAll("[tw-accordian-element='accordian']");
+      const items = group.querySelectorAll("[tw-accordion='item']");
 
       items.forEach((item, itemIndex) => {
-        const head = item.querySelector("[tw-accordian-element='head']");
-        const body = item.querySelector("[tw-accordian-element='body']");
+        const head = item.querySelector("[tw-accordion='trigger']");
+        const body = item.querySelector("[tw-accordion='answer']");
         if (!head || !body) return;
 
         /* -----------------------------
@@ -52,8 +51,8 @@
 
           // Close all in this group
           items.forEach((i) => {
-            const h = i.querySelector("[tw-accordian-element='head']");
-            const b = i.querySelector("[tw-accordian-element='body']");
+            const h = i.querySelector("[tw-accordion='trigger']");
+            const b = i.querySelector("[tw-accordion='answer']");
 
             h.classList.remove("open");
             h.setAttribute("aria-expanded", "false");
@@ -96,5 +95,5 @@
 })();
 
 $(document).ready(function () {
-  $("[tw-accordian-element='head']").first().trigger("click");
+  $("[tw-accordion='trigger']").first().trigger("click");
 });
