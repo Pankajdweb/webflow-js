@@ -3,10 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Universal Video Player — a lightweight vanilla JS library that auto-detects YouTube, Vimeo, MP4, WebM URLs and renders an accessible, customizable player."
-    />
+   
     <title>Accordian Element</title>
 
     <!-- Fonts -->
@@ -17,11 +14,6 @@
       rel="stylesheet"
     />
 
-    <!-- Video Player CSS -->
-    <link
-      rel="stylesheet"
-      href="https://jswebflow.netlify.app/videoplayer/videoPlayer.css"
-    />
     <!-- Page Styles -->
     <style>
       *,
@@ -1161,102 +1153,7 @@
       </main>
     </div>
 
-    <script src="https://jswebflow.netlify.app/techwise/accordian/script.js">
-      (function () {
-        function initAccordion() {
-          const groups = document.querySelectorAll("[tw-accordion='wrapper']");
-
-          groups.forEach((group, groupIndex) => {
-            const items = group.querySelectorAll("[tw-accordion='item']");
-
-            items.forEach((item, itemIndex) => {
-              const head = item.querySelector("[tw-accordion='trigger']");
-              const body = item.querySelector("[tw-accordion='answer']");
-              if (!head || !body) return;
-
-              // Store refs for ResizeObserver
-              item._accordionHead = head;
-              item._accordionBody = body;
-
-              const headId = `faq-head-${groupIndex}-${itemIndex}`;
-              const bodyId = `faq-panel-${groupIndex}-${itemIndex}`;
-              head.id = headId;
-              body.id = bodyId;
-
-              head.setAttribute("aria-controls", bodyId);
-              head.setAttribute("aria-expanded", "false");
-              body.setAttribute("role", "region");
-              body.setAttribute("aria-labelledby", headId);
-
-              body.style.overflow = "hidden";
-              body.style.transition = "height 0.3s ease";
-              body.style.height = "0px";
-              body.setAttribute("inert", "");
-
-              if (head.classList.contains("open")) {
-                body.style.height = body.scrollHeight + "px";
-                head.setAttribute("aria-expanded", "true");
-                body.removeAttribute("inert");
-              }
-
-              const toggleAccordion = () => {
-                const isOpen = head.getAttribute("aria-expanded") === "true";
-
-                items.forEach((i) => {
-                  const h = i.querySelector("[tw-accordion='trigger']");
-                  const b = i.querySelector("[tw-accordion='answer']");
-                  h.classList.remove("open");
-                  h.setAttribute("aria-expanded", "false");
-                  b.style.height = "0px";
-                  b.setAttribute("inert", "");
-                });
-
-                if (!isOpen) {
-                  head.classList.add("open");
-                  head.setAttribute("aria-expanded", "true");
-                  body.style.height = body.scrollHeight + "px";
-                  body.removeAttribute("inert");
-                }
-              };
-
-              head.addEventListener("click", toggleAccordion);
-              head.addEventListener("keydown", (e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  toggleAccordion();
-                }
-              });
-            });
-
-            // Re-measure open panels on resize
-            const ro = new ResizeObserver(() => {
-              items.forEach((i) => {
-                const h = i._accordionHead;
-                const b = i._accordionBody;
-                if (!h || !b) return;
-                if (h.getAttribute("aria-expanded") === "true") {
-                  b.style.transition = "none";
-                  b.style.height = "auto";
-                  const newH = b.scrollHeight;
-                  b.style.height = newH + "px";
-                  requestAnimationFrame(() => {
-                    b.style.transition = "height 0.3s ease";
-                  });
-                }
-              });
-            });
-
-            ro.observe(group);
-          });
-        }
-
-        if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", initAccordion);
-        } else {
-          initAccordion();
-        }
-      })();
-    </script>
+    <script src="https://jswebflow.netlify.app/techwise/accordian/script.js">  </script>
     <!-- Tabs JS -->
     <script>
       document.addEventListener("DOMContentLoaded", () => {
