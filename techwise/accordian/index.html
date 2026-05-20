@@ -1,0 +1,1072 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Universal Video Player — a lightweight vanilla JS library that auto-detects YouTube, Vimeo, MP4, WebM URLs and renders an accessible, customizable player."
+    />
+    <title>Accordian Element</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Video Player CSS -->
+    <link
+      rel="stylesheet"
+      href="https://jswebflow.netlify.app/videoplayer/videoPlayer.css"
+    />
+    <!-- Page Styles -->
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", system-ui, sans-serif;
+        background: #0d0f14;
+        color: #e8eaf0;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      .section-header {
+        text-align: center;
+        padding: 80px 24px 60px;
+        border-bottom: 1px solid #1e2230;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .section-header-content {
+        display: flex;
+        max-width: 560px;
+        gap: 24px;
+        margin: 0 auto;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 14px;
+        border-radius: 999px;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        background: rgba(230, 160, 32, 0.1);
+        color: #e6a020;
+        border: 1px solid rgba(230, 160, 32, 0.2);
+      }
+
+      .heading-style-h1 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1;
+        position: relative;
+      }
+
+      .heading-style-h2 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .global-desc {
+        color: #6b7280;
+        font-size: 1.1rem;
+      }
+
+      .section-content {
+        padding: 80px 0;
+      }
+
+      .tw-tabs {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .tw-tabs-pane {
+        display: none;
+      }
+
+      .tw-tabs-pane.is-active {
+        display: block;
+      }
+
+      .tw-tabs-menu {
+        display: inline-flex;
+        gap: 6px;
+        padding: 6px;
+        border-radius: 999px;
+        background: rgba(21, 24, 32, 0.8);
+        border: 1px solid #1e2230;
+        backdrop-filter: blur(8px);
+      }
+
+      .tw-tabs-link {
+        appearance: none;
+        border: 1px solid transparent;
+        background: transparent;
+        color: #9ca3af;
+        padding: 10px 14px;
+        border-radius: 999px;
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        transition:
+          background 0.2s ease,
+          color 0.2s ease;
+      }
+
+      .tw-tabs-link.is-active {
+        background: rgba(230, 160, 32, 0.12);
+        color: #e6a020;
+        border: 1px solid rgba(230, 160, 32, 0.22);
+      }
+
+      .tw-tabs-content {
+        margin-top: 2rem;
+        color: #e8eaf0;
+        width: 100%;
+      }
+
+      .tw-tabs-pane{
+        width: 100%;
+      }
+
+      .accordian-list {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+      .accordian {
+        border: 1px solid #333;
+        border-radius: 1rem;
+        flex-flow: column;
+        display: flex;
+      }
+
+      .accordian-head {
+        grid-column-gap: 1rem;
+        grid-row-gap: 1rem;
+        text-align: left;
+        color: #e8eaf0;
+        background-color: #f0f0f000;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 1.25rem;
+        display: flex;
+        border: none;
+        cursor: pointer;
+      }
+
+      .accordian-heading {
+        font-size: 1.5rem;
+        line-height: 1.2;
+      }
+
+      .accordian-icon-wrap {
+        justify-content: center;
+        align-items: center;
+        width: 1.5rem;
+        transition: all 0.3s;
+        display: flex;
+      }
+
+      .accordian-body-content {
+        padding-bottom: 1rem;
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+      }
+
+      [tw-accordion="trigger"].open .accordian-icon-wrap {
+        transform: rotate(45deg);
+      }
+
+      .code-block {
+        background: #151820;
+        border: 1px solid #1e2230;
+        border-radius: 12px;
+        padding: 24px;
+        overflow-x: auto;
+        margin-top: 3rem;
+      }
+
+      .code-block pre {
+        font-family: "SF Mono", "Fira Code", Consolas, monospace;
+        font-size: 13px;
+        color: #9ca3af;
+        line-height: 1.7;
+        white-space: pre;
+      }
+
+      .code-block pre .comment {
+        color: #4b5563;
+      }
+
+      .code-block pre .tag {
+        color: #38bdf8;
+      }
+
+      .code-block pre .attr {
+        color: #e6a020;
+      }
+
+      .code-block pre .val {
+        color: #34d399;
+      }
+
+      .code-block pre .attr {
+        color: #e6a020;
+      }
+
+      .element-copy-btn {
+        margin: 2rem auto 0;
+        appearance: none;
+        border: 1px solid rgba(230, 160, 32, 0.22);
+        background: rgba(230, 160, 32, 0.12);
+        color: #e6a020;
+        padding: 10px 14px;
+        border-radius: 999px;
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        transition:
+          background 0.2s ease,
+          color 0.2s ease;
+      }
+    </style>
+  </head>
+
+  <body>
+    <script type="application/json" id="payload-Accordian">
+      {
+        "type": "@webflow/XscpData",
+        "payload": {
+          "nodes": [
+            {
+              "_id": "d5deb1cb-bdb6-7594-6632-9293428fe52d",
+              "type": "Block",
+              "tag": "div",
+              "classes": ["a6efd57f-4816-289e-5972-20ef569b8704"],
+              "children": ["8533f03d-b9d3-feb0-e392-8e3608f00e19"],
+              "data": {
+                "tag": "div",
+                "text": false,
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [
+                  { "name": "tw-accordian-element", "value": "list" },
+                  { "name": "itemtype", "value": "https://schema.org/FAQPage" },
+                  { "name": "itemscope", "value": "" }
+                ],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "8533f03d-b9d3-feb0-e392-8e3608f00e19",
+              "type": "Block",
+              "tag": "div",
+              "classes": ["0ca10d23-4629-093f-6dbe-eb4397961208"],
+              "children": [
+                "af233e0e-300f-db67-fb57-5f35dc600768",
+                "adbc1caf-df5f-eac4-2d1e-d7908802fa57"
+              ],
+              "data": {
+                "tag": "div",
+                "text": false,
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [
+                  { "name": "tw-accordian-element", "value": "accordian" },
+                  { "name": "itemscope", "value": "" },
+                  { "name": "itemprop", "value": "mainEntity" },
+                  { "name": "itemtype", "value": "https://schema.org/Question" }
+                ],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "af233e0e-300f-db67-fb57-5f35dc600768",
+              "type": "DOM",
+              "tag": "div",
+              "classes": ["268497b8-73ae-d3eb-3123-57054eea9dde"],
+              "children": [
+                "dc8d46ce-00dd-96f8-60ff-0b31b3d7d53b",
+                "37778a51-d038-92b0-6b22-74783d967a00"
+              ],
+              "data": {
+                "tag": "Button",
+                "attributes": [
+                  { "name": "tw-accordian-element", "value": "head" }
+                ],
+                "text": false,
+                "slot": "",
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "dc8d46ce-00dd-96f8-60ff-0b31b3d7d53b",
+              "type": "Heading",
+              "tag": "h3",
+              "classes": ["02926812-bd2b-4503-ee53-028705c6b263"],
+              "children": ["dd989d39-3959-d0c8-6f2a-1bd52cbee294"],
+              "data": {
+                "tag": "h3",
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [{ "name": "itemprop", "value": "name" }],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "dd989d39-3959-d0c8-6f2a-1bd52cbee294",
+              "text": true,
+              "v": "What is the accordion component?"
+            },
+            {
+              "_id": "37778a51-d038-92b0-6b22-74783d967a00",
+              "type": "DOM",
+              "tag": "div",
+              "classes": ["66ebd682-5893-6297-4b22-ff3a7538429d"],
+              "children": ["93dcf77e-242b-df57-9f20-99cbc827bf39"],
+              "data": {
+                "tag": "svg",
+                "attributes": [
+                  { "name": "viewBox", "value": "0 0 14 14" },
+                  { "name": "fill", "value": "none" },
+                  { "name": "stroke", "value": "currentColor" },
+                  { "name": "stroke-width", "value": "2" }
+                ],
+                "text": false,
+                "slot": "",
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "93dcf77e-242b-df57-9f20-99cbc827bf39",
+              "type": "DOM",
+              "tag": "div",
+              "classes": [],
+              "children": [],
+              "data": {
+                "tag": "path",
+                "attributes": [{ "name": "d", "value": "M7 2v10M2 7h10" }],
+                "text": false,
+                "slot": "",
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "adbc1caf-df5f-eac4-2d1e-d7908802fa57",
+              "type": "Block",
+              "tag": "div",
+              "classes": ["052d2c3d-7cbc-5139-dc93-5f0150c49220"],
+              "children": ["88a885f3-820e-c414-cdd6-e24e67f7a2ed"],
+              "data": {
+                "tag": "div",
+                "text": false,
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [
+                  { "name": "tw-accordian-element", "value": "body" },
+                  { "name": "itemscope", "value": "" },
+                  { "name": "itemprop", "value": "acceptedAnswer" },
+                  { "name": "itemtype", "value": "https://schema.org/Answer" }
+                ],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "88a885f3-820e-c414-cdd6-e24e67f7a2ed",
+              "type": "Block",
+              "tag": "div",
+              "classes": ["7290047e-1539-0eb2-6790-70bdcbc6abb1"],
+              "children": ["b8de8930-42ec-b6f9-eccf-85289994a500"],
+              "data": {
+                "tag": "div",
+                "text": false,
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [{ "name": "itemprop", "value": "text" }],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "b8de8930-42ec-b6f9-eccf-85289994a500",
+              "type": "RichText",
+              "tag": "div",
+              "classes": ["5eb7183c-1d53-f477-2423-8486b57b6c2c"],
+              "children": ["34385736-b70a-89bb-2944-8c86a81adf95"],
+              "data": {
+                "rich": true,
+                "tag": "div",
+                "slot": "",
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "34385736-b70a-89bb-2944-8c86a81adf95",
+              "type": "Paragraph",
+              "tag": "p",
+              "classes": [],
+              "children": ["f234a961-858a-dc59-4629-6073a0251969"],
+              "data": {
+                "tag": "div",
+                "text": false,
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "f234a961-858a-dc59-4629-6073a0251969",
+              "text": true,
+              "v": "The accordion is a UI pattern that shows one expanded content panel at a time. Ideal for FAQs, settings menus, and content-heavy pages."
+            }
+          ],
+          "styles": [
+            {
+              "_id": "a6efd57f-4816-289e-5972-20ef569b8704",
+              "fake": false,
+              "type": "class",
+              "name": "accordian-list",
+              "namespace": "",
+              "comb": "",
+              "styleLess": "",
+              "variants": {},
+              "children": [],
+              "createdBy": "586aa9980dca55161330cbbb",
+              "origin": null,
+              "selector": null
+            },
+            {
+              "_id": "0ca10d23-4629-093f-6dbe-eb4397961208",
+              "fake": false,
+              "type": "class",
+              "name": "accordian",
+              "namespace": "",
+              "comb": "",
+              "styleLess": "display: flex; flex-direction: column; flex-wrap: nowrap; border-top-style: solid; border-top-width: 1px; border-top-color: #333; border-right-style: solid; border-right-width: 1px; border-right-color: #333; border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #333; border-left-style: solid; border-left-width: 1px; border-left-color: #333; border-top-left-radius: 1rem; border-top-right-radius: 1rem; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem;",
+              "variants": {},
+              "children": [],
+              "createdBy": "586aa9980dca55161330cbbb",
+              "origin": null,
+              "selector": null
+            },
+            {
+              "_id": "268497b8-73ae-d3eb-3123-57054eea9dde",
+              "fake": false,
+              "type": "class",
+              "name": "accordian-head",
+              "namespace": "",
+              "comb": "",
+              "styleLess": "display: flex; width: 100%; padding-top: 1.25rem; padding-right: 1.25rem; padding-bottom: 1.25rem; padding-left: 1.25rem; justify-content: space-between; align-items: center; grid-column-gap: 1rem; grid-row-gap: 1rem; background-color: hsla(0, 0.00%, 94.12%, 0.00); text-align: left;",
+              "variants": {},
+              "children": [],
+              "createdBy": "586aa9980dca55161330cbbb",
+              "origin": null,
+              "selector": null
+            },
+            {
+              "_id": "02926812-bd2b-4503-ee53-028705c6b263",
+              "fake": false,
+              "type": "class",
+              "name": "accordian-heading",
+              "namespace": "",
+              "comb": "",
+              "styleLess": "font-size: 1.5rem; line-height: 1.2;",
+              "variants": {},
+              "children": [],
+              "createdBy": "586aa9980dca55161330cbbb",
+              "origin": null,
+              "selector": null
+            },
+            {
+              "_id": "66ebd682-5893-6297-4b22-ff3a7538429d",
+              "fake": false,
+              "type": "class",
+              "name": "accordian-icon-wrap",
+              "namespace": "",
+              "comb": "",
+              "styleLess": "display: flex; width: 1.5rem; justify-content: center; align-items: center; transition-property: all; transition-duration: 300ms; transition-timing-function: ease;",
+              "variants": {},
+              "children": [],
+              "createdBy": "586aa9980dca55161330cbbb",
+              "origin": null,
+              "selector": null
+            },
+            {
+              "_id": "052d2c3d-7cbc-5139-dc93-5f0150c49220",
+              "fake": false,
+              "type": "class",
+              "name": "accordian-body",
+              "namespace": "",
+              "comb": "",
+              "styleLess": "",
+              "variants": {},
+              "children": [],
+              "createdBy": "586aa9980dca55161330cbbb",
+              "origin": null,
+              "selector": null
+            },
+            {
+              "_id": "7290047e-1539-0eb2-6790-70bdcbc6abb1",
+              "fake": false,
+              "type": "class",
+              "name": "accordian-body-content",
+              "namespace": "",
+              "comb": "",
+              "styleLess": "padding-right: 1.25rem; padding-bottom: 1rem; padding-left: 1.25rem;",
+              "variants": {},
+              "children": [],
+              "createdBy": "586aa9980dca55161330cbbb",
+              "origin": null,
+              "selector": null
+            },
+            {
+              "_id": "5eb7183c-1d53-f477-2423-8486b57b6c2c",
+              "fake": false,
+              "type": "class",
+              "name": "accordian-richtext",
+              "namespace": "",
+              "comb": "",
+              "styleLess": "",
+              "variants": {},
+              "children": [
+                "66209682-3b3a-1e4b-dd7e-1084bb29fc38",
+                "f0a724b6-22f4-7a1c-1c92-d551e747e585",
+                "1acb4f71-7007-c734-693f-3c8f1b2b0268",
+                "dd1f0c88-c833-1e14-fd36-99d6c14ce7b9",
+                "15bc167e-7010-517b-75c7-b3cbab67d99c",
+                "558d951f-2581-bb99-b2e3-07d32aca7657",
+                "702196c9-ffc9-2f76-208a-b17f5f41f12a",
+                "1b4e904d-d71f-cd50-f261-d6770ec06eb9",
+                "e282b36e-9060-5012-ae93-afbd75d67603",
+                "bc0d3676-2741-7e9e-31e3-6e06178a5295"
+              ],
+              "createdBy": "586aa9980dca55161330cbbb",
+              "origin": null,
+              "selector": null
+            }
+          ],
+          "assets": [],
+          "ix1": [],
+          "ix2": { "interactions": [], "events": [], "actionLists": [] }
+        },
+        "meta": {
+          "droppedLinks": 0,
+          "dynBindRemovedCount": 0,
+          "dynListBindRemovedCount": 0,
+          "paginationRemovedCount": 0,
+          "universalBindingsRemovedCount": 0,
+          "unlinkedSymbolCount": 0,
+          "codeComponentsRemovedCount": 0,
+          "richTextComponentsStripped": false
+        }
+      }
+    </script>
+    <div class="page-wrapper">
+      <main class="main-wrapper">
+        <header class="section-header">
+          <div class="container">
+            <div class="section-header-content">
+              <div class="badge">
+                Universal Accordian element Build by TechWise
+              </div>
+              <h1 class="heading-style-h1">Accordian Element</h1>
+              <p class="global-desc">
+                Flexible and accessible accordion component for Webflow projects
+                with schema support, smooth animations, and developer-friendly
+                integration.
+              </p>
+            </div>
+          </div>
+        </header>
+
+        <section class="section-content">
+          <div class="container">
+            <div tw-tabs="wrapper" class="tw-tabs">
+              <div tw-tabs="menu" class="tw-tabs-menu">
+                <button tw-tabs-trigger="demo" class="tw-tabs-link">
+                  Demo
+                </button>
+                <button tw-tabs-trigger="documentation" class="tw-tabs-link">
+                  Documentation
+                </button>
+                <button
+                  tw-tabs-trigger="documentation-for-webflow"
+                  class="tw-tabs-link"
+                >
+                  Documentation for webflow
+                </button>
+              </div>
+              <div tw-tabs="content" class="tw-tabs-content">
+                <div tw-tabs-pane="demo" class="tw-tabs-pane">
+                  <div
+                    itemscope=""
+                    tw-accordion="wrapper"
+                    itemtype="https://schema.org/FAQPage"
+                    class="accordian-list"
+                  >
+                    <div
+                      itemtype="https://schema.org/Question"
+                      tw-accordion="item"
+                      itemscope=""
+                      itemprop="mainEntity"
+                      class="accordian"
+                    >
+                      <button tw-accordion="trigger" class="accordian-head">
+                        <h3 itemprop="name" class="accordian-heading">
+                          What is the accordion component?
+                        </h3>
+                        <svg
+                          viewBox="0 0 14 14"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          class="accordian-icon-wrap"
+                        >
+                          <path d="M7 2v10M2 7h10"></path>
+                        </svg>
+                      </button>
+                      <div
+                        itemtype="https://schema.org/Answer"
+                        tw-accordion="answer"
+                        itemscope=""
+                        itemprop="acceptedAnswer"
+                        class="accordian-body"
+                      >
+                        <div itemprop="text" class="accordian-body-content">
+                          <div class="accordian-richtext">
+                            <p class="global-desc">
+                              The accordion is a UI pattern that shows one
+                              expanded content panel at a time. Ideal for FAQs,
+                              settings menus, and content-heavy pages.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      itemtype="https://schema.org/Question"
+                      tw-accordion="item"
+                      itemscope=""
+                      itemprop="mainEntity"
+                      class="accordian"
+                    >
+                      <button tw-accordion="trigger" class="accordian-head">
+                        <h3 itemprop="name" class="accordian-heading">
+                          What is the accordion component?
+                        </h3>
+                        <svg
+                          viewBox="0 0 14 14"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          class="accordian-icon-wrap"
+                        >
+                          <path d="M7 2v10M2 7h10"></path>
+                        </svg>
+                      </button>
+                      <div
+                        itemtype="https://schema.org/Answer"
+                        tw-accordion="answer"
+                        itemscope=""
+                        itemprop="acceptedAnswer"
+                        class="accordian-body"
+                      >
+                        <div itemprop="text" class="accordian-body-content">
+                          <div class="accordian-richtext">
+                            <p class="global-desc">
+                              The accordion is a UI pattern that shows one
+                              expanded content panel at a time. Ideal for FAQs,
+                              settings menus, and content-heavy pages.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      itemtype="https://schema.org/Question"
+                      tw-accordion="item"
+                      itemscope=""
+                      itemprop="mainEntity"
+                      class="accordian"
+                    >
+                      <button tw-accordion="trigger" class="accordian-head">
+                        <h3 itemprop="name" class="accordian-heading">
+                          What is the accordion component?
+                        </h3>
+                        <svg
+                          viewBox="0 0 14 14"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          class="accordian-icon-wrap"
+                        >
+                          <path d="M7 2v10M2 7h10"></path>
+                        </svg>
+                      </button>
+                      <div
+                        itemtype="https://schema.org/Answer"
+                        tw-accordion="answer"
+                        itemscope=""
+                        itemprop="acceptedAnswer"
+                        class="accordian-body"
+                      >
+                        <div itemprop="text" class="accordian-body-content">
+                          <div class="accordian-richtext">
+                            <p class="global-desc">
+                              The accordion is a UI pattern that shows one
+                              expanded content panel at a time. Ideal for FAQs,
+                              settings menus, and content-heavy pages.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div tw-tabs-pane="documentation" class="tw-tabs-pane">
+                  <div class="documentation-content">
+                    <h2 class="heading-style-h2">Quick Usage</h2>
+                    <div class="code-block">
+                      <pre><span class="comment">&lt;!-- 1. Include JS --&gt;</span>
+
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="val">"https://jswebflow.netlify.app/techwise/accordian/script.js"</span> <span class="attr">defer</span><span class="tag">&gt;&lt;/script&gt;</span>
+
+<span class="tag">&lt;div</span> <span class="attr">itemscope</span>=<span class="val">""</span> <span class="attr">tw-accordion</span>=<span class="val">"wrapper"</span> <span class="attr">itemtype</span>=<span class="val">"https://schema.org/FAQPage"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span>
+    <span class="attr">itemtype</span>=<span class="val">"https://schema.org/Question"</span>
+    <span class="attr">tw-accordion</span>=<span class="val">"item"</span>
+    <span class="attr">itemscope</span>=<span class="val">""</span>
+    <span class="attr">itemprop</span>=<span class="val">"mainEntity"</span>
+  <span class="tag">&gt;</span>
+    <span class="tag">&lt;button</span> <span class="attr">tw-accordion</span>=<span class="val">"trigger"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;h3</span> <span class="attr">itemprop</span>=<span class="val">"name"</span><span class="tag">&gt;</span>What is the accordion component?<span class="tag">&lt;/h3&gt;</span>
+      <span class="tag">&lt;svg</span>
+        <span class="attr">viewBox</span>=<span class="val">"0 0 14 14"</span>
+        <span class="attr">fill</span>=<span class="val">"none"</span>
+        <span class="attr">stroke</span>=<span class="val">"currentColor"</span>
+        <span class="attr">stroke-width</span>=<span class="val">"2"</span>
+      <span class="tag">&gt;</span>
+        <span class="tag">&lt;path</span> <span class="attr">d</span>=<span class="val">"M7 2v10M2 7h10"</span><span class="tag">&gt;&lt;/path&gt;</span>
+      <span class="tag">&lt;/svg&gt;</span>
+    <span class="tag">&lt;/button&gt;</span>
+    <span class="tag">&lt;div</span>
+      <span class="attr">itemtype</span>=<span class="val">"https://schema.org/Answer"</span>
+      <span class="attr">tw-accordion</span>=<span class="val">"answer"</span>
+      <span class="attr">itemscope</span>=<span class="val">""</span>
+      <span class="attr">itemprop</span>=<span class="val">"acceptedAnswer"</span>
+    <span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">itemprop</span>=<span class="val">"text"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;p&gt;</span>
+          The accordion is a UI pattern that shows one
+          expanded content panel at a time. Ideal for FAQs,
+          settings menus, and content-heavy pages.
+        <span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+</pre>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  tw-tabs-pane="documentation-for-webflow"
+                  class="tw-tabs-pane"
+                >
+                  <div class="documentation-content">
+                    <h2 class="heading-style-h2">Quick Usage</h2>
+                    <div class="code-block">
+                      <pre><span class="comment">&lt;!-- 1. Include JS --&gt;</span>
+
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="val">"https://jswebflow.netlify.app/techwise/accordian/script.js"</span> <span class="attr">defer</span><span class="tag">&gt;&lt;/script&gt;</span>
+</pre>
+                    </div>
+
+                    <button
+                      data-copy-btn
+                      data-component-name="Accordian"
+                      data-payload-id="payload-Accordian"
+                      class="element-copy-btn"
+                    >
+                      Copy Accordian
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://jswebflow.netlify.app/techwise/accordian/script.js"></script>
+    <!-- Tabs JS -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const twTabsWrappers = document.querySelectorAll('[tw-tabs="wrapper"]');
+
+        twTabsWrappers.forEach((twTabsWrapper, wrapperIndex) => {
+          const twTabsMenu = twTabsWrapper.querySelector('[tw-tabs="menu"]');
+
+          const twTabsTriggers =
+            twTabsWrapper.querySelectorAll("[tw-tabs-trigger]");
+
+          const twTabsPanes = twTabsWrapper.querySelectorAll("[tw-tabs-pane]");
+
+          // Accessibility
+          if (twTabsMenu) {
+            twTabsMenu.setAttribute("role", "tablist");
+            twTabsMenu.setAttribute("aria-label", "Tabs Navigation");
+          }
+
+          // Generate IDs + ARIA
+          twTabsTriggers.forEach((twTabsTrigger, triggerIndex) => {
+            const twTabsValue = twTabsTrigger.getAttribute("tw-tabs-trigger");
+
+            const twTabsTriggerId = `tw-tab-${wrapperIndex}-${triggerIndex}`;
+
+            const twTabsPaneId = `tw-pane-${wrapperIndex}-${triggerIndex}`;
+
+            // Tab attributes
+            twTabsTrigger.setAttribute("role", "tab");
+
+            twTabsTrigger.setAttribute("id", twTabsTriggerId);
+
+            twTabsTrigger.setAttribute("aria-controls", twTabsPaneId);
+
+            twTabsTrigger.setAttribute("aria-selected", "false");
+
+            // Only active tab should be tabbable
+            // twTabsTrigger.setAttribute("tabindex", "-1");
+
+            // Matching pane
+            const twTabsPane = twTabsWrapper.querySelector(
+              `[tw-tabs-pane="${twTabsValue}"]`,
+            );
+
+            if (twTabsPane) {
+              twTabsPane.setAttribute("role", "tabpanel");
+
+              twTabsPane.setAttribute("id", twTabsPaneId);
+
+              twTabsPane.setAttribute("aria-labelledby", twTabsTriggerId);
+
+              twTabsPane.hidden = true;
+            }
+          });
+
+          // Activate tab
+          function twTabsActivateTab(targetValue) {
+            twTabsTriggers.forEach((twTabsTrigger) => {
+              const isActive =
+                twTabsTrigger.getAttribute("tw-tabs-trigger") === targetValue;
+
+              // ARIA
+              twTabsTrigger.setAttribute(
+                "aria-selected",
+                isActive ? "true" : "false",
+              );
+
+              // Only active tab in tab order
+              //   twTabsTrigger.setAttribute("tabindex", isActive ? "0" : "-1");
+
+              // Active class
+              twTabsTrigger.classList.toggle("is-active", isActive);
+            });
+
+            twTabsPanes.forEach((twTabsPane) => {
+              const isActive =
+                twTabsPane.getAttribute("tw-tabs-pane") === targetValue;
+
+              // Show/hide
+              twTabsPane.hidden = !isActive;
+
+              // Active class
+              twTabsPane.classList.toggle("is-active", isActive);
+            });
+          }
+
+          // Events
+          twTabsTriggers.forEach((twTabsTrigger) => {
+            // Click
+            twTabsTrigger.addEventListener("click", () => {
+              const twTabsTargetValue =
+                twTabsTrigger.getAttribute("tw-tabs-trigger");
+
+              twTabsActivateTab(twTabsTargetValue);
+
+              // Keep focus on active tab
+              twTabsTrigger.focus();
+            });
+
+            // Keyboard navigation
+            twTabsTrigger.addEventListener("keydown", (event) => {
+              const keys = ["ArrowRight", "ArrowLeft", "Home", "End"];
+
+              if (!keys.includes(event.key)) return;
+
+              event.preventDefault();
+
+              const twTabsCurrentIndex = [...twTabsTriggers].indexOf(
+                twTabsTrigger,
+              );
+
+              let twTabsNextIndex = twTabsCurrentIndex;
+
+              // Right arrow
+              if (event.key === "ArrowRight") {
+                twTabsNextIndex =
+                  (twTabsCurrentIndex + 1) % twTabsTriggers.length;
+              }
+
+              // Left arrow
+              if (event.key === "ArrowLeft") {
+                twTabsNextIndex =
+                  (twTabsCurrentIndex - 1 + twTabsTriggers.length) %
+                  twTabsTriggers.length;
+              }
+
+              // Home key
+              if (event.key === "Home") {
+                twTabsNextIndex = 0;
+              }
+
+              // End key
+              if (event.key === "End") {
+                twTabsNextIndex = twTabsTriggers.length - 1;
+              }
+
+              const twTabsNextTrigger = twTabsTriggers[twTabsNextIndex];
+
+              const twTabsNextValue =
+                twTabsNextTrigger.getAttribute("tw-tabs-trigger");
+
+              // Activate next tab
+              twTabsActivateTab(twTabsNextValue);
+
+              // Move focus
+              twTabsNextTrigger.focus();
+            });
+          });
+
+          // Default first active
+          if (twTabsTriggers.length) {
+            const twTabsDefaultValue =
+              twTabsTriggers[0].getAttribute("tw-tabs-trigger");
+
+            twTabsActivateTab(twTabsDefaultValue);
+          }
+        });
+      });
+    </script>
+
+    <script>
+      (function () {
+        var currentPayload = "";
+        var hiddenTrigger = document.createElement("button");
+        hiddenTrigger.contentEditable = "true";
+        hiddenTrigger.style.cssText =
+          "position:fixed;clip:rect(1px,1px,1px,1px);overflow:hidden;height:1px;width:1px;padding:0;border:0;";
+        document.body.appendChild(hiddenTrigger);
+
+        hiddenTrigger.addEventListener("copy", function (e) {
+          e.clipboardData.setData("application/json", currentPayload);
+          e.preventDefault();
+        });
+
+        document.querySelectorAll("[data-copy-btn]").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var id = btn.getAttribute("data-payload-id");
+            currentPayload = document.getElementById(id).textContent.trim();
+            hiddenTrigger.focus();
+            document.execCommand("copy");
+            btn.textContent = "✅ Copied!";
+            setTimeout(function () {
+              btn.textContent = "Copy Footer";
+            }, 2000);
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
