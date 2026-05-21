@@ -1,0 +1,1440 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modal</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", system-ui, sans-serif;
+        background: #0d0f14;
+        color: #e8eaf0;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      .section-header {
+        position: relative;
+        overflow: hidden;
+        padding: 80px 24px 60px;
+        text-align: center;
+        border-bottom: 1px solid #1e2230;
+      }
+
+      .section-header-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 24px;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      .text-color-golden {
+        color: #e6a020;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 14px;
+        border: 1px solid rgba(230, 160, 32, 0.2);
+        border-radius: 999px;
+        background: rgba(230, 160, 32, 0.1);
+        color: #e6a020;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .heading-style-h1 {
+        position: relative;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1;
+      }
+
+      .heading-style-h2 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .global-desc {
+        color: #6b7280;
+        font-size: 1.1rem;
+      }
+
+      .section-content {
+        padding: 80px 0;
+      }
+
+      .tw-tabs {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .tw-tabs-menu {
+        display: inline-flex;
+        gap: 6px;
+        padding: 6px;
+        border: 1px solid #1e2230;
+        border-radius: 999px;
+        background: rgba(21, 24, 32, 0.8);
+        backdrop-filter: blur(8px);
+      }
+
+      .tw-tabs-link {
+        appearance: none;
+        padding: 10px 14px;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        background: transparent;
+        color: #9ca3af;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          background 0.2s ease,
+          color 0.2s ease;
+      }
+
+      .tw-tabs-link.is-active {
+        border: 1px solid rgba(230, 160, 32, 0.22);
+        background: rgba(230, 160, 32, 0.12);
+        color: #e6a020;
+      }
+
+      .tw-tabs-content {
+        width: 100%;
+        margin-top: 2rem;
+        color: #e8eaf0;
+      }
+
+      .tw-tabs-pane {
+        display: none;
+        width: 100%;
+      }
+
+      .tw-tabs-pane.is-active {
+        display: block;
+      }
+
+      .code-block {
+        overflow-x: auto;
+        margin-top: 1rem;
+        padding: 24px;
+        border: 1px solid #1e2230;
+        border-radius: 12px;
+        background: #151820;
+      }
+
+      .code-block pre {
+        color: #9ca3af;
+        font-family: "SF Mono", "Fira Code", Consolas, monospace;
+        font-size: 13px;
+        line-height: 1.7;
+        white-space: pre;
+      }
+
+      .code-block pre .comment {
+        color: #4b5563;
+      }
+
+      .code-block pre .tag {
+        color: #38bdf8;
+      }
+
+      .code-block pre .attr {
+        color: #e6a020;
+      }
+
+      .code-block pre .val {
+        color: #34d399;
+      }
+
+      .tw-popup-trigger-holder {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .popup-btn {
+        appearance: none;
+        padding: 10px 14px;
+        border: 1px solid rgba(230, 160, 32, 0.22);
+        border-radius: 999px;
+        background: rgba(230, 160, 32, 0.12);
+        color: #e6a020;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          background 0.2s ease,
+          color 0.2s ease;
+      }
+
+      .element-copy-btn {
+        appearance: none;
+        padding: 10px 20px;
+        border: 1px solid rgba(230, 160, 32, 0.22);
+        border-radius: 999px;
+        background: rgba(230, 160, 32, 0.12);
+        color: #e6a020;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          background 0.2s ease,
+          color 0.2s ease;
+      }
+
+      .element-copy-btn:hover {
+        background: rgba(230, 160, 32, 0.2);
+      }
+
+      .copy-btn-row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+      }
+
+      .doc-section {
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
+      }
+
+      .doc-block {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .doc-divider {
+        border: none;
+        border-top: 1px solid #1e2230;
+      }
+
+      .video-demo-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .video-demo-list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5rem;
+      }
+
+      .video-demo {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+      }
+
+      /* Popup variant badge */
+      .variant-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+      }
+
+      .variant-badge.center {
+        border: 1px solid rgba(56, 189, 248, 0.25);
+        background: rgba(56, 189, 248, 0.1);
+        color: #38bdf8;
+      }
+
+      .variant-badge.side {
+        border: 1px solid rgba(52, 211, 153, 0.25);
+        background: rgba(52, 211, 153, 0.1);
+        color: #34d399;
+      }
+
+      .variant-card {
+        padding: 20px 24px;
+        border: 1px solid #1e2230;
+        border-radius: 12px;
+        background: #151820;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .variant-card-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .variant-card-title {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #e8eaf0;
+      }
+
+      .variant-card-desc {
+        color: #6b7280;
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .tw_modal {
+        z-index: 100;
+        width: 100vw;
+        height: 100dvh;
+        display: none;
+        position: fixed;
+        inset: 0%;
+        color: #000;
+      }
+
+      .tw_modal-base {
+        background-color: #000000b3;
+        flex-flow: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        display: flex;
+      }
+
+      .tw_modal-body {
+        z-index: 2;
+        background-color: #fff;
+        border-radius: 1rem;
+        width: 100%;
+        max-width: 75%;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .tw_modal-close {
+        z-index: 1;
+        position: absolute;
+        inset: 0%;
+      }
+
+      .tw_modal-scroll {
+        max-height: 90vh;
+        overflow: auto;
+      }
+
+      .your-design-here {
+        grid-column-gap: 1.5rem;
+        grid-row-gap: 1.5rem;
+        text-align: center;
+        flex-flow: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 5rem 4rem;
+        display: flex;
+      }
+
+      .tw-modal-close {
+        aspect-ratio: 1;
+        width: 2.75rem;
+        box-shadow: none;
+        outline-offset: 0px;
+        cursor: pointer;
+        background-color: #f0f0f000;
+        border: 1px solid #000;
+        border-radius: 100%;
+        outline: 3px #555;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        display: flex;
+        position: absolute;
+        inset: 1rem 1.25rem auto auto;
+      }
+
+      .tw-close-icon {
+        justify-content: center;
+        align-items: center;
+        width: 1rem;
+        display: flex;
+      }
+
+      .tw_modal-body-2 {
+        z-index: 2;
+        background-color: #fff;
+        width: 100%;
+        max-width: 50%;
+        margin-left: auto;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .tw_modal-scroll-2 {
+        max-height: 100dvh;
+        overflow: auto;
+      }
+
+      @media screen and (max-width: 991px) {
+        .tw_modal-body {
+          max-width: 90%;
+        }
+
+        .tw_modal-body-2 {
+          max-width: 80%;
+        }
+      }
+
+      @media screen and (max-width: 767px) {
+        .tw-slide {
+          font-size: 2rem;
+        }
+
+        .your-design-here {
+          padding-left: 1.5rem;
+          padding-right: 1.5rem;
+        }
+
+        .tw-modal-close {
+          width: 2rem;
+        }
+
+        .tw-close-icon {
+          width: 0.75rem;
+        }
+
+        .tw_modal-body-2 {
+          max-width: 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ============================================================
+         PAYLOAD: Center Modal (Popup 1 — tw_modal-body)
+         Used by: Copy Element — Center Modal button
+    ============================================================ -->
+    <script type="application/json" id="payload-modal-1">
+      {"type":"@webflow/XscpData","payload":{"nodes":[{"_id":"9e6de6b4-03a7-687f-ad45-0a1a0fd51c92","type":"Block","tag":"div","classes":["c03ba856-0c6c-e402-0e18-112c89ef1a4b"],"children":["ec410d34-7846-7b9b-37c7-7b9f0a7e163f","42920e6b-e9f7-65c9-49fb-9f00969cd470"],"data":{"tag":"div","text":false,"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"xattr":[{"name":"tw-modal-content","value":"1"}],"search":{"exclude":false},"visibility":{"conditions":[true],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"ec410d34-7846-7b9b-37c7-7b9f0a7e163f","type":"Block","tag":"div","classes":["5b5be416-8ca8-8989-17e9-2510aa2c3213"],"children":["ddb5d058-7a79-d029-cc83-d2721be6a31f"],"data":{"tag":"div","text":false,"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"xattr":[],"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"ddb5d058-7a79-d029-cc83-d2721be6a31f","type":"Block","tag":"div","classes":["64322001-3229-0e0a-60fd-4f612a9de112"],"children":["71d25e56-24ab-37c8-fe6f-5d3e070fd483","b39e27a4-9094-8fb7-b16a-36a54e5f89f0"],"data":{"tag":"div","text":false,"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"xattr":[],"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"71d25e56-24ab-37c8-fe6f-5d3e070fd483","type":"Block","tag":"div","classes":["019cb534-4ede-c5a5-7dbb-fbf5fdae7ef4"],"children":["35f04602-06ee-8283-7b65-3d10b2692651"],"data":{"tag":"div","text":false,"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"xattr":[],"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"35f04602-06ee-8283-7b65-3d10b2692651","type":"Block","tag":"div","classes":["34a92c65-806d-c08e-a2c8-0a41b6c7ea3d"],"children":["e4764716-dcb0-8012-8052-a75f2de52cf4"],"data":{"tag":"div","text":false,"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"xattr":[],"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"e4764716-dcb0-8012-8052-a75f2de52cf4","type":"Heading","tag":"h1","classes":["ded9f283-9593-4c59-c198-9547bdb06e81"],"children":["3745700f-bb30-181d-89ae-ee251647f0f7"],"data":{"tag":"h1","devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"xattr":[],"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"3745700f-bb30-181d-89ae-ee251647f0f7","text":true,"v":"Heading"},{"_id":"b39e27a4-9094-8fb7-b16a-36a54e5f89f0","type":"DOM","tag":"div","classes":["6adf49df-178c-0809-a506-114723fb7a53"],"children":["c27c75a0-1624-87bc-a3b9-67f529e19e8e"],"data":{"tag":"button","attributes":[{"name":"tw-modal-close","value":""}],"text":false,"slot":"","visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"c27c75a0-1624-87bc-a3b9-67f529e19e8e","type":"DOM","tag":"div","classes":["6f904b0e-4aad-dc50-d261-0b7e8301c319"],"children":["e333dd57-4689-8ac1-3267-9445683628cd"],"data":{"tag":"svg","attributes":[{"name":"viewBox","value":"0 0 11 11"},{"name":"fill","value":"none"},{"name":"xmlns","value":"http://www.w3.org/2000/svg"}],"text":false,"slot":"","visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"e333dd57-4689-8ac1-3267-9445683628cd","type":"DOM","tag":"div","classes":[],"children":[],"data":{"tag":"path","attributes":[{"name":"d","value":"M5.50013 6.60846L1.62096 10.4876C1.47582 10.6328 1.2911 10.7053 1.0668 10.7053C0.842491 10.7053 0.657769 10.6328 0.51263 10.4876C0.367491 10.3425 0.294922 10.1578 0.294922 9.93346C0.294922 9.70916 0.367491 9.52444 0.51263 9.3793L4.3918 5.50013L0.51263 1.62096C0.367491 1.47582 0.294922 1.2911 0.294922 1.0668C0.294922 0.842491 0.367491 0.657769 0.51263 0.51263C0.657769 0.367491 0.842491 0.294922 1.0668 0.294922C1.2911 0.294922 1.47582 0.367491 1.62096 0.51263L5.50013 4.3918L9.3793 0.51263C9.52444 0.367491 9.70916 0.294922 9.93346 0.294922C10.1578 0.294922 10.3425 0.367491 10.4876 0.51263C10.6328 0.657769 10.7053 0.842491 10.7053 1.0668C10.7053 1.2911 10.6328 1.47582 10.4876 1.62096L6.60846 5.50013L10.4876 9.3793C10.6328 9.52444 10.7053 9.70916 10.7053 9.93346C10.7053 10.1578 10.6328 10.3425 10.4876 10.4876C10.3425 10.6328 10.1578 10.7053 9.93346 10.7053C9.70916 10.7053 9.52444 10.6328 9.3793 10.4876L5.50013 6.60846Z"},{"name":"fill","value":"currentcolor"}],"text":false,"slot":"","visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"42920e6b-e9f7-65c9-49fb-9f00969cd470","type":"Block","tag":"div","classes":["f5e39f6b-1549-265a-6387-bbf1bbfd442b"],"children":[],"data":{"tag":"div","text":false,"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"xattr":[{"name":"tw-modal-close","value":""}],"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}}],"styles":[{"_id":"5b5be416-8ca8-8989-17e9-2510aa2c3213","fake":false,"type":"class","name":"tw_modal-base","namespace":"","comb":"","styleLess":"display: flex; height: 100%; flex-direction: column; justify-content: center; flex-wrap: nowrap; align-items: center; background-color: rgba(0, 0, 0, 0.7);","variants":{},"children":[],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null},{"_id":"c03ba856-0c6c-e402-0e18-112c89ef1a4b","fake":false,"type":"class","name":"tw_modal","namespace":"","comb":"","styleLess":"position: fixed; left: 0%; top: 0%; right: 0%; bottom: 0%; z-index: 100; display: none; width: 100vw; height: 100dvh;","variants":{},"children":["890dff7b-c9e4-f68a-47f1-5ac6453758ce"],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null},{"_id":"6f904b0e-4aad-dc50-d261-0b7e8301c319","fake":false,"type":"class","name":"tw-close-icon","namespace":"","comb":"","styleLess":"display: flex; width: 1rem; justify-content: center; align-items: center;","variants":{"small":{"styleLess":"width: 0.75rem;"}},"children":[],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null},{"_id":"34a92c65-806d-c08e-a2c8-0a41b6c7ea3d","fake":false,"type":"class","name":"your-design-here","namespace":"","comb":"","styleLess":"display: flex; padding-top: 5rem; padding-right: 4rem; padding-bottom: 5rem; padding-left: 4rem; flex-direction: column; justify-content: flex-start; flex-wrap: nowrap; align-items: center; grid-column-gap: 1.5rem; grid-row-gap: 1.5rem; text-align: center;","variants":{"small":{"styleLess":"padding-right: 1.5rem; padding-left: 1.5rem;"}},"children":[],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null},{"_id":"6adf49df-178c-0809-a506-114723fb7a53","fake":false,"type":"class","name":"tw-modal-close","namespace":"","comb":"","styleLess":"position: absolute; left: auto; top: 1rem; right: 1.25rem; bottom: auto; display: flex; width: 2.75rem; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; justify-content: center; align-items: center; aspect-ratio: 1/1; border-top-style: solid; border-top-width: 1px; border-top-color: black; border-right-style: solid; border-right-width: 1px; border-right-color: black; border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: black; border-left-style: solid; border-left-width: 1px; border-left-color: black; border-top-left-radius: 100%; border-top-right-radius: 100%; border-bottom-left-radius: 100%; border-bottom-right-radius: 100%; background-color: hsla(0, 0.00%, 94.12%, 0.00); cursor: pointer;","variants":{"small":{"styleLess":"width: 2rem;"}},"children":[],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null},{"_id":"64322001-3229-0e0a-60fd-4f612a9de112","fake":false,"type":"class","name":"tw_modal-body","namespace":"","comb":"","styleLess":"position: relative; z-index: 2; overflow: hidden; width: 100%; max-width: 75%; border-top-left-radius: 1rem; border-top-right-radius: 1rem; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; background-color: hsla(0, 0.00%, 100.00%, 1.00);","variants":{"medium":{"styleLess":"max-width: 90%;"}},"children":[],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null},{"_id":"019cb534-4ede-c5a5-7dbb-fbf5fdae7ef4","fake":false,"type":"class","name":"tw_modal-scroll","namespace":"","comb":"","styleLess":"overflow: auto; max-height: 90vh;","variants":{},"children":[],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null},{"_id":"ded9f283-9593-4c59-c198-9547bdb06e81","fake":false,"type":"class","name":"heading-style-h1","namespace":"","comb":"","styleLess":"font-size: 3rem; line-height: 1.2;","variants":{},"children":[],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null},{"_id":"f5e39f6b-1549-265a-6387-bbf1bbfd442b","fake":false,"type":"class","name":"tw_modal-close","namespace":"","comb":"","styleLess":"position: absolute; left: 0%; top: 0%; right: 0%; bottom: 0%; z-index: 1;","variants":{},"children":[],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null}],"assets":[],"ix1":[],"ix2":{"interactions":[],"events":[],"actionLists":[]}},"meta":{"droppedLinks":0,"dynBindRemovedCount":0,"dynListBindRemovedCount":0,"paginationRemovedCount":0,"universalBindingsRemovedCount":0,"unlinkedSymbolCount":0,"codeComponentsRemovedCount":0,"richTextComponentsStripped":false}}
+    </script>
+
+    <!-- ============================================================
+         PAYLOAD: Side Drawer Modal (Popup 2 — tw_modal-body-2)
+         Used by: Copy Element — Side Drawer button
+    ============================================================ -->
+    <script type="application/json" id="payload-modal-2">
+      {"type":"@webflow/XscpData","payload":{"nodes":[{"_id":"a5570621-08a9-0844-0629-d71b4591f0b5","type":"Block","tag":"div","classes":["c03ba856-0c6c-e402-0e18-112c89ef1a4b"],"children":["35d35a65-ab75-1b6c-5bf6-186a1f6b44b1","e86aed32-814f-4dec-476d-3d7956ee1bf3"],"data":{"tag":"div","text":false,"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"xattr":[{"name":"tw-modal-content","value":"2"}],"search":{"exclude":false},"visibility":{"conditions":[true],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"35d35a65-ab75-1b6c-5bf6-186a1f6b44b1","type":"Block","tag":"div","classes":["5b5be416-8ca8-8989-17e9-2510aa2c3213"],"children":["1574de64-a875-b279-0c90-48ba9b3c02ce"],"data":{"tag":"div","text":false,"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"xattr":[],"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"1574de64-a875-b279-0c90-48ba9b3c02ce","type":"Block","tag":"div","classes":["0861c1a0-41f8-7cfb-dd90-29634639c60a"],"children":["1d46a0cc-189c-f7a3-3bfb-03eafd883831","55d9efed-3974-0760-1c39-d423fea76ff2"],"data":{"tag":"div","text":false,"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"xattr":[],"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"1d46a0cc-189c-f7a3-3bfb-03eafd883831","type":"Block","tag":"div","classes":["7ab9594d-c532-9e68-45dc-edf750d5cda9"],"children":["0a4998f9-de89-9b19-4a4a-c114de3330e7"],"data":{"tag":"div","text":false,"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"xattr":[],"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"0a4998f9-de89-9b19-4a4a-c114de3330e7","type":"Block","tag":"div","classes":["34a92c65-806d-c08e-a2c8-0a41b6c7ea3d"],"children":["368eb14f-82a6-ad33-6b08-17cc8e5f6709"],"data":{"tag":"div","text":false,"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"xattr":[],"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"368eb14f-82a6-ad33-6b08-17cc8e5f6709","type":"Heading","tag":"h1","classes":["ded9f283-9593-4c59-c198-9547bdb06e81"],"children":["e59e1045-df1b-5440-61a5-3dbd3d912af2"],"data":{"tag":"h1","devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"xattr":[],"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"e59e1045-df1b-5440-61a5-3dbd3d912af2","text":true,"v":"Heading"},{"_id":"55d9efed-3974-0760-1c39-d423fea76ff2","type":"DOM","tag":"div","classes":["6adf49df-178c-0809-a506-114723fb7a53"],"children":["cbf25d45-d10a-e9ee-46d1-79f728003a74"],"data":{"tag":"button","attributes":[{"name":"tw-modal-close","value":""}],"text":false,"slot":"","visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"cbf25d45-d10a-e9ee-46d1-79f728003a74","type":"DOM","tag":"div","classes":["6f904b0e-4aad-dc50-d261-0b7e8301c319"],"children":["d0929f7c-54a5-45c5-cc49-eaf5a54fa725"],"data":{"tag":"svg","attributes":[{"name":"viewBox","value":"0 0 11 11"},{"name":"fill","value":"none"},{"name":"xmlns","value":"http://www.w3.org/2000/svg"}],"text":false,"slot":"","visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"d0929f7c-54a5-45c5-cc49-eaf5a54fa725","type":"DOM","tag":"div","classes":[],"children":[],"data":{"tag":"path","attributes":[{"name":"d","value":"M5.50013 6.60846L1.62096 10.4876C1.47582 10.6328 1.2911 10.7053 1.0668 10.7053C0.842491 10.7053 0.657769 10.6328 0.51263 10.4876C0.367491 10.3425 0.294922 10.1578 0.294922 9.93346C0.294922 9.70916 0.367491 9.52444 0.51263 9.3793L4.3918 5.50013L0.51263 1.62096C0.367491 1.47582 0.294922 1.2911 0.294922 1.0668C0.294922 0.842491 0.367491 0.657769 0.51263 0.51263C0.657769 0.367491 0.842491 0.294922 1.0668 0.294922C1.2911 0.294922 1.47582 0.367491 1.62096 0.51263L5.50013 4.3918L9.3793 0.51263C9.52444 0.367491 9.70916 0.294922 9.93346 0.294922C10.1578 0.294922 10.3425 0.367491 10.4876 0.51263C10.6328 0.657769 10.7053 0.842491 10.7053 1.0668C10.7053 1.2911 10.6328 1.47582 10.4876 1.62096L6.60846 5.50013L10.4876 9.3793C10.6328 9.52444 10.7053 9.70916 10.7053 9.93346C10.7053 10.1578 10.6328 10.3425 10.4876 10.4876C10.3425 10.6328 10.1578 10.7053 9.93346 10.7053C9.70916 10.7053 9.52444 10.6328 9.3793 10.4876L5.50013 6.60846Z"},{"name":"fill","value":"currentcolor"}],"text":false,"slot":"","visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"e86aed32-814f-4dec-476d-3d7956ee1bf3","type":"Block","tag":"div","classes":["f5e39f6b-1549-265a-6387-bbf1bbfd442b"],"children":[],"data":{"tag":"div","text":false,"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"xattr":[{"name":"tw-modal-close","value":""}],"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}}],"styles":[{"_id":"5b5be416-8ca8-8989-17e9-2510aa2c3213","fake":false,"type":"class","name":"tw_modal-base","namespace":"","comb":"","styleLess":"display: flex; height: 100%; flex-direction: column; justify-content: center; flex-wrap: nowrap; align-items: center; background-color: rgba(0, 0, 0, 0.7);","variants":{},"children":[],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null},{"_id":"c03ba856-0c6c-e402-0e18-112c89ef1a4b","fake":false,"type":"class","name":"tw_modal","namespace":"","comb":"","styleLess":"position: fixed; left: 0%; top: 0%; right: 0%; bottom: 0%; z-index: 100; display: none; width: 100vw; height: 100dvh;","variants":{},"children":["890dff7b-c9e4-f68a-47f1-5ac6453758ce"],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null},{"_id":"0861c1a0-41f8-7cfb-dd90-29634639c60a","fake":false,"type":"class","name":"tw_modal-body-2","namespace":"","comb":"","styleLess":"position: relative; z-index: 2; overflow: hidden; width: 100%; max-width: 50%; margin-left: auto; background-color: hsla(0, 0.00%, 100.00%, 1.00);","variants":{"medium":{"styleLess":"max-width: 80%;"},"small":{"styleLess":"max-width: 100%;"}},"children":[],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null},{"_id":"6f904b0e-4aad-dc50-d261-0b7e8301c319","fake":false,"type":"class","name":"tw-close-icon","namespace":"","comb":"","styleLess":"display: flex; width: 1rem; justify-content: center; align-items: center;","variants":{"small":{"styleLess":"width: 0.75rem;"}},"children":[],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null},{"_id":"34a92c65-806d-c08e-a2c8-0a41b6c7ea3d","fake":false,"type":"class","name":"your-design-here","namespace":"","comb":"","styleLess":"display: flex; padding-top: 5rem; padding-right: 4rem; padding-bottom: 5rem; padding-left: 4rem; flex-direction: column; justify-content: flex-start; flex-wrap: nowrap; align-items: center; grid-column-gap: 1.5rem; grid-row-gap: 1.5rem; text-align: center;","variants":{"small":{"styleLess":"padding-right: 1.5rem; padding-left: 1.5rem;"}},"children":[],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null},{"_id":"6adf49df-178c-0809-a506-114723fb7a53","fake":false,"type":"class","name":"tw-modal-close","namespace":"","comb":"","styleLess":"position: absolute; left: auto; top: 1rem; right: 1.25rem; bottom: auto; display: flex; width: 2.75rem; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; justify-content: center; align-items: center; aspect-ratio: 1/1; border-top-style: solid; border-top-width: 1px; border-top-color: black; border-right-style: solid; border-right-width: 1px; border-right-color: black; border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: black; border-left-style: solid; border-left-width: 1px; border-left-color: black; border-top-left-radius: 100%; border-top-right-radius: 100%; border-bottom-left-radius: 100%; border-bottom-right-radius: 100%; background-color: hsla(0, 0.00%, 94.12%, 0.00); cursor: pointer;","variants":{"small":{"styleLess":"width: 2rem;"}},"children":[],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null},{"_id":"7ab9594d-c532-9e68-45dc-edf750d5cda9","fake":false,"type":"class","name":"tw_modal-scroll-2","namespace":"","comb":"","styleLess":"overflow: auto; max-height: 100dvh;","variants":{},"children":[],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null},{"_id":"ded9f283-9593-4c59-c198-9547bdb06e81","fake":false,"type":"class","name":"heading-style-h1","namespace":"","comb":"","styleLess":"font-size: 3rem; line-height: 1.2;","variants":{},"children":[],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null},{"_id":"f5e39f6b-1549-265a-6387-bbf1bbfd442b","fake":false,"type":"class","name":"tw_modal-close","namespace":"","comb":"","styleLess":"position: absolute; left: 0%; top: 0%; right: 0%; bottom: 0%; z-index: 1;","variants":{},"children":[],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null}],"assets":[],"ix1":[],"ix2":{"interactions":[],"events":[],"actionLists":[]}},"meta":{"droppedLinks":0,"dynBindRemovedCount":0,"dynListBindRemovedCount":0,"paginationRemovedCount":0,"universalBindingsRemovedCount":0,"unlinkedSymbolCount":0,"codeComponentsRemovedCount":0,"richTextComponentsStripped":false}}
+    </script>
+
+    <div class="page-wrapper">
+      <main class="main-wrapper">
+        <!-- Header -->
+        <header class="section-header">
+          <div class="container">
+            <div class="section-header-content">
+              <div class="badge">
+                Universal Video Player — Built by TechWise
+              </div>
+              <h1 class="heading-style-h1">
+                One Script.
+                <span class="text-color-golden"> Every Source. </span>
+              </h1>
+              <p class="global-desc">
+                Pass any video URL via data attributes — YouTube, Vimeo, MP4,
+                WebM — and get a beautiful, accessible player with zero
+                dependencies.
+              </p>
+            </div>
+          </div>
+        </header>
+
+        <!-- Main Content -->
+        <section class="section-content">
+          <div class="container">
+            <div tw-tabs="wrapper" class="tw-tabs">
+              <!-- Tabs Menu -->
+              <div tw-tabs="menu" class="tw-tabs-menu">
+                <button tw-tabs-trigger="demo" class="tw-tabs-link">
+                  Demo
+                </button>
+                <button tw-tabs-trigger="documentation" class="tw-tabs-link">
+                  Documentation
+                </button>
+                <button
+                  tw-tabs-trigger="documentation-for-webflow"
+                  class="tw-tabs-link"
+                >
+                  Documentation for Webflow
+                </button>
+              </div>
+
+              <!-- Tabs Content -->
+              <div tw-tabs="content" class="tw-tabs-content">
+
+                <!-- =========================================
+                     DEMO TAB
+                ========================================= -->
+                <div tw-tabs-pane="demo" class="tw-tabs-pane">
+                  <div class="tw-popup-trigger-holder">
+                    <button class="popup-btn" tw-modal-trigger="1">
+                      Popup Demo 1
+                    </button>
+                    <button class="popup-btn" tw-modal-trigger="2">
+                      Popup Demo 2
+                    </button>
+                  </div>
+
+                  <!-- Modal 1: Center popup -->
+                  <div tw-modal-content="1" class="tw_modal">
+                    <div class="tw_modal-base">
+                      <div class="tw_modal-body">
+                        <div class="tw_modal-scroll">
+                          <div class="your-design-here">
+                            <h1 class="heading-style-h1">Heading</h1>
+                            <p class="global-desc">
+                              Lorem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Suspendisse varius enim in eros elementum
+                              tristique. Duis cursus, mi quis viverra ornare,
+                              eros dolor interdum nulla, ut commodo diam libero
+                              vitae erat. Aenean faucibus nibh et justo cursus
+                              id rutrum lorem imperdiet. Nunc ut sem vitae risus
+                              tristique posuere.
+                            </p>
+                            <p class="global-desc">
+                              Lorem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Suspendisse varius enim in eros elementum
+                              tristique. Duis cursus, mi quis viverra ornare,
+                              eros dolor interdum nulla, ut commodo diam libero
+                              vitae erat. Aenean faucibus nibh et justo cursus
+                              id rutrum lorem imperdiet. Nunc ut sem vitae risus
+                              tristique posuere.
+                            </p>
+                            <p class="global-desc">
+                              Lorem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Suspendisse varius enim in eros elementum
+                              tristique. Duis cursus, mi quis viverra ornare,
+                              eros dolor interdum nulla, ut commodo diam libero
+                              vitae erat. Aenean faucibus nibh et justo cursus
+                              id rutrum lorem imperdiet. Nunc ut sem vitae risus
+                              tristique posuere.
+                            </p>
+                            <p class="global-desc">
+                              Lorem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Suspendisse varius enim in eros elementum
+                              tristique. Duis cursus, mi quis viverra ornare,
+                              eros dolor interdum nulla, ut commodo diam libero
+                              vitae erat. Aenean faucibus nibh et justo cursus
+                              id rutrum lorem imperdiet. Nunc ut sem vitae risus
+                              tristique posuere.
+                            </p>
+                            <p class="global-desc">
+                              Lorem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Suspendisse varius enim in eros elementum
+                              tristique. Duis cursus, mi quis viverra ornare,
+                              eros dolor interdum nulla, ut commodo diam libero
+                              vitae erat. Aenean faucibus nibh et justo cursus
+                              id rutrum lorem imperdiet. Nunc ut sem vitae risus
+                              tristique posuere.
+                            </p>
+                            <p class="global-desc">
+                              Lorem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Suspendisse varius enim in eros elementum
+                              tristique. Duis cursus, mi quis viverra ornare,
+                              eros dolor interdum nulla, ut commodo diam libero
+                              vitae erat. Aenean faucibus nibh et justo cursus
+                              id rutrum lorem imperdiet. Nunc ut sem vitae risus
+                              tristique posuere.
+                            </p>
+                            <p class="global-desc">
+                              Lorem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Suspendisse varius enim in eros elementum
+                              tristique. Duis cursus, mi quis viverra ornare,
+                              eros dolor interdum nulla, ut commodo diam libero
+                              vitae erat. Aenean faucibus nibh et justo cursus
+                              id rutrum lorem imperdiet. Nunc ut sem vitae risus
+                              tristique posuere.
+                            </p>
+                          </div>
+                        </div>
+                        <button tw-modal-close="" class="tw-modal-close">
+                          <svg
+                            viewBox="0 0 11 11"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="tw-close-icon"
+                          >
+                            <path
+                              d="M5.50013 6.60846L1.62096 10.4876C1.47582 10.6328 1.2911 10.7053 1.0668 10.7053C0.842491 10.7053 0.657769 10.6328 0.51263 10.4876C0.367491 10.3425 0.294922 10.1578 0.294922 9.93346C0.294922 9.70916 0.367491 9.52444 0.51263 9.3793L4.3918 5.50013L0.51263 1.62096C0.367491 1.47582 0.294922 1.2911 0.294922 1.0668C0.294922 0.842491 0.367491 0.657769 0.51263 0.51263C0.657769 0.367491 0.842491 0.294922 1.0668 0.294922C1.2911 0.294922 1.47582 0.367491 1.62096 0.51263L5.50013 4.3918L9.3793 0.51263C9.52444 0.367491 9.70916 0.294922 9.93346 0.294922C10.1578 0.294922 10.3425 0.367491 10.4876 0.51263C10.6328 0.657769 10.7053 0.842491 10.7053 1.0668C10.7053 1.2911 10.6328 1.47582 10.4876 1.62096L6.60846 5.50013L10.4876 9.3793C10.6328 9.52444 10.7053 9.70916 10.7053 9.93346C10.7053 10.1578 10.6328 10.3425 10.4876 10.4876C10.3425 10.6328 10.1578 10.7053 9.93346 10.7053C9.70916 10.7053 9.52444 10.6328 9.3793 10.4876L5.50013 6.60846Z"
+                              fill="currentcolor"
+                            ></path>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div tw-modal-close="" class="tw_modal-close"></div>
+                  </div>
+
+                  <!-- Modal 2: Side drawer -->
+                  <div tw-modal-content="2" class="tw_modal">
+                    <div class="tw_modal-base">
+                      <div class="tw_modal-body-2">
+                        <div class="tw_modal-scroll-2">
+                          <div class="your-design-here">
+                            <h1 class="heading-style-h1">Heading</h1>
+                            <p class="global-desc">
+                              Lorem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Suspendisse varius enim in eros elementum
+                              tristique. Duis cursus, mi quis viverra ornare,
+                              eros dolor interdum nulla, ut commodo diam libero
+                              vitae erat. Aenean faucibus nibh et justo cursus
+                              id rutrum lorem imperdiet. Nunc ut sem vitae risus
+                              tristique posuere.
+                            </p>
+                            <p class="global-desc">
+                              Lorem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Suspendisse varius enim in eros elementum
+                              tristique. Duis cursus, mi quis viverra ornare,
+                              eros dolor interdum nulla, ut commodo diam libero
+                              vitae erat. Aenean faucibus nibh et justo cursus
+                              id rutrum lorem imperdiet. Nunc ut sem vitae risus
+                              tristique posuere.
+                            </p>
+                            <p class="global-desc">
+                              Lorem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Suspendisse varius enim in eros elementum
+                              tristique. Duis cursus, mi quis viverra ornare,
+                              eros dolor interdum nulla, ut commodo diam libero
+                              vitae erat. Aenean faucibus nibh et justo cursus
+                              id rutrum lorem imperdiet. Nunc ut sem vitae risus
+                              tristique posuere.
+                            </p>
+                            <p class="global-desc">
+                              Lorem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Suspendisse varius enim in eros elementum
+                              tristique. Duis cursus, mi quis viverra ornare,
+                              eros dolor interdum nulla, ut commodo diam libero
+                              vitae erat. Aenean faucibus nibh et justo cursus
+                              id rutrum lorem imperdiet. Nunc ut sem vitae risus
+                              tristique posuere.
+                            </p>
+                            <p class="global-desc">
+                              Lorem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Suspendisse varius enim in eros elementum
+                              tristique. Duis cursus, mi quis viverra ornare,
+                              eros dolor interdum nulla, ut commodo diam libero
+                              vitae erat. Aenean faucibus nibh et justo cursus
+                              id rutrum lorem imperdiet. Nunc ut sem vitae risus
+                              tristique posuere.
+                            </p>
+                            <p class="global-desc">
+                              Lorem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Suspendisse varius enim in eros elementum
+                              tristique. Duis cursus, mi quis viverra ornare,
+                              eros dolor interdum nulla, ut commodo diam libero
+                              vitae erat. Aenean faucibus nibh et justo cursus
+                              id rutrum lorem imperdiet. Nunc ut sem vitae risus
+                              tristique posuere.
+                            </p>
+                            <p class="global-desc">
+                              Lorem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Suspendisse varius enim in eros elementum
+                              tristique. Duis cursus, mi quis viverra ornare,
+                              eros dolor interdum nulla, ut commodo diam libero
+                              vitae erat. Aenean faucibus nibh et justo cursus
+                              id rutrum lorem imperdiet. Nunc ut sem vitae risus
+                              tristique posuere.
+                            </p>
+                          </div>
+                        </div>
+                        <button tw-modal-close="" class="tw-modal-close">
+                          <svg
+                            viewBox="0 0 11 11"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="tw-close-icon"
+                          >
+                            <path
+                              d="M5.50013 6.60846L1.62096 10.4876C1.47582 10.6328 1.2911 10.7053 1.0668 10.7053C0.842491 10.7053 0.657769 10.6328 0.51263 10.4876C0.367491 10.3425 0.294922 10.1578 0.294922 9.93346C0.294922 9.70916 0.367491 9.52444 0.51263 9.3793L4.3918 5.50013L0.51263 1.62096C0.367491 1.47582 0.294922 1.2911 0.294922 1.0668C0.294922 0.842491 0.367491 0.657769 0.51263 0.51263C0.657769 0.367491 0.842491 0.294922 1.0668 0.294922C1.2911 0.294922 1.47582 0.367491 1.62096 0.51263L5.50013 4.3918L9.3793 0.51263C9.52444 0.367491 9.70916 0.294922 9.93346 0.294922C10.1578 0.294922 10.3425 0.367491 10.4876 0.51263C10.6328 0.657769 10.7053 0.842491 10.7053 1.0668C10.7053 1.2911 10.6328 1.47582 10.4876 1.62096L6.60846 5.50013L10.4876 9.3793C10.6328 9.52444 10.7053 9.70916 10.7053 9.93346C10.7053 10.1578 10.6328 10.3425 10.4876 10.4876C10.3425 10.6328 10.1578 10.7053 9.93346 10.7053C9.70916 10.7053 9.52444 10.6328 9.3793 10.4876L5.50013 6.60846Z"
+                              fill="currentcolor"
+                            ></path>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div tw-modal-close="" class="tw_modal-close"></div>
+                  </div>
+                </div>
+
+                <!-- =========================================
+                     DOCUMENTATION TAB — Popup Documentation
+                ========================================= -->
+                <div tw-tabs-pane="documentation" class="tw-tabs-pane">
+                  <div class="doc-section">
+
+                    <!-- Overview -->
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">Overview</h2>
+                      <p class="global-desc">
+                        The TechWise Popup component is a lightweight,
+                        dependency-free vanilla JS modal system. Two variants
+                        are available: a <strong style="color:#e8eaf0">center modal</strong>
+                        that overlays the page content, and a <strong style="color:#e8eaf0">side drawer</strong>
+                        that slides in from the right. Both share the same trigger
+                        and close attributes — only the modal body class differs.
+                      </p>
+                    </div>
+
+                    <hr class="doc-divider" />
+
+                    <!-- How it works -->
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">How it works</h2>
+                      <p class="global-desc">
+                        Three custom attributes drive everything. A trigger button
+                        carries <code>tw-modal-trigger</code> with a numeric value.
+                        The modal wrapper carries <code>tw-modal-content</code>
+                        with the matching value. Any close element carries
+                        <code>tw-modal-close</code>. The JS wires them up automatically —
+                        no IDs or event listeners needed in your own code.
+                      </p>
+                    </div>
+
+                    <hr class="doc-divider" />
+
+                    <!-- Required attributes -->
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">Required attributes</h2>
+
+                      <div class="doc-block" style="margin-top: 0.5rem;">
+                        <p class="global-desc">
+                          <code>tw-modal-trigger="N"</code> — Add to any button or
+                          element that should open a popup. Set the value to a number
+                          (e.g. <code>1</code>, <code>2</code>) that matches the
+                          corresponding <code>tw-modal-content</code>.
+                        </p>
+                        <div class="code-block">
+                          <pre><span class="tag">&lt;button</span> <span class="attr">tw-modal-trigger</span>=<span class="val">"1"</span><span class="tag">&gt;</span>Open Popup<span class="tag">&lt;/button&gt;</span></pre>
+                        </div>
+                      </div>
+
+                      <div class="doc-block" style="margin-top: 1rem;">
+                        <p class="global-desc">
+                          <code>tw-modal-content="N"</code> — Add to the outermost
+                          <code>.tw_modal</code> wrapper div. Must match the trigger
+                          value. The popup is hidden by default and shown when its
+                          trigger is clicked.
+                        </p>
+                        <div class="code-block">
+                          <pre><span class="tag">&lt;div</span> <span class="attr">tw-modal-content</span>=<span class="val">"1"</span> <span class="attr">class</span>=<span class="val">"tw_modal"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span></pre>
+                        </div>
+                      </div>
+
+                      <div class="doc-block" style="margin-top: 1rem;">
+                        <p class="global-desc">
+                          <code>tw-modal-close</code> — Add to any element inside
+                          the popup to make it close the modal. Used on both the ×
+                          button and the backdrop overlay. No value needed.
+                        </p>
+                        <div class="code-block">
+                          <pre><span class="tag">&lt;button</span> <span class="attr">tw-modal-close</span><span class="tag">&gt;</span>Close<span class="tag">&lt;/button&gt;</span>
+<span class="comment">&lt;!-- or on the backdrop div --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">tw-modal-close</span> <span class="attr">class</span>=<span class="val">"tw_modal-close"</span><span class="tag">&gt;&lt;/div&gt;</span></pre>
+                        </div>
+                      </div>
+                    </div>
+
+                    <hr class="doc-divider" />
+
+                    <!-- CSS classes -->
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">Required CSS classes</h2>
+                      <p class="global-desc">
+                        The popup relies on a small set of structural classes.
+                        Do not rename them — the JS and CSS both depend on them.
+                        Paste all of the CSS below into your project's stylesheet
+                        or a custom code block.
+                      </p>
+                      <div class="code-block">
+                        <pre><span class="comment">/* Outermost fixed overlay — hidden by default */</span>
+<span class="tag">.tw_modal</span> {
+  <span class="attr">position</span>: <span class="val">fixed</span>;
+  <span class="attr">inset</span>: <span class="val">0%</span>;
+  <span class="attr">z-index</span>: <span class="val">100</span>;
+  <span class="attr">display</span>: <span class="val">none</span>;
+  <span class="attr">width</span>: <span class="val">100vw</span>;
+  <span class="attr">height</span>: <span class="val">100dvh</span>;
+}
+
+<span class="comment">/* Dark backdrop flex container */</span>
+<span class="tag">.tw_modal-base</span> {
+  <span class="attr">display</span>: <span class="val">flex</span>;
+  <span class="attr">flex-flow</span>: <span class="val">column</span>;
+  <span class="attr">justify-content</span>: <span class="val">center</span>;
+  <span class="attr">align-items</span>: <span class="val">center</span>;
+  <span class="attr">height</span>: <span class="val">100%</span>;
+  <span class="attr">background-color</span>: <span class="val">#000000b3</span>;
+}
+
+<span class="comment">/* Center modal panel (Variant 1) */</span>
+<span class="tag">.tw_modal-body</span> {
+  <span class="attr">position</span>: <span class="val">relative</span>;
+  <span class="attr">z-index</span>: <span class="val">2</span>;
+  <span class="attr">overflow</span>: <span class="val">hidden</span>;
+  <span class="attr">width</span>: <span class="val">100%</span>;
+  <span class="attr">max-width</span>: <span class="val">75%</span>;
+  <span class="attr">border-radius</span>: <span class="val">1rem</span>;
+  <span class="attr">background-color</span>: <span class="val">#fff</span>;
+}
+<span class="comment">/* Responsive */</span>
+<span class="tag">@media (max-width: 991px)</span> { <span class="tag">.tw_modal-body</span> { <span class="attr">max-width</span>: <span class="val">90%</span>; } }
+
+<span class="comment">/* Side drawer panel (Variant 2) */</span>
+<span class="tag">.tw_modal-body-2</span> {
+  <span class="attr">position</span>: <span class="val">relative</span>;
+  <span class="attr">z-index</span>: <span class="val">2</span>;
+  <span class="attr">overflow</span>: <span class="val">hidden</span>;
+  <span class="attr">width</span>: <span class="val">100%</span>;
+  <span class="attr">max-width</span>: <span class="val">50%</span>;
+  <span class="attr">margin-left</span>: <span class="val">auto</span>;
+  <span class="attr">background-color</span>: <span class="val">#fff</span>;
+}
+<span class="comment">/* Responsive */</span>
+<span class="tag">@media (max-width: 991px)</span> { <span class="tag">.tw_modal-body-2</span> { <span class="attr">max-width</span>: <span class="val">80%</span>; } }
+<span class="tag">@media (max-width: 767px)</span>  { <span class="tag">.tw_modal-body-2</span> { <span class="attr">max-width</span>: <span class="val">100%</span>; } }
+
+<span class="comment">/* Scrollable content area — center modal */</span>
+<span class="tag">.tw_modal-scroll</span> {
+  <span class="attr">overflow</span>: <span class="val">auto</span>;
+  <span class="attr">max-height</span>: <span class="val">90vh</span>;
+}
+
+<span class="comment">/* Scrollable content area — side drawer */</span>
+<span class="tag">.tw_modal-scroll-2</span> {
+  <span class="attr">overflow</span>: <span class="val">auto</span>;
+  <span class="attr">max-height</span>: <span class="val">100dvh</span>;
+}
+
+<span class="comment">/* Transparent backdrop close zone (sits behind the panel) */</span>
+<span class="tag">.tw_modal-close</span> {
+  <span class="attr">position</span>: <span class="val">absolute</span>;
+  <span class="attr">inset</span>: <span class="val">0%</span>;
+  <span class="attr">z-index</span>: <span class="val">1</span>;
+}
+
+<span class="comment">/* Styled × close button (top-right corner of the panel) */</span>
+<span class="tag">.tw-modal-close</span> {
+  <span class="attr">position</span>: <span class="val">absolute</span>;
+  <span class="attr">top</span>: <span class="val">1rem</span>;
+  <span class="attr">right</span>: <span class="val">1.25rem</span>;
+  <span class="attr">display</span>: <span class="val">flex</span>;
+  <span class="attr">justify-content</span>: <span class="val">center</span>;
+  <span class="attr">align-items</span>: <span class="val">center</span>;
+  <span class="attr">width</span>: <span class="val">2.75rem</span>;
+  <span class="attr">aspect-ratio</span>: <span class="val">1 / 1</span>;
+  <span class="attr">padding</span>: <span class="val">0</span>;
+  <span class="attr">border</span>: <span class="val">1px solid #000</span>;
+  <span class="attr">border-radius</span>: <span class="val">100%</span>;
+  <span class="attr">background-color</span>: <span class="val">transparent</span>;
+  <span class="attr">cursor</span>: <span class="val">pointer</span>;
+}
+<span class="tag">@media (max-width: 767px)</span> { <span class="tag">.tw-modal-close</span> { <span class="attr">width</span>: <span class="val">2rem</span>; } }
+
+<span class="comment">/* SVG icon wrapper inside the × button */</span>
+<span class="tag">.tw-close-icon</span> {
+  <span class="attr">display</span>: <span class="val">flex</span>;
+  <span class="attr">justify-content</span>: <span class="val">center</span>;
+  <span class="attr">align-items</span>: <span class="val">center</span>;
+  <span class="attr">width</span>: <span class="val">1rem</span>;
+}
+<span class="tag">@media (max-width: 767px)</span> { <span class="tag">.tw-close-icon</span> { <span class="attr">width</span>: <span class="val">0.75rem</span>; } }</pre>
+                      </div>
+                    </div>
+
+                    <hr class="doc-divider" />
+
+                    <!-- Variant 1: Center modal -->
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">Variant 1 — Center modal</h2>
+                      <p class="global-desc">
+                        The popup opens centered over the page with a dark backdrop.
+                        Uses <code>.tw_modal-body</code> (max-width 75%) and
+                        <code>.tw_modal-scroll</code> (max-height 90vh). Best for
+                        confirmation dialogs, forms, and rich content.
+                      </p>
+                      <div class="code-block">
+                        <pre><span class="tag">&lt;div</span> <span class="attr">tw-modal-content</span>=<span class="val">"1"</span> <span class="attr">class</span>=<span class="val">"tw_modal"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"tw_modal-base"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"tw_modal-body"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"tw_modal-scroll"</span><span class="tag">&gt;</span>
+        <span class="comment">&lt;!-- Your content goes here --&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"your-design-here"</span><span class="tag">&gt;</span>
+          <span class="tag">&lt;h1&gt;</span>Heading<span class="tag">&lt;/h1&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;/div&gt;</span>
+      <span class="comment">&lt;!-- Close button --&gt;</span>
+      <span class="tag">&lt;button</span> <span class="attr">tw-modal-close</span>=<span class="val">""</span> <span class="attr">class</span>=<span class="val">"tw-modal-close"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;svg</span> <span class="attr">viewBox</span>=<span class="val">"0 0 11 11"</span> <span class="attr">fill</span>=<span class="val">"none"</span> <span class="attr">xmlns</span>=<span class="val">"http://www.w3.org/2000/svg"</span> <span class="attr">class</span>=<span class="val">"tw-close-icon"</span><span class="tag">&gt;</span>
+          <span class="tag">&lt;path</span> <span class="attr">d</span>=<span class="val">"M5.50013 6.60846L1.62096 10.4876..."</span> <span class="attr">fill</span>=<span class="val">"currentcolor"</span><span class="tag">&gt;&lt;/path&gt;</span>
+        <span class="tag">&lt;/svg&gt;</span>
+      <span class="tag">&lt;/button&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+  <span class="comment">&lt;!-- Backdrop close zone --&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">tw-modal-close</span>=<span class="val">""</span> <span class="attr">class</span>=<span class="val">"tw_modal-close"</span><span class="tag">&gt;&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+                      </div>
+                    </div>
+
+                    <hr class="doc-divider" />
+
+                    <!-- Variant 2: Side drawer -->
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">Variant 2 — Side drawer</h2>
+                      <p class="global-desc">
+                        The popup opens as a right-aligned panel. Uses
+                        <code>.tw_modal-body-2</code> (max-width 50%, margin-left: auto)
+                        and <code>.tw_modal-scroll-2</code> (max-height 100dvh).
+                        Best for detail panels, navigation drawers, and settings.
+                      </p>
+                      <div class="code-block">
+                        <pre><span class="tag">&lt;div</span> <span class="attr">tw-modal-content</span>=<span class="val">"2"</span> <span class="attr">class</span>=<span class="val">"tw_modal"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"tw_modal-base"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"tw_modal-body-2"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"tw_modal-scroll-2"</span><span class="tag">&gt;</span>
+        <span class="comment">&lt;!-- Your content goes here --&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"your-design-here"</span><span class="tag">&gt;</span>
+          <span class="tag">&lt;h1&gt;</span>Heading<span class="tag">&lt;/h1&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;/div&gt;</span>
+      <span class="comment">&lt;!-- Close button --&gt;</span>
+      <span class="tag">&lt;button</span> <span class="attr">tw-modal-close</span>=<span class="val">""</span> <span class="attr">class</span>=<span class="val">"tw-modal-close"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;svg</span> <span class="attr">viewBox</span>=<span class="val">"0 0 11 11"</span> <span class="attr">fill</span>=<span class="val">"none"</span> <span class="attr">xmlns</span>=<span class="val">"http://www.w3.org/2000/svg"</span> <span class="attr">class</span>=<span class="val">"tw-close-icon"</span><span class="tag">&gt;</span>
+          <span class="tag">&lt;path</span> <span class="attr">d</span>=<span class="val">"M5.50013 6.60846L1.62096 10.4876..."</span> <span class="attr">fill</span>=<span class="val">"currentcolor"</span><span class="tag">&gt;&lt;/path&gt;</span>
+        <span class="tag">&lt;/svg&gt;</span>
+      <span class="tag">&lt;/button&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+  <span class="comment">&lt;!-- Backdrop close zone --&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">tw-modal-close</span>=<span class="val">""</span> <span class="attr">class</span>=<span class="val">"tw_modal-close"</span><span class="tag">&gt;&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+                      </div>
+                    </div>
+
+                    <hr class="doc-divider" />
+
+                    <!-- JS snippet -->
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">JS — Popup Script</h2>
+                      <p class="global-desc">
+                        Paste this script just before the closing
+                        <code>&lt;/body&gt;</code> tag. It handles open, close,
+                        backdrop click, ESC key, and body scroll lock automatically
+                        for any number of popups on the page.
+                      </p>
+                      <div class="code-block">
+                        <pre><span class="tag">&lt;script&gt;</span>
+  document.addEventListener(<span class="val">"DOMContentLoaded"</span>, function () {
+    const twModalTrigger = document.querySelectorAll(<span class="val">"[tw-modal-trigger]"</span>);
+    const twModals = document.querySelectorAll(<span class="val">"[tw-modal-content]"</span>);
+
+    <span class="comment">// Hide all popups initially</span>
+    twModals.forEach((popup) => {
+      popup.style.opacity = <span class="val">"0"</span>;
+      popup.style.display = <span class="val">"none"</span>;
+    });
+
+    <span class="comment">// Reusable close function</span>
+    function closePopup(popup) {
+      if (!popup || popup.style.opacity === <span class="val">"0"</span>) return;
+
+      popup.style.transition = <span class="val">"opacity 0.3s ease"</span>;
+      popup.style.opacity = <span class="val">"0"</span>;
+
+      popup.addEventListener(<span class="val">"transitionend"</span>, function handler() {
+        popup.style.display = <span class="val">"none"</span>;
+        document.body.style.overflow = <span class="val">"auto"</span>;
+        popup.removeEventListener(<span class="val">"transitionend"</span>, handler);
+      });
+    }
+
+    <span class="comment">// Show popup on button click</span>
+    twModalTrigger.forEach((btn) => {
+      btn.addEventListener(<span class="val">"click"</span>, function () {
+        const popupAttr = this.getAttribute(<span class="val">"tw-modal-trigger"</span>);
+        if (!popupAttr) return;
+
+        const popup = document.querySelector(<span class="val">`[tw-modal-content="${popupAttr}"]`</span>);
+        if (popup) {
+          popup.style.display = <span class="val">"block"</span>;
+          popup.getBoundingClientRect(); <span class="comment">// Trigger reflow</span>
+          popup.style.transition = <span class="val">"opacity 0.5s ease"</span>;
+          popup.style.opacity = <span class="val">"1"</span>;
+          document.body.style.overflow = <span class="val">"hidden"</span>;
+        }
+      });
+    });
+
+    <span class="comment">// Close popup via close button or backdrop</span>
+    document.querySelectorAll(<span class="val">"[tw-modal-close]"</span>).forEach((closeBtn) => {
+      closeBtn.addEventListener(<span class="val">"click"</span>, function () {
+        closePopup(this.closest(<span class="val">"[tw-modal-content]"</span>));
+      });
+    });
+
+    <span class="comment">// Close popup via ESC key</span>
+    document.addEventListener(<span class="val">"keydown"</span>, function (e) {
+      if (e.key !== <span class="val">"Escape"</span>) return;
+
+      const openPopup = [...twModals].find((p) => p.style.opacity === <span class="val">"1"</span>);
+      if (openPopup) closePopup(openPopup);
+    });
+  });
+<span class="tag">&lt;/script&gt;</span></pre>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- =========================================
+                     DOCUMENTATION FOR WEBFLOW TAB
+                ========================================= -->
+                <div
+                  tw-tabs-pane="documentation-for-webflow"
+                  class="tw-tabs-pane"
+                >
+                  <div class="doc-section">
+
+                    <!-- Overview -->
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">Overview</h2>
+                      <p class="global-desc">
+                        The steps below walk you through adding the TechWise
+                        Popup to any Webflow project. Two variants are available:
+                        a <strong style="color:#e8eaf0">center modal</strong> and a
+                        <strong style="color:#e8eaf0">side drawer</strong>. Use the Copy
+                        Element buttons below to paste the right structure directly
+                        into your Webflow canvas.
+                      </p>
+                    </div>
+
+                    <hr class="doc-divider" />
+
+                    <!-- Step 1: JS -->
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">Step 1 — Add the popup script</h2>
+                      <p class="global-desc">
+                        In Webflow, go to
+                        <strong>Project Settings → Custom Code</strong>. Paste
+                        the script below into the <strong>Footer Code</strong>
+                        section. This enables the popup behaviour on every
+                        published page.
+                      </p>
+                      <div class="code-block">
+                        <pre><span class="tag">&lt;script&gt;</span>
+  document.addEventListener(<span class="val">"DOMContentLoaded"</span>, function () {
+    const twModalTrigger = document.querySelectorAll(<span class="val">"[tw-modal-trigger]"</span>);
+    const twModals = document.querySelectorAll(<span class="val">"[tw-modal-content]"</span>);
+
+    twModals.forEach((popup) => {
+      popup.style.opacity = <span class="val">"0"</span>;
+      popup.style.display = <span class="val">"none"</span>;
+    });
+
+    function closePopup(popup) {
+      if (!popup || popup.style.opacity === <span class="val">"0"</span>) return;
+      popup.style.transition = <span class="val">"opacity 0.3s ease"</span>;
+      popup.style.opacity = <span class="val">"0"</span>;
+      popup.addEventListener(<span class="val">"transitionend"</span>, function handler() {
+        popup.style.display = <span class="val">"none"</span>;
+        document.body.style.overflow = <span class="val">"auto"</span>;
+        popup.removeEventListener(<span class="val">"transitionend"</span>, handler);
+      });
+    }
+
+    twModalTrigger.forEach((btn) => {
+      btn.addEventListener(<span class="val">"click"</span>, function () {
+        const popupAttr = this.getAttribute(<span class="val">"tw-modal-trigger"</span>);
+        if (!popupAttr) return;
+        const popup = document.querySelector(<span class="val">`[tw-modal-content="${popupAttr}"]`</span>);
+        if (popup) {
+          popup.style.display = <span class="val">"block"</span>;
+          popup.getBoundingClientRect();
+          popup.style.transition = <span class="val">"opacity 0.5s ease"</span>;
+          popup.style.opacity = <span class="val">"1"</span>;
+          document.body.style.overflow = <span class="val">"hidden"</span>;
+        }
+      });
+    });
+
+    document.querySelectorAll(<span class="val">"[tw-modal-close]"</span>).forEach((closeBtn) => {
+      closeBtn.addEventListener(<span class="val">"click"</span>, function () {
+        closePopup(this.closest(<span class="val">"[tw-modal-content]"</span>));
+      });
+    });
+
+    document.addEventListener(<span class="val">"keydown"</span>, function (e) {
+      if (e.key !== <span class="val">"Escape"</span>) return;
+      const openPopup = [...twModals].find((p) => p.style.opacity === <span class="val">"1"</span>);
+      if (openPopup) closePopup(openPopup);
+    });
+  });
+<span class="tag">&lt;/script&gt;</span></pre>
+                      </div>
+                    </div>
+
+                    <hr class="doc-divider" />
+
+                    <!-- Step 2: Copy elements -->
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">Step 2 — Copy a popup element</h2>
+                      <p class="global-desc">
+                        Choose the variant you need and click its
+                        <strong>Copy Element</strong> button. Then open your
+                        Webflow project, click anywhere on the canvas, and press
+                        <strong>Ctrl + V</strong> (Windows) or
+                        <strong>Cmd + V</strong> (Mac) to paste. The full popup
+                        structure — classes, attributes, and close button — will
+                        appear instantly.
+                      </p>
+
+                      <!-- Variant cards -->
+                      <div class="variant-card" style="margin-top: 0.5rem;">
+                        <div class="variant-card-header">
+                          <span class="variant-badge center">Variant 1</span>
+                          <span class="variant-card-title">Center Modal</span>
+                        </div>
+                        <p class="variant-card-desc">
+                          Opens centered over the page with a dark backdrop.
+                          Uses <code>.tw_modal-body</code> (max-width 75%) and
+                          <code>.tw_modal-scroll</code> (max-height 90vh).
+                          Ideal for confirmation dialogs, forms, and rich content.
+                        </p>
+                        <div class="copy-btn-row">
+                          <button
+                            data-copy-btn
+                            data-component-name="Center Modal"
+                            data-payload-id="payload-modal-1"
+                            class="element-copy-btn"
+                          >
+                            Copy Element — Center Modal
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="variant-card" style="margin-top: 1rem;">
+                        <div class="variant-card-header">
+                          <span class="variant-badge side">Variant 2</span>
+                          <span class="variant-card-title">Side Drawer</span>
+                        </div>
+                        <p class="variant-card-desc">
+                          Opens as a right-aligned panel with full viewport height.
+                          Uses <code>.tw_modal-body-2</code> (max-width 50%,
+                          margin-left: auto) and <code>.tw_modal-scroll-2</code>
+                          (max-height 100dvh). Ideal for detail panels, navigation
+                          drawers, and settings.
+                        </p>
+                        <div class="copy-btn-row">
+                          <button
+                            data-copy-btn
+                            data-component-name="Side Drawer"
+                            data-payload-id="payload-modal-2"
+                            class="element-copy-btn"
+                          >
+                            Copy Element — Side Drawer
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <hr class="doc-divider" />
+
+                    <!-- Step 3: Trigger -->
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">Step 3 — Add a trigger button</h2>
+                      <p class="global-desc">
+                        Select any button or element in the Navigator. In
+                        <strong>Element Settings</strong>, add a custom attribute
+                        named <code>tw-modal-trigger</code> with a value of
+                        <code>1</code> (or whichever number matches your pasted
+                        popup's <code>tw-modal-content</code> value). Clicking
+                        that element will now open the popup.
+                      </p>
+                      <div class="code-block">
+                        <pre><span class="comment">&lt;!-- Add this custom attribute to your trigger button --&gt;</span>
+<span class="attr">tw-modal-trigger</span> = <span class="val">1</span>   <span class="comment">&lt;!-- matches tw-modal-content="1" --&gt;</span></pre>
+                      </div>
+                    </div>
+
+                    <hr class="doc-divider" />
+
+                    <!-- Step 4: Multiple popups -->
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">Step 4 — Using multiple popups</h2>
+                      <p class="global-desc">
+                        You can have as many popups on a page as you need. Each
+                        popup must have a unique <code>tw-modal-content</code>
+                        value, and its trigger button must carry the matching
+                        <code>tw-modal-trigger</code> value. For example, paste
+                        a second popup and change its <code>tw-modal-content</code>
+                        to <code>2</code>, then set its trigger button's
+                        <code>tw-modal-trigger</code> to <code>2</code>.
+                      </p>
+                      <div class="code-block">
+                        <pre><span class="comment">&lt;!-- First popup pair --&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">tw-modal-trigger</span>=<span class="val">"1"</span><span class="tag">&gt;</span>Open Popup 1<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">tw-modal-content</span>=<span class="val">"1"</span> <span class="attr">class</span>=<span class="val">"tw_modal"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- Second popup pair --&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">tw-modal-trigger</span>=<span class="val">"2"</span><span class="tag">&gt;</span>Open Popup 2<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">tw-modal-content</span>=<span class="val">"2"</span> <span class="attr">class</span>=<span class="val">"tw_modal"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span></pre>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Tabs JS -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const twTabsWrappers = document.querySelectorAll('[tw-tabs="wrapper"]');
+
+        twTabsWrappers.forEach((twTabsWrapper, wrapperIndex) => {
+          const twTabsMenu = twTabsWrapper.querySelector('[tw-tabs="menu"]');
+          const twTabsTriggers =
+            twTabsWrapper.querySelectorAll("[tw-tabs-trigger]");
+          const twTabsPanes = twTabsWrapper.querySelectorAll("[tw-tabs-pane]");
+
+          if (twTabsMenu) {
+            twTabsMenu.setAttribute("role", "tablist");
+            twTabsMenu.setAttribute("aria-label", "Tabs Navigation");
+          }
+
+          twTabsTriggers.forEach((twTabsTrigger, triggerIndex) => {
+            const twTabsValue = twTabsTrigger.getAttribute("tw-tabs-trigger");
+            const twTabsTriggerId = `tw-tab-${wrapperIndex}-${triggerIndex}`;
+            const twTabsPaneId = `tw-pane-${wrapperIndex}-${triggerIndex}`;
+
+            twTabsTrigger.setAttribute("role", "tab");
+            twTabsTrigger.setAttribute("id", twTabsTriggerId);
+            twTabsTrigger.setAttribute("aria-controls", twTabsPaneId);
+            twTabsTrigger.setAttribute("aria-selected", "false");
+
+            const twTabsPane = twTabsWrapper.querySelector(
+              `[tw-tabs-pane="${twTabsValue}"]`,
+            );
+            if (twTabsPane) {
+              twTabsPane.setAttribute("role", "tabpanel");
+              twTabsPane.setAttribute("id", twTabsPaneId);
+              twTabsPane.setAttribute("aria-labelledby", twTabsTriggerId);
+              twTabsPane.hidden = true;
+            }
+          });
+
+          function twTabsActivateTab(targetValue) {
+            twTabsTriggers.forEach((twTabsTrigger) => {
+              const isActive =
+                twTabsTrigger.getAttribute("tw-tabs-trigger") === targetValue;
+              twTabsTrigger.setAttribute(
+                "aria-selected",
+                isActive ? "true" : "false",
+              );
+              twTabsTrigger.classList.toggle("is-active", isActive);
+            });
+
+            twTabsPanes.forEach((twTabsPane) => {
+              const isActive =
+                twTabsPane.getAttribute("tw-tabs-pane") === targetValue;
+              twTabsPane.hidden = !isActive;
+              twTabsPane.classList.toggle("is-active", isActive);
+            });
+          }
+
+          twTabsTriggers.forEach((twTabsTrigger) => {
+            twTabsTrigger.addEventListener("click", () => {
+              const twTabsTargetValue =
+                twTabsTrigger.getAttribute("tw-tabs-trigger");
+              twTabsActivateTab(twTabsTargetValue);
+              twTabsTrigger.focus();
+            });
+
+            twTabsTrigger.addEventListener("keydown", (event) => {
+              const keys = ["ArrowRight", "ArrowLeft", "Home", "End"];
+              if (!keys.includes(event.key)) return;
+              event.preventDefault();
+
+              const twTabsCurrentIndex = [...twTabsTriggers].indexOf(
+                twTabsTrigger,
+              );
+              let twTabsNextIndex = twTabsCurrentIndex;
+
+              if (event.key === "ArrowRight")
+                twTabsNextIndex =
+                  (twTabsCurrentIndex + 1) % twTabsTriggers.length;
+              if (event.key === "ArrowLeft")
+                twTabsNextIndex =
+                  (twTabsCurrentIndex - 1 + twTabsTriggers.length) %
+                  twTabsTriggers.length;
+              if (event.key === "Home") twTabsNextIndex = 0;
+              if (event.key === "End")
+                twTabsNextIndex = twTabsTriggers.length - 1;
+
+              const twTabsNextTrigger = twTabsTriggers[twTabsNextIndex];
+              const twTabsNextValue =
+                twTabsNextTrigger.getAttribute("tw-tabs-trigger");
+              twTabsActivateTab(twTabsNextValue);
+              twTabsNextTrigger.focus();
+            });
+          });
+
+          if (twTabsTriggers.length) {
+            const twTabsDefaultValue =
+              twTabsTriggers[0].getAttribute("tw-tabs-trigger");
+            twTabsActivateTab(twTabsDefaultValue);
+          }
+        });
+      });
+    </script>
+
+    <!-- Copy to Clipboard JS -->
+    <script>
+      (function () {
+        var currentPayload = "";
+        var hiddenTrigger = document.createElement("button");
+        hiddenTrigger.contentEditable = "true";
+        hiddenTrigger.style.cssText =
+          "position:fixed;clip:rect(1px,1px,1px,1px);overflow:hidden;height:1px;width:1px;padding:0;border:0;";
+        document.body.appendChild(hiddenTrigger);
+
+        hiddenTrigger.addEventListener("copy", function (e) {
+          e.clipboardData.setData("application/json", currentPayload);
+          e.preventDefault();
+        });
+
+        document.querySelectorAll("[data-copy-btn]").forEach(function (btn) {
+          var originalText = btn.textContent.trim();
+          btn.addEventListener("click", function () {
+            var id = btn.getAttribute("data-payload-id");
+            currentPayload = document.getElementById(id).textContent.trim();
+            hiddenTrigger.focus();
+            document.execCommand("copy");
+            btn.textContent = "✅ Copied!";
+            setTimeout(function () {
+              btn.textContent = originalText;
+            }, 2000);
+          });
+        });
+      })();
+    </script>
+
+    <!-- Popup Script -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const twModalTrigger = document.querySelectorAll("[tw-modal-trigger]");
+        const twModals = document.querySelectorAll("[tw-modal-content]");
+
+        // Hide all popups initially
+        twModals.forEach((popup) => {
+          popup.style.opacity = "0";
+          popup.style.display = "none";
+        });
+
+        // Reusable close function
+        function closePopup(popup) {
+          if (!popup || popup.style.opacity === "0") return;
+
+          popup.style.transition = "opacity 0.3s ease";
+          popup.style.opacity = "0";
+
+          popup.addEventListener("transitionend", function handler() {
+            popup.style.display = "none";
+            document.body.style.overflow = "auto";
+            popup.removeEventListener("transitionend", handler);
+          });
+        }
+
+        // Show popup on button click
+        twModalTrigger.forEach((btn) => {
+          btn.addEventListener("click", function () {
+            const popupAttr = this.getAttribute("tw-modal-trigger");
+            if (!popupAttr) return;
+
+            const popup = document.querySelector(
+              `[tw-modal-content="${popupAttr}"]`
+            );
+            if (popup) {
+              popup.style.display = "block";
+              popup.getBoundingClientRect(); // Trigger reflow
+              popup.style.transition = "opacity 0.5s ease";
+              popup.style.opacity = "1";
+              document.body.style.overflow = "hidden";
+            }
+          });
+        });
+
+        // Close popup via close button or backdrop
+        document.querySelectorAll("[tw-modal-close]").forEach((closeBtn) => {
+          closeBtn.addEventListener("click", function () {
+            closePopup(this.closest("[tw-modal-content]"));
+          });
+        });
+
+        // Close popup via ESC key
+        document.addEventListener("keydown", function (e) {
+          if (e.key !== "Escape") return;
+
+          const openPopup = [...twModals].find((p) => p.style.opacity === "1");
+          if (openPopup) closePopup(openPopup);
+        });
+      });
+    </script>
+  </body>
+</html>
