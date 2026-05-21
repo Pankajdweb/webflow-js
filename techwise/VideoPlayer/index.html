@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video Player</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="https://jswebflow.netlify.app/techwise/videoplayer/style.css" />
+
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", system-ui, sans-serif;
+        background: #0d0f14;
+        color: #e8eaf0;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      .section-header {
+        position: relative;
+        overflow: hidden;
+        padding: 80px 24px 60px;
+        text-align: center;
+        border-bottom: 1px solid #1e2230;
+      }
+
+      .section-header-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 24px;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      .text-color-golden {
+        color: #e6a020;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 14px;
+        border: 1px solid rgba(230, 160, 32, 0.2);
+        border-radius: 999px;
+        background: rgba(230, 160, 32, 0.1);
+        color: #e6a020;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .heading-style-h1 {
+        position: relative;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1;
+      }
+
+      .heading-style-h2 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .global-desc {
+        color: #6b7280;
+        font-size: 1.1rem;
+      }
+
+      .section-content {
+        padding: 80px 0;
+      }
+
+      .tw-tabs {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .tw-tabs-menu {
+        display: inline-flex;
+        gap: 6px;
+        padding: 6px;
+        border: 1px solid #1e2230;
+        border-radius: 999px;
+        background: rgba(21, 24, 32, 0.8);
+        backdrop-filter: blur(8px);
+      }
+
+      .tw-tabs-link {
+        appearance: none;
+        padding: 10px 14px;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        background: transparent;
+        color: #9ca3af;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+
+      .tw-tabs-link.is-active {
+        border: 1px solid rgba(230, 160, 32, 0.22);
+        background: rgba(230, 160, 32, 0.12);
+        color: #e6a020;
+      }
+
+      .tw-tabs-content {
+        width: 100%;
+        margin-top: 2rem;
+        color: #e8eaf0;
+      }
+
+      .tw-tabs-pane {
+        display: none;
+        width: 100%;
+      }
+
+      .tw-tabs-pane.is-active {
+        display: block;
+      }
+
+      .code-block {
+        overflow-x: auto;
+        margin-top: 1rem;
+        padding: 24px;
+        border: 1px solid #1e2230;
+        border-radius: 12px;
+        background: #151820;
+      }
+
+      .code-block pre {
+        color: #9ca3af;
+        font-family: "SF Mono", "Fira Code", Consolas, monospace;
+        font-size: 13px;
+        line-height: 1.7;
+        white-space: pre;
+      }
+
+      .code-block pre .comment {
+        color: #4b5563;
+      }
+
+      .code-block pre .tag {
+        color: #38bdf8;
+      }
+
+      .code-block pre .attr {
+        color: #e6a020;
+      }
+
+      .code-block pre .val {
+        color: #34d399;
+      }
+
+      .element-copy-btn {
+        appearance: none;
+        margin: 2rem auto 0;
+        padding: 10px 14px;
+        border: 1px solid rgba(230, 160, 32, 0.22);
+        border-radius: 999px;
+        background: rgba(230, 160, 32, 0.12);
+        color: #e6a020;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+
+      .doc-section {
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
+      }
+
+      .doc-block {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .doc-divider {
+        border: none;
+        border-top: 1px solid #1e2230;
+      }
+
+      .video-demo-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .video-demo-list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5rem;
+      }
+
+      .video-demo {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <script type="application/json" id="payload-video">
+      {"type":"@webflow/XscpData","payload":{"nodes":[{"_id":"07ced9e7-55c0-abea-6277-07b6391048d7","type":"Block","tag":"div","classes":["9ccf564b-1772-6009-cb6e-e57c61defd06"],"children":["5ea6a08e-c739-40f6-695c-54a7cd52ca86"],"data":{"tag":"div","text":false,"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"xattr":[{"name":"tw-data-video-url","value":"https://www.youtube.com/watch?v=pLgPFfFdpDs"},{"name":"data-title","value":"Big Buck Bunny"},{"name":"aria-label","value":"Big Buck Bunny video player"}],"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"5ea6a08e-c739-40f6-695c-54a7cd52ca86","type":"Block","tag":"div","classes":["ba3f65d5-9836-dfcb-99f8-4ae87bc78771"],"children":["97ea5470-102d-6bf8-e80e-187686e52eef"],"data":{"tag":"div","text":false,"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"xattr":[],"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"97ea5470-102d-6bf8-e80e-187686e52eef","type":"Block","tag":"div","classes":["aa6f330f-b2bb-0d8d-d597-d82f6d0c28cd"],"children":["072b339b-72ec-abe1-83fb-75d6d1ad58d3"],"data":{"tag":"div","text":false,"devlink":{"runtimeProps":{},"slot":""},"displayName":"","attr":{"id":""},"xattr":[],"search":{"exclude":false},"visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}},{"_id":"072b339b-72ec-abe1-83fb-75d6d1ad58d3","type":"DOM","tag":"div","classes":["87c0958f-0779-a5a3-ab3c-cc25cbe2fa68"],"children":[],"data":{"tag":"img","attributes":[{"name":"src","value":""},{"name":"alt","value":""}],"text":false,"slot":"","visibility":{"conditions":[],"keepInHtml":{"tag":"False","val":{}}}}}],"styles":[{"_id":"9ccf564b-1772-6009-cb6e-e57c61defd06","fake":false,"type":"class","name":"tw-vp-wrapper","namespace":"","comb":"","styleLess":"width: 100%; aspect-ratio: 16/9; border-top-left-radius: 1rem; border-top-right-radius: 1rem; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; background-color: hsla(0, 0.00%, 0.00%, 1.00);","variants":{},"children":[],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null},{"_id":"ba3f65d5-9836-dfcb-99f8-4ae87bc78771","fake":false,"type":"class","name":"tw-vp-container","namespace":"","comb":"","styleLess":"","variants":{},"children":[],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null},{"_id":"aa6f330f-b2bb-0d8d-d597-d82f6d0c28cd","fake":false,"type":"class","name":"tw-vp-thumbnail-holder","namespace":"","comb":"","styleLess":"","variants":{},"children":[],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null},{"_id":"87c0958f-0779-a5a3-ab3c-cc25cbe2fa68","fake":false,"type":"class","name":"tw-vp-thumbnail","namespace":"","comb":"","styleLess":"","variants":{},"children":[],"createdBy":"586aa9980dca55161330cbbb","origin":null,"selector":null}],"assets":[],"ix1":[],"ix2":{"interactions":[],"events":[],"actionLists":[]}},"meta":{"droppedLinks":0,"dynBindRemovedCount":0,"dynListBindRemovedCount":0,"paginationRemovedCount":0,"universalBindingsRemovedCount":0,"unlinkedSymbolCount":0,"codeComponentsRemovedCount":0,"richTextComponentsStripped":false}}
+    </script>
+
+    <div class="page-wrapper">
+      <main class="main-wrapper">
+
+        <!-- Header -->
+        <header class="section-header">
+          <div class="container">
+            <div class="section-header-content">
+              <div class="badge">Universal Video Player — Built by TechWise</div>
+              <h1 class="heading-style-h1">
+                One Script.
+                <span class="text-color-golden"> Every Source. </span>
+              </h1>
+              <p class="global-desc">
+                Pass any video URL via data attributes — YouTube, Vimeo, MP4, WebM — and get a beautiful, accessible player with zero dependencies.
+              </p>
+            </div>
+          </div>
+        </header>
+
+        <!-- Main Content -->
+        <section class="section-content">
+          <div class="container">
+            <div tw-tabs="wrapper" class="tw-tabs">
+
+              <!-- Tabs Menu -->
+              <div tw-tabs="menu" class="tw-tabs-menu">
+                <button tw-tabs-trigger="demo" class="tw-tabs-link">Demo</button>
+                <button tw-tabs-trigger="documentation" class="tw-tabs-link">Documentation</button>
+                <button tw-tabs-trigger="documentation-for-webflow" class="tw-tabs-link">Documentation for Webflow</button>
+              </div>
+
+              <!-- Tabs Content -->
+              <div tw-tabs="content" class="tw-tabs-content">
+
+                <!-- Demo Tab -->
+                <div tw-tabs-pane="demo" class="tw-tabs-pane">
+                  <div class="video-demo-list">
+
+                    <div class="video-demo">
+                      <div class="video-demo-header">
+                        <span class="badge">MP4 / WebM</span>
+                        <h2 class="heading-style-h2">Self-Hosted Video</h2>
+                      </div>
+                      <p class="global-desc">
+                        Auto-detects MP4 or WebM, generates a smart thumbnail (skips black frames), shows full controls with centre play button.
+                      </p>
+                      <div
+                        class="tw-vp-wrapper"
+                        tw-data-video-url="https://cdn.jsdelivr.net/gh/NotAnother-NZ/na13-tuc@main/assets/videos/tuc-pci-trailer.webm"
+                        tw-data-title="TUC PCI Trailer"
+                        aria-label="TUC PCI Trailer video player"
+                      >
+                        <div class="tw-vp-container">
+                          <div class="tw-vp-thumbnail-holder">
+                            <img src="" alt="" class="tw-vp-thumbnail" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="video-demo">
+                      <div class="video-demo-header">
+                        <span class="badge">Autoplay</span>
+                        <h2 class="heading-style-h2">Autoplay</h2>
+                      </div>
+                      <p class="global-desc">
+                        Perfect for hero backgrounds. Add <code>tw-tw-data-autoplay</code> — the video autoplays muted with loop and controls hidden.
+                      </p>
+                      <div
+                        class="tw-vp-wrapper"
+                        tw-data-video-url="https://cdn.jsdelivr.net/gh/NotAnother-NZ/na13-tuc@main/assets/videos/tuc-pci-trailer.webm"
+                        tw-data-title="TUC PCI Trailer"
+                        tw-data-autoplay
+                        aria-label="TUC PCI Trailer autoplay video player"
+                      >
+                        <div class="tw-vp-container">
+                          <div class="tw-vp-thumbnail-holder">
+                            <img src="" alt="" class="tw-vp-thumbnail" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="video-demo">
+                      <div class="video-demo-header">
+                        <span class="badge">YouTube</span>
+                        <h2 class="heading-style-h2">YouTube Video</h2>
+                      </div>
+                      <p class="global-desc">
+                        Automatically detects YouTube URLs, fetches the high-res thumbnail, and embeds the player on click.
+                      </p>
+                      <div
+                        class="tw-vp-wrapper"
+                        tw-data-video-url="https://youtu.be/gSoyOSvjuWw?si=Ag2n56SJxtHXpAXs"
+                        tw-data-title="YouTube Video"
+                        aria-label="YouTube video player"
+                      >
+                        <div class="tw-vp-container">
+                          <div class="tw-vp-thumbnail-holder">
+                            <img src="" alt="" class="tw-vp-thumbnail" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="video-demo">
+                      <div class="video-demo-header">
+                        <span class="badge">Vimeo</span>
+                        <h2 class="heading-style-h2">Vimeo Video</h2>
+                      </div>
+                      <p class="global-desc">
+                        Detects Vimeo URLs, fetches the thumbnail via the oEmbed API, and embeds on play.
+                      </p>
+                      <div
+                        class="tw-vp-wrapper"
+                        tw-data-video-url="https://vimeo.com/1115490186"
+                        tw-data-title="Vimeo Video"
+                        aria-label="Vimeo video player"
+                      >
+                        <div class="tw-vp-container">
+                          <div class="tw-vp-thumbnail-holder">
+                            <img src="" alt="" class="tw-vp-thumbnail" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- Documentation Tab -->
+                <div tw-tabs-pane="documentation" class="tw-tabs-pane">
+                  <div class="doc-section">
+
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">Overview</h2>
+                      <p class="global-desc">
+                        The TechWise Universal Video Player is a lightweight, dependency-free vanilla JS component. Drop in the CSS and JS from the CDN, add the required HTML structure with a <code>tw-data-video-url</code> attribute, and you get a fully functional, accessible video player — for YouTube, Vimeo, MP4, or WebM.
+                      </p>
+                    </div>
+
+                    <hr class="doc-divider" />
+
+                    <!-- CDN -->
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">Step 1 — Add the CDN</h2>
+                      <p class="global-desc">
+                        Paste the CSS link in your <code>&lt;head&gt;</code> and the JS script just before the closing <code>&lt;/body&gt;</code> tag.
+                      </p>
+                      <div class="code-block">
+                        <pre><span class="comment">&lt;!-- TechWise Video Player CSS --&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"stylesheet"</span> <span class="attr">href</span>=<span class="val">"https://jswebflow.netlify.app/techwise/videoplayer/style.css"</span> <span class="tag">/&gt;</span>
+
+<span class="comment">&lt;!-- TechWise Video Player JS --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="val">"https://jswebflow.netlify.app/techwise/videoplayer/script.js"</span> <span class="attr">defer</span><span class="tag">&gt;&lt;/script&gt;</span></pre>
+                      </div>
+                    </div>
+
+                    <hr class="doc-divider" />
+
+                    <!-- Attribute 1 — tw-data-video-url -->
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">1. <code>tw-data-video-url</code> — Required</h2>
+                      <p class="global-desc">
+                        This is the only required attribute. Set it on the <code>.tw-vp-wrapper</code> element to the URL of your video. The player automatically detects the source type — YouTube, Vimeo, MP4, or WebM — and handles everything from there.
+                      </p>
+                      <div class="code-block">
+                        <pre><span class="comment">&lt;!-- YouTube --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"tw-vp-wrapper"</span> <span class="attr">tw-data-video-url</span>=<span class="val">"https://youtu.be/gSoyOSvjuWw"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- Vimeo --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"tw-vp-wrapper"</span> <span class="attr">tw-data-video-url</span>=<span class="val">"https://vimeo.com/1115490186"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- MP4 / WebM --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"tw-vp-wrapper"</span> <span class="attr">tw-data-video-url</span>=<span class="val">"https://example.com/video.mp4"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span></pre>
+                      </div>
+                    </div>
+
+                    <hr class="doc-divider" />
+
+                    <!-- Attribute 2 — tw-data-autoplay -->
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">2. <code>tw-data-autoplay</code> — Optional</h2>
+                      <p class="global-desc">
+                        Add the <code>tw-data-autoplay</code> attribute (no value needed) to make the video autoplay muted on page load, with looping enabled and controls hidden. Ideal for hero section background videos.
+                      </p>
+                      <div class="code-block">
+                        <pre><span class="tag">&lt;div</span>
+  <span class="attr">class</span>=<span class="val">"tw-vp-wrapper"</span>
+  <span class="attr">tw-data-video-url</span>=<span class="val">"https://example.com/video.mp4"</span>
+  <span class="attr">tw-data-autoplay</span>
+<span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"tw-vp-container"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"tw-vp-thumbnail-holder"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">""</span> <span class="attr">alt</span>=<span class="val">""</span> <span class="attr">class</span>=<span class="val">"tw-vp-thumbnail"</span> <span class="tag">/&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+                      </div>
+                    </div>
+
+                    <hr class="doc-divider" />
+
+                    <!-- Attribute 3 — tw-vp-thumbnail -->
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">3. Thumbnail — Auto or Custom</h2>
+                      <p class="global-desc">
+                        The <code>.tw-vp-thumbnail</code> image controls what's shown before the video plays. You have two options:
+                      </p>
+                      <p class="global-desc">
+                        <strong style="color:#e8eaf0;">Auto-generated</strong> — Leave <code>src=""</code> empty. The player will automatically generate a thumbnail by seeking into the video (for MP4/WebM) or fetching it from the platform API (for YouTube and Vimeo).
+                      </p>
+                      <p class="global-desc">
+                        <strong style="color:#e8eaf0;">Custom thumbnail</strong> — Set <code>src</code> to your own image URL to use a custom poster image instead.
+                      </p>
+                      <div class="code-block">
+                        <pre><span class="comment">&lt;!-- Auto-generated thumbnail (leave src empty) --&gt;</span>
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">""</span> <span class="attr">alt</span>=<span class="val">""</span> <span class="attr">class</span>=<span class="val">"tw-vp-thumbnail"</span> <span class="tag">/&gt;</span>
+
+<span class="comment">&lt;!-- Custom thumbnail (add your image URL to src) --&gt;</span>
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"https://example.com/my-poster.jpg"</span> <span class="attr">alt</span>=<span class="val">"Video poster"</span> <span class="attr">class</span>=<span class="val">"tw-vp-thumbnail"</span> <span class="tag">/&gt;</span></pre>
+                      </div>
+                    </div>
+
+                    <hr class="doc-divider" />
+
+                    <!-- Full markup reference -->
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">Full HTML Markup</h2>
+                      <p class="global-desc">
+                        Copy the complete structure below and paste it into your page. Update <code>tw-data-video-url</code> with your video URL and optionally add <code>tw-data-autoplay</code> or a custom thumbnail <code>src</code>.
+                      </p>
+                      <div class="code-block">
+                        <pre><span class="tag">&lt;div</span>
+  <span class="attr">class</span>=<span class="val">"tw-vp-wrapper"</span>
+  <span class="attr">tw-data-video-url</span>=<span class="val">"YOUR_VIDEO_URL_HERE"</span>
+  <span class="attr">aria-label</span>=<span class="val">"Video player"</span>
+<span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"tw-vp-container"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"tw-vp-thumbnail-holder"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">""</span> <span class="attr">alt</span>=<span class="val">""</span> <span class="attr">class</span>=<span class="val">"tw-vp-thumbnail"</span> <span class="tag">/&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- Webflow Documentation Tab -->
+                <div tw-tabs-pane="documentation-for-webflow" class="tw-tabs-pane">
+                  <div class="doc-section">
+
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">Overview</h2>
+                      <p class="global-desc">
+                        The steps below walk you through adding the TechWise Video Player to any Webflow project — no custom code experience required. Add the CDN links in Project Settings, then paste the pre-built element directly into your canvas using the Copy Element button.
+                      </p>
+                    </div>
+
+                    <hr class="doc-divider" />
+
+                    <!-- Step 1 -->
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">Step 1 — Add the CDN</h2>
+                      <p class="global-desc">
+                        In Webflow, go to <strong>Project Settings → Custom Code</strong>. Paste the CSS link into the <strong>Head Code</strong> section and the JS script into the <strong>Footer Code</strong> section. This loads the video player on every published page.
+                      </p>
+                      <div class="code-block">
+                        <pre><span class="comment">&lt;!-- Paste in Head Code --&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"stylesheet"</span> <span class="attr">href</span>=<span class="val">"https://jswebflow.netlify.app/techwise/videoplayer/style.css"</span> <span class="tag">/&gt;</span>
+
+<span class="comment">&lt;!-- Paste in Footer Code --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="val">"https://jswebflow.netlify.app/techwise/videoplayer/script.js"</span> <span class="attr">defer</span><span class="tag">&gt;&lt;/script&gt;</span></pre>
+                      </div>
+                    </div>
+
+                    <hr class="doc-divider" />
+
+                    <!-- Step 2 -->
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">Step 2 — Copy the Webflow Element</h2>
+                      <p class="global-desc">
+                        Click <strong>Copy Element</strong> below. Then open your Webflow project, click anywhere on the canvas, and press <strong>Ctrl + V</strong> (Windows) or <strong>Cmd + V</strong> (Mac) to paste. The full video player structure — including classes and attributes — will appear instantly.
+                      </p>
+                      <button
+                        data-copy-btn
+                        data-component-name="Video Component"
+                        data-payload-id="payload-video"
+                        class="element-copy-btn"
+                        style="margin-top: 1rem"
+                      >
+                        Copy Element
+                      </button>
+                    </div>
+
+                    <hr class="doc-divider" />
+
+                    <!-- Step 3 — Configure in Webflow -->
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">Step 3 — Set Your Video URL</h2>
+                      <p class="global-desc">
+                        After pasting the element, select the outer <code>.tw-vp-wrapper</code> div in the Webflow Navigator. In the <strong>Element Settings</strong> panel, find the custom attribute <code>tw-data-video-url</code> and update its value to your video URL (YouTube, Vimeo, MP4, or WebM).
+                      </p>
+                      <p class="global-desc">
+                        To enable <strong>autoplay</strong>, add a new custom attribute named <code>tw-data-autoplay</code> with no value. To use a <strong>custom thumbnail</strong>, select the <code>.tw-vp-thumbnail</code> image element and set its <strong>src</strong> to your poster image URL.
+                      </p>
+                    </div>
+
+                    <hr class="doc-divider" />
+
+                    <!-- Step 4 — HTML reference -->
+                    <div class="doc-block">
+                      <h2 class="heading-style-h2">Step 4 — HTML Reference</h2>
+                      <p class="global-desc">
+                        If you prefer to build the structure manually using Webflow's Embed element, use the markup below as your reference. Only <code>tw-data-video-url</code> is required; <code>tw-data-autoplay</code> is optional.
+                      </p>
+                      <div class="code-block">
+                        <pre><span class="tag">&lt;div</span>
+  <span class="attr">class</span>=<span class="val">"tw-vp-wrapper"</span>
+  <span class="attr">tw-data-video-url</span>=<span class="val">"YOUR_VIDEO_URL_HERE"</span>
+  <span class="attr">aria-label</span>=<span class="val">"Video player"</span>
+<span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"tw-vp-container"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"tw-vp-thumbnail-holder"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">""</span> <span class="attr">alt</span>=<span class="val">""</span> <span class="attr">class</span>=<span class="val">"tw-vp-thumbnail"</span> <span class="tag">/&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Video Player JS -->
+    <script src="https://jswebflow.netlify.app/techwise/videoplayer/script.js" defer ></script>
+
+    <!-- Tabs JS -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const twTabsWrappers = document.querySelectorAll('[tw-tabs="wrapper"]');
+
+        twTabsWrappers.forEach((twTabsWrapper, wrapperIndex) => {
+          const twTabsMenu = twTabsWrapper.querySelector('[tw-tabs="menu"]');
+          const twTabsTriggers = twTabsWrapper.querySelectorAll("[tw-tabs-trigger]");
+          const twTabsPanes = twTabsWrapper.querySelectorAll("[tw-tabs-pane]");
+
+          if (twTabsMenu) {
+            twTabsMenu.setAttribute("role", "tablist");
+            twTabsMenu.setAttribute("aria-label", "Tabs Navigation");
+          }
+
+          twTabsTriggers.forEach((twTabsTrigger, triggerIndex) => {
+            const twTabsValue = twTabsTrigger.getAttribute("tw-tabs-trigger");
+            const twTabsTriggerId = `tw-tab-${wrapperIndex}-${triggerIndex}`;
+            const twTabsPaneId = `tw-pane-${wrapperIndex}-${triggerIndex}`;
+
+            twTabsTrigger.setAttribute("role", "tab");
+            twTabsTrigger.setAttribute("id", twTabsTriggerId);
+            twTabsTrigger.setAttribute("aria-controls", twTabsPaneId);
+            twTabsTrigger.setAttribute("aria-selected", "false");
+
+            const twTabsPane = twTabsWrapper.querySelector(`[tw-tabs-pane="${twTabsValue}"]`);
+            if (twTabsPane) {
+              twTabsPane.setAttribute("role", "tabpanel");
+              twTabsPane.setAttribute("id", twTabsPaneId);
+              twTabsPane.setAttribute("aria-labelledby", twTabsTriggerId);
+              twTabsPane.hidden = true;
+            }
+          });
+
+          function twTabsActivateTab(targetValue) {
+            twTabsTriggers.forEach((twTabsTrigger) => {
+              const isActive = twTabsTrigger.getAttribute("tw-tabs-trigger") === targetValue;
+              twTabsTrigger.setAttribute("aria-selected", isActive ? "true" : "false");
+              twTabsTrigger.classList.toggle("is-active", isActive);
+            });
+
+            twTabsPanes.forEach((twTabsPane) => {
+              const isActive = twTabsPane.getAttribute("tw-tabs-pane") === targetValue;
+              twTabsPane.hidden = !isActive;
+              twTabsPane.classList.toggle("is-active", isActive);
+            });
+          }
+
+          twTabsTriggers.forEach((twTabsTrigger) => {
+            twTabsTrigger.addEventListener("click", () => {
+              const twTabsTargetValue = twTabsTrigger.getAttribute("tw-tabs-trigger");
+              twTabsActivateTab(twTabsTargetValue);
+              twTabsTrigger.focus();
+            });
+
+            twTabsTrigger.addEventListener("keydown", (event) => {
+              const keys = ["ArrowRight", "ArrowLeft", "Home", "End"];
+              if (!keys.includes(event.key)) return;
+              event.preventDefault();
+
+              const twTabsCurrentIndex = [...twTabsTriggers].indexOf(twTabsTrigger);
+              let twTabsNextIndex = twTabsCurrentIndex;
+
+              if (event.key === "ArrowRight") twTabsNextIndex = (twTabsCurrentIndex + 1) % twTabsTriggers.length;
+              if (event.key === "ArrowLeft") twTabsNextIndex = (twTabsCurrentIndex - 1 + twTabsTriggers.length) % twTabsTriggers.length;
+              if (event.key === "Home") twTabsNextIndex = 0;
+              if (event.key === "End") twTabsNextIndex = twTabsTriggers.length - 1;
+
+              const twTabsNextTrigger = twTabsTriggers[twTabsNextIndex];
+              const twTabsNextValue = twTabsNextTrigger.getAttribute("tw-tabs-trigger");
+              twTabsActivateTab(twTabsNextValue);
+              twTabsNextTrigger.focus();
+            });
+          });
+
+          if (twTabsTriggers.length) {
+            const twTabsDefaultValue = twTabsTriggers[0].getAttribute("tw-tabs-trigger");
+            twTabsActivateTab(twTabsDefaultValue);
+          }
+        });
+      });
+    </script>
+
+    <!-- Copy to Clipboard JS -->
+    <script>
+      (function () {
+        var currentPayload = "";
+        var hiddenTrigger = document.createElement("button");
+        hiddenTrigger.contentEditable = "true";
+        hiddenTrigger.style.cssText =
+          "position:fixed;clip:rect(1px,1px,1px,1px);overflow:hidden;height:1px;width:1px;padding:0;border:0;";
+        document.body.appendChild(hiddenTrigger);
+
+        hiddenTrigger.addEventListener("copy", function (e) {
+          e.clipboardData.setData("application/json", currentPayload);
+          e.preventDefault();
+        });
+
+        document.querySelectorAll("[data-copy-btn]").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var id = btn.getAttribute("data-payload-id");
+            currentPayload = document.getElementById(id).textContent.trim();
+            hiddenTrigger.focus();
+            document.execCommand("copy");
+            btn.textContent = "✅ Copied!";
+            setTimeout(function () {
+              btn.textContent = "Copy Element";
+            }, 2000);
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
