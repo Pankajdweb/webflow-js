@@ -22,6 +22,103 @@
         margin: 0;
         padding: 0;
       }
+         /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid #1e2230;
+      backdrop-filter: blur(12px);
+      background: rgba(13, 15, 20, 0.88);
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 60px;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .nav-logo {
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+      color: #e8eaf0;;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-logo-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background:  #e6a020;;
+      box-shadow: 0 0 8px  #e6a020;;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: #6b7280;;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 999px;
+      transition: color 0.2s, background 0.2s;
+      font-family: "Space Grotesk", sans-serif;
+    }
+
+    .nav-links a:hover { color: #e8eaf0; background: rgba(255,255,255,0.05); }
+
+      /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid #1e2230;;
+      padding: 28px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-copy { font-size: 13px; color: #6b7280; }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: #6b7280;
+      text-decoration: none;
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: #e8eaf0; }
 
       body {
         font-family: "Inter", system-ui, sans-serif;
@@ -243,7 +340,13 @@
 
     <div class="page-wrapper">
       <main class="main-wrapper">
-
+<nav>
+  <div class="nav-inner">
+    <a href="https://jswebflow.netlify.app/techwise/" class="nav-logo">
+      <span class="nav-logo-dot"></span> TechWise
+    </a>
+  </div>
+</nav>
         <!-- Header -->
         <header class="section-header">
           <div class="container">
@@ -581,6 +684,11 @@
             </div>
           </div>
         </section>
+        <footer>
+  <div class="footer-inner">
+    <p class="footer-copy">© 2026 TechWise. Built for Webflow.</p>
+      </div>
+</footer>
       </main>
     </div>
 
