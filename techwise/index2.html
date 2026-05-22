@@ -1,0 +1,1096 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TechWise — UI Component Library</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+html{
+    scroll-behavior: smooth;
+}
+
+      :root {
+        --amber: #e6a020;
+        --amber-dim: rgba(230, 160, 32, 0.12);
+        --amber-border: rgba(230, 160, 32, 0.22);
+        --surface: #151820;
+        --border: #1e2230;
+        --text: #e8eaf0;
+        --muted: #6b7280;
+        --bg: #0d0f14;
+      }
+
+      body {
+        font-family: "Inter", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      /* ── Noise overlay ── */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.4;
+      }
+
+      .container {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 24px;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* ── NAV ── */
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        border-bottom: 1px solid var(--border);
+        backdrop-filter: blur(12px);
+        background: rgba(13, 15, 20, 0.85);
+      }
+
+      .nav-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 60px;
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      .nav-logo {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 1.1rem;
+        letter-spacing: -0.02em;
+        color: var(--text);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .nav-logo span {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--amber);
+        box-shadow: 0 0 8px var(--amber);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 8px;
+        list-style: none;
+      }
+
+      .nav-links a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        padding: 6px 14px;
+        border-radius: 999px;
+        transition: color 0.2s, background 0.2s;
+        font-family: "Space Grotesk", sans-serif;
+      }
+
+      .nav-links a:hover {
+        color: var(--text);
+        background: rgba(255,255,255,0.05);
+      }
+
+      /* ── HERO ── */
+      .hero {
+        text-align: center;
+        padding: 120px 24px 100px;
+        border-bottom: 1px solid var(--border);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        top: -60px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(230, 160, 32, 0.06) 0%, transparent 70%);
+        pointer-events: none;
+      }
+
+      .hero-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        max-width: 580px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 14px;
+        border-radius: 999px;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        background: var(--amber-dim);
+        color: var(--amber);
+        border: 1px solid var(--amber-border);
+        animation: fadein 0.6s ease both;
+      }
+
+      .hero h1 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(2.4rem, 6vw, 4rem);
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1;
+        animation: fadein 0.6s 0.1s ease both;
+      }
+
+      .hero h1 em {
+        font-style: normal;
+        color: var(--amber);
+      }
+
+      .hero p {
+        color: var(--muted);
+        font-size: 1.05rem;
+        max-width: 440px;
+        animation: fadein 0.6s 0.2s ease both;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+        animation: fadein 0.6s 0.3s ease both;
+      }
+
+      .btn-primary {
+        appearance: none;
+        border: 1px solid var(--amber-border);
+        background: var(--amber-dim);
+        color: var(--amber);
+        padding: 11px 24px;
+        border-radius: 999px;
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.2s, transform 0.15s;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .btn-primary:hover {
+        background: rgba(230,160,32,0.2);
+        transform: translateY(-1px);
+      }
+
+      .btn-ghost {
+        appearance: none;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--muted);
+        padding: 11px 24px;
+        border-radius: 999px;
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: color 0.2s, border-color 0.2s, transform 0.15s;
+      }
+
+      .btn-ghost:hover {
+        color: var(--text);
+        border-color: #3a3f52;
+        transform: translateY(-1px);
+      }
+
+      /* ── STATS ROW ── */
+      .stats-row {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        padding: 48px 0;
+        border-bottom: 1px solid var(--border);
+        flex-wrap: wrap;
+      }
+
+      .stat {
+        text-align: center;
+      }
+
+      .stat-num {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--amber);
+      }
+
+      .stat-label {
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 500;
+        margin-top: 2px;
+        font-family: "Space Grotesk", sans-serif;
+      }
+
+      /* ── ABOUT SECTION ── */
+      .section {
+        padding: 80px 0;
+        border-bottom: 1px solid var(--border);
+        position: relative;
+        z-index: 1;
+      }
+
+      .section-label {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--amber);
+        margin-bottom: 16px;
+      }
+
+      .section-title {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(1.6rem, 3vw, 2.2rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+        margin-bottom: 20px;
+      }
+
+      .section-desc {
+        color: var(--muted);
+        font-size: 1rem;
+        max-width: 520px;
+        line-height: 1.7;
+      }
+
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        align-items: center;
+        margin-top: 0;
+      }
+
+      .about-left {}
+
+      .feature-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-top: 36px;
+      }
+
+      .feature-item {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+      }
+
+      .feature-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--amber);
+        margin-top: 8px;
+        flex-shrink: 0;
+      }
+
+      .feature-item-text strong {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: var(--text);
+        display: block;
+      }
+
+      .feature-item-text span {
+        font-size: 0.875rem;
+        color: var(--muted);
+      }
+
+      .about-visual {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .code-line {
+        font-family: "SF Mono", "Fira Code", Consolas, monospace;
+        font-size: 12px;
+        color: var(--muted);
+        padding: 8px 12px;
+        background: rgba(255,255,255,0.03);
+        border-radius: 6px;
+        border-left: 2px solid transparent;
+        transition: border-color 0.2s;
+      }
+
+      .code-line:hover {
+        border-left-color: var(--amber);
+        background: rgba(230,160,32,0.04);
+      }
+
+      .code-line .kw { color: #38bdf8; }
+      .code-line .str { color: #34d399; }
+      .code-line .attr { color: var(--amber); }
+      .code-line .cm { color: #374151; }
+
+      /* ── COMPONENTS GRID ── */
+      .components-header {
+        text-align: center;
+        margin-bottom: 52px;
+      }
+
+      .components-header .section-desc {
+        margin: 0 auto;
+      }
+
+      .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+        gap: 20px;
+      }
+
+      .component-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        transition: border-color 0.25s, transform 0.2s;
+        position: relative;
+        group: true;
+      }
+
+      .component-card:hover {
+        border-color: var(--amber-border);
+        transform: translateY(-3px);
+      }
+
+      .component-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 16px;
+        background: radial-gradient(circle at 50% 0%, rgba(230,160,32,0.05) 0%, transparent 60%);
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+      }
+
+      .component-card:hover::before {
+        opacity: 1;
+      }
+
+      .card-preview {
+        aspect-ratio: 980 / 644;
+        background: #000010;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+
+      /* Video Player Preview */
+      .preview-player {
+        width: 80%;
+        background: #1a1e28;
+        border-radius: 10px;
+        border: 1px solid #2a2f3e;
+        overflow: hidden;
+      }
+
+      .preview-player-screen {
+        height: 70px;
+        background: #12141c;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .preview-play-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--amber-dim);
+        border: 1px solid var(--amber-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .preview-play-btn::after {
+        content: "";
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 6px 0 6px 10px;
+        border-color: transparent transparent transparent var(--amber);
+        margin-left: 2px;
+      }
+
+      .preview-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+      }
+
+      .preview-bar {
+        flex: 1;
+        height: 3px;
+        border-radius: 2px;
+        background: #2a2f3e;
+        position: relative;
+      }
+
+      .preview-bar::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 35%;
+        height: 100%;
+        background: var(--amber);
+        border-radius: 2px;
+      }
+
+      .preview-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #2a2f3e;
+      }
+
+      /* Accordion Preview */
+      .preview-accordion {
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .preview-acc-item {
+        background: #1a1e28;
+        border-radius: 8px;
+        border: 1px solid #2a2f3e;
+        overflow: hidden;
+      }
+
+      .preview-acc-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 12px;
+      }
+
+      .preview-acc-title {
+        width: 60%;
+        height: 6px;
+        border-radius: 3px;
+        background: #2a2f3e;
+      }
+
+      .preview-acc-icon {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        border: 1.5px solid #3a3f52;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        color: var(--amber);
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .preview-acc-body {
+        padding: 0 12px 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .preview-acc-line {
+        height: 4px;
+        border-radius: 2px;
+        background: #2a2f3e;
+      }
+
+      /* Popup Preview */
+      .preview-popup-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .preview-popup-modal {
+        background: #1a1e28;
+        border-radius: 10px;
+        border: 1px solid var(--amber-border);
+        padding: 16px;
+        width: 140px;
+      }
+
+      .preview-popup-title {
+        width: 70%;
+        height: 6px;
+        border-radius: 3px;
+        background: var(--amber-dim);
+        border: 1px solid var(--amber-border);
+        margin-bottom: 10px;
+      }
+
+      .preview-popup-line {
+        height: 4px;
+        border-radius: 2px;
+        background: #2a2f3e;
+        margin-bottom: 6px;
+      }
+
+      .preview-popup-btn {
+        margin-top: 10px;
+        width: 60%;
+        height: 20px;
+        border-radius: 999px;
+        background: var(--amber-dim);
+        border: 1px solid var(--amber-border);
+      }
+
+      /* Checklist Preview */
+      .preview-checklist {
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .preview-check-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #1a1e28;
+        border-radius: 8px;
+        border: 1px solid #2a2f3e;
+        padding: 8px 12px;
+      }
+
+      .preview-checkbox {
+        width: 14px;
+        height: 14px;
+        border-radius: 4px;
+        border: 1.5px solid #3a3f52;
+        flex-shrink: 0;
+      }
+
+      .preview-checkbox.checked {
+        background: var(--amber-dim);
+        border-color: var(--amber);
+        position: relative;
+      }
+
+      .preview-checkbox.checked::after {
+        content: "✓";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 9px;
+        color: var(--amber);
+        font-weight: 700;
+      }
+
+      .preview-check-text {
+        flex: 1;
+        height: 5px;
+        border-radius: 2px;
+        background: #2a2f3e;
+      }
+
+      .check-text-done {
+        background: rgba(230,160,32,0.2) !important;
+      }
+
+      /* Card Body */
+      .card-body {
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        flex: 1;
+      }
+
+      .card-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .card-tag {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--amber);
+        background: var(--amber-dim);
+        border: 1px solid var(--amber-border);
+        padding: 3px 10px;
+        border-radius: 999px;
+      }
+
+      .card-arrow {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--muted);
+        font-size: 14px;
+        transition: border-color 0.2s, color 0.2s, transform 0.2s;
+      }
+
+      .component-card:hover .card-arrow {
+        border-color: var(--amber-border);
+        color: var(--amber);
+        transform: translate(2px, -2px);
+      }
+
+      .card-title {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: var(--text);
+      }
+
+      .card-desc {
+        font-size: 0.875rem;
+        color: var(--muted);
+        line-height: 1.6;
+        flex: 1;
+      }
+
+      .card-footer {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+        flex-wrap: wrap;
+      }
+
+      .card-pill {
+        font-size: 11px;
+        color: #4b5563;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid #1e2230;
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 500;
+      }
+
+      /* ── FOOTER CTA ── */
+      .cta-section {
+        padding: 80px 0;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+      }
+
+      .cta-section::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 800px;
+        height: 400px;
+        background: radial-gradient(ellipse, rgba(230,160,32,0.05) 0%, transparent 70%);
+        pointer-events: none;
+      }
+
+      .cta-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .cta-inner h2 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(1.6rem, 4vw, 2.4rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .cta-inner p {
+        color: var(--muted);
+        max-width: 400px;
+        font-size: 0.95rem;
+      }
+
+      /* ── FOOTER ── */
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 28px 0;
+        position: relative;
+        z-index: 1;
+      }
+
+      .footer-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .footer-copy {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 20px;
+        list-style: none;
+      }
+
+      .footer-links a {
+        font-size: 13px;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s;
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 500;
+      }
+
+      img{
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .footer-links a:hover { color: var(--text); }
+
+      @keyframes fadein {
+        from { opacity: 0; transform: translateY(12px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      @media (max-width: 640px) {
+        .about-grid { grid-template-columns: 1fr; }
+        .about-visual { display: none; }
+        .cards-grid { grid-template-columns: 1fr; }
+        .nav-links { display: none; }
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <!-- NAV -->
+    <nav>
+      <div class="nav-inner">
+        <a href="#" class="nav-logo">
+          <span></span> TechWise
+        </a>
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#components">Components</a></li>
+          <!-- <li><a href="https://webflow.com" target="_blank">Webflow</a></li> -->
+        </ul>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero" id="home">
+      <div class="hero-inner">
+        <div class="badge">🔧 UI Component Library for Webflow</div>
+        <h1>Build smarter with <em>TechWise</em> components</h1>
+        <p>Production-ready, accessible, and drop-in ready. Every component is crafted for Webflow with clean markup, schema support, and developer-friendly APIs.</p>
+        <div class="hero-actions">
+          <a href="#components" class="btn-primary">Browse Components →</a>
+          <!-- <a href="https://webflow.com" class="btn-ghost" target="_blank">View on Webflow</a> -->
+        </div>
+      </div>
+    </header>
+
+    <!-- STATS -->
+    <div class="container">
+      <div class="stats-row">
+        <div class="stat">
+          <div class="stat-num">4+</div>
+          <div class="stat-label">Components</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Accessible</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">0</div>
+          <div class="stat-label">Dependencies</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Customizable</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <div class="container">
+        <div class="about-grid">
+          <div class="about-left">
+            <p class="section-label">About TechWise</p>
+            <h2 class="section-title">Components that just&nbsp;work</h2>
+            <p class="section-desc">TechWise delivers a curated collection of Webflow-native UI elements — built with accessibility, performance, and developer ergonomics as first-class priorities. Drop them in, style them your way.</p>
+            <div class="feature-list">
+              <div class="feature-item">
+                <div class="feature-dot"></div>
+                <div class="feature-item-text">
+                  <strong>Schema-ready</strong>
+                  <span>Every component ships with structured data support out of the box.</span>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-dot"></div>
+                <div class="feature-item-text">
+                  <strong>Smooth animations</strong>
+                  <span>CSS-first transitions with ARIA state management built in.</span>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-dot"></div>
+                <div class="feature-item-text">
+                  <strong>Developer-friendly</strong>
+                  <span>Clean attributes API — no framework lock-in, pure vanilla JS.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="about-visual">
+            <div class="code-line"><span class="cm">// initialize an accordion</span></div>
+            <div class="code-line">
+              <span class="kw">const</span> acc = <span class="kw">new</span> <span class="attr">TechWise</span>.<span class="attr">Accordion</span>({
+            </div>
+            <div class="code-line">&nbsp;&nbsp;<span class="attr">selector</span>: <span class="str">'[tw-accordion]'</span>,</div>
+            <div class="code-line">&nbsp;&nbsp;<span class="attr">animate</span>: <span class="str">true</span>,</div>
+            <div class="code-line">&nbsp;&nbsp;<span class="attr">schema</span>: <span class="str">true</span></div>
+            <div class="code-line">});</div>
+            <div class="code-line"><span class="cm">// open the first item</span></div>
+            <div class="code-line">acc.<span class="attr">open</span>(<span class="str">0</span>);</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPONENTS -->
+    <section class="section" id="components">
+      <div class="container">
+        <div class="components-header">
+          <p class="section-label">Components</p>
+          <h2 class="section-title">Pick your element</h2>
+          <p class="section-desc">Each component is a standalone page — full documentation, live demos, and copy-ready snippets included.</p>
+        </div>
+
+        <div class="cards-grid">
+
+          <!-- Video Player -->
+          <a href="https://jswebflow.netlify.app/techwise/videoplayer/" target="_blank" class="component-card">
+            <div class="card-preview">
+              <img src="/gif/Vimeo Video.gif" alt="">
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="card-tag">Media</span>
+                <div class="card-arrow">↗</div>
+              </div>
+              <div class="card-title">Video Player</div>
+              <p class="card-desc">Auto-detects YouTube, Vimeo, MP4, and WebM URLs. Renders an accessible, fully customizable player — one attribute, zero config.</p>
+              <div class="card-footer">
+                <span class="card-pill">YouTube</span>
+                <span class="card-pill">Vimeo</span>
+                <span class="card-pill">MP4</span>
+                <span class="card-pill">Accessible</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Accordion -->
+          <a href="https://jswebflow.netlify.app/techwise/accordian/" target="_blank" class="component-card">
+            <div class="card-preview">
+              <img src="/gif/Accordian.gif" alt="">
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="card-tag">Layout</span>
+                <div class="card-arrow">↗</div>
+              </div>
+              <div class="card-title">Accordion</div>
+              <p class="card-desc">Flexible, accessible accordion with schema support, smooth CSS animations, and a clean attributes-driven API for Webflow projects.</p>
+              <div class="card-footer">
+                <span class="card-pill">ARIA</span>
+                <span class="card-pill">Schema.org</span>
+                <span class="card-pill">Animated</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Popup -->
+          <a href="https://jswebflow.netlify.app/techwise/modal"  target="_blank" class="component-card">
+            <div class="card-preview">
+              <img src="/gif/Modal.gif" alt="">
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="card-tag">Overlay</span>
+                <div class="card-arrow">↗</div>
+              </div>
+              <div class="card-title">Popup / Modal</div>
+              <p class="card-desc">Focus-trapped, keyboard-dismissible modal overlay with backdrop blur, scroll-lock, and configurable entry animations.</p>
+              <div class="card-footer">
+                <span class="card-pill">Focus trap</span>
+                <span class="card-pill">ESC key</span>
+                <span class="card-pill">Animated</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Checklist -->
+          <a href="https://jswebflow.netlify.app/techwise/accessibilitychecklist" target="_blank" class="component-card">
+            <div class="card-preview">
+              <div class="preview-checklist">
+                <div class="preview-check-item">
+                  <div class="preview-checkbox checked"></div>
+                  <div class="preview-check-text check-text-done"></div>
+                </div>
+                <div class="preview-check-item">
+                  <div class="preview-checkbox checked"></div>
+                  <div class="preview-check-text check-text-done" style="width:55%"></div>
+                </div>
+                <div class="preview-check-item">
+                  <div class="preview-checkbox"></div>
+                  <div class="preview-check-text"></div>
+                </div>
+                <div class="preview-check-item">
+                  <div class="preview-checkbox"></div>
+                  <div class="preview-check-text" style="width:70%"></div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="card-tag">Form</span>
+                <div class="card-arrow">↗</div>
+              </div>
+              <div class="card-title">Checklist</div>
+              <p class="card-desc">Interactive, persistent checklist with progress tracking, optional localStorage sync, and fine-grained state callbacks for CMS-driven lists.</p>
+              <div class="card-footer">
+                <span class="card-pill">Progress</span>
+                <span class="card-pill">Persistent</span>
+                <span class="card-pill">CMS-ready</span>
+              </div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-inner">
+          <div class="badge">Free & open source</div>
+          <h2>Ready to build?</h2>
+          <p>All TechWise components are free to use in any Webflow project — personal or commercial. No attribution required.</p>
+          <div class="hero-actions">
+            <a href="#components" class="btn-primary">Get started →</a>
+            <!-- <a href="https://github.com" class="btn-ghost" target="_blank">GitHub</a> -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <div class="footer-inner">
+          <p class="footer-copy">© 2026 TechWise. Built for Webflow.</p>
+          <ul class="footer-links">
+            <li><a href="#components">Components</a></li>
+            <li><a href="#about">About</a></li>
+            <!-- <li><a href="https://webflow.com" target="_blank">Webflow</a></li> -->
+          </ul>
+        </div>
+      </div>
+    </footer>
+
+  </body>
+</html>
