@@ -1,0 +1,907 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TechWise Navbar — Lightweight Responsive Navigation Component</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="https://jswebflow.netlify.app/techwise/style.css" />
+
+    <style>
+      .navbar-img {
+        width: 100%;
+      }
+
+      /* Documentation Styles */
+      .doc-section {
+        margin-top: 3rem;
+      }
+
+      .doc-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+      }
+
+ 
+
+    
+      .feature-tag {
+        display: inline-block;
+        padding: 0.2rem 0.65rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        background: #000;
+        color: #fff;
+        margin-right: 0.35rem;
+        margin-bottom: 0.35rem;
+      }
+
+      .divider {
+        border: none;
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+        margin: 2.5rem 0;
+      }
+
+      .navbar-buttons-holder {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 1.5rem;
+      }
+
+      .extra-margin{
+        margin-top: 5rem;
+        margin-bottom: 5rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ============================================================
+         PAYLOAD: Navbar (tw_navbar)
+         Used by: Copy Element — Navbar button
+    ============================================================ -->
+    <script type="application/json" id="payload-navbar">
+      {
+        "type": "@webflow/XscpData",
+        "payload": {
+          "nodes": [
+            {
+              "_id": "1d8857c5-fe28-97ae-b7d9-5177f150bdc5",
+              "type": "NavbarWrapper",
+              "tag": "div",
+              "classes": ["0d44531e-ad82-9206-4a9a-f90b6d9f546a"],
+              "children": ["8b1208ca-7d1d-f933-d9d3-ba7bd9d32966"],
+              "data": {
+                "tag": "div",
+                "navbar": {
+                  "animation": "default",
+                  "collapse": "medium",
+                  "docHeight": false,
+                  "duration": 400,
+                  "easing": "ease",
+                  "easing2": "ease",
+                  "noScroll": false,
+                  "type": "wrapper"
+                },
+                "search": { "exclude": true },
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [],
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "8b1208ca-7d1d-f933-d9d3-ba7bd9d32966",
+              "type": "Block",
+              "tag": "div",
+              "classes": ["70e71ac8-6730-b402-7234-cc8e22a5bffe"],
+              "children": [
+                "cc1918a1-0a89-233a-c6c2-881a347ac1a0",
+                "7d497cfc-07c7-ffd1-1942-f4c6bcd486d9"
+              ],
+              "data": {
+                "tag": "div",
+                "text": false,
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "cc1918a1-0a89-233a-c6c2-881a347ac1a0",
+              "type": "HtmlEmbed",
+              "tag": "div",
+              "classes": ["ffeea984-ab57-0a70-d1dc-be8c75a71170"],
+              "children": [],
+              "v": "",
+              "data": {
+                "search": { "exclude": true },
+                "embed": {
+                  "type": "html",
+                  "meta": {
+                    "html": "",
+                    "div": false,
+                    "script": false,
+                    "compilable": false,
+                    "iframe": false
+                  }
+                },
+                "insideRTE": false,
+                "content": "<style>\n  .humberger-button .humberger-line:nth-child(1){top:0;}\n  .humberger-button .humberger-line:nth-child(2){top:8px;}\n  .humberger-button .humberger-line:nth-child(3){top:16px;}\n  .humberger-button.w--open .humberger-line:nth-child(1){transform:rotate(45deg);top:8px;}\n  .humberger-button.w--open .humberger-line:nth-child(2){opacity:0;}\n  .humberger-button.w--open .humberger-line:nth-child(3){transform:rotate(-45deg);top:8px;width:100%;}\n  body:has(.humberger-button.w--open){overflow:hidden;}\n  .nav:has(.humberger-button.w--open){border-bottom-right-radius:0rem;border-bottom-left-radius:0rem;border-bottom:none;}\n</style>",
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [],
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "7d497cfc-07c7-ffd1-1942-f4c6bcd486d9",
+              "type": "Block",
+              "tag": "div",
+              "classes": ["68245080-0df9-d61d-adad-28e756efd301"],
+              "children": [
+                "77799706-0103-da97-1735-7ba8ac9eda47",
+                "d2d630c0-35ce-0b40-206a-7176d265737c",
+                "2f5c1103-dec0-c42a-cef9-ef74d12aaa2b"
+              ],
+              "data": {
+                "tag": "div",
+                "text": false,
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "77799706-0103-da97-1735-7ba8ac9eda47",
+              "type": "NavbarBrand",
+              "tag": "a",
+              "classes": ["590d3e90-925e-38d3-3e1e-1b6cf3b8b169"],
+              "children": ["09edf282-bfdd-14a5-ec45-8570975e2ebe"],
+              "data": {
+                "navbar": { "type": "brand" },
+                "link": { "mode": "external", "url": "#" },
+                "eventIds": [],
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "09edf282-bfdd-14a5-ec45-8570975e2ebe",
+              "type": "Block",
+              "tag": "div",
+              "classes": [],
+              "children": ["eb3e6b36-ddae-0da1-ba6a-3b0bed3f2256"],
+              "data": {
+                "text": true,
+                "tag": "div",
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "eb3e6b36-ddae-0da1-ba6a-3b0bed3f2256",
+              "text": true,
+              "v": "TECHWISE"
+            },
+            {
+              "_id": "d2d630c0-35ce-0b40-206a-7176d265737c",
+              "type": "NavbarMenu",
+              "tag": "nav",
+              "classes": ["55354be1-40d6-b453-9b10-c6268b6d5424"],
+              "children": ["915b75d1-b4d6-19cb-6426-ea8561e3624e"],
+              "data": {
+                "tag": "nav",
+                "navbar": { "type": "menu" },
+                "attr": { "role": "navigation", "id": "" },
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "xattr": [],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "915b75d1-b4d6-19cb-6426-ea8561e3624e",
+              "type": "Block",
+              "tag": "div",
+              "classes": ["bc050999-8f85-bba5-8de2-727480782865"],
+              "children": [
+                "6958d78a-c469-a0cc-f3f8-fc32d53e1b9c",
+                "a2c34668-3e71-3558-72ef-31b5a9288471",
+                "f4c6e643-46c1-e29b-c2e9-3f5efaad515c",
+                "ea2dad00-dcc9-b8e6-6bf8-0599991e0c1b"
+              ],
+              "data": {
+                "tag": "div",
+                "text": false,
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "6958d78a-c469-a0cc-f3f8-fc32d53e1b9c",
+              "type": "NavbarLink",
+              "tag": "a",
+              "classes": ["07354e9b-22b1-0f06-947a-fd83e5bd7c96"],
+              "children": ["3c975943-c96c-1cab-5b09-c2105df47b9d"],
+              "data": {
+                "navbar": { "type": "link" },
+                "link": { "mode": "external", "url": "#" },
+                "eventIds": [],
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "3c975943-c96c-1cab-5b09-c2105df47b9d",
+              "text": true,
+              "v": "Home"
+            },
+            {
+              "_id": "a2c34668-3e71-3558-72ef-31b5a9288471",
+              "type": "NavbarLink",
+              "tag": "a",
+              "classes": ["07354e9b-22b1-0f06-947a-fd83e5bd7c96"],
+              "children": ["f4b52090-078b-2da0-96ff-6c2f0e289c3a"],
+              "data": {
+                "navbar": { "type": "link" },
+                "link": { "mode": "external", "url": "#" },
+                "eventIds": [],
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "f4b52090-078b-2da0-96ff-6c2f0e289c3a",
+              "text": true,
+              "v": "About"
+            },
+            {
+              "_id": "f4c6e643-46c1-e29b-c2e9-3f5efaad515c",
+              "type": "NavbarLink",
+              "tag": "a",
+              "classes": ["07354e9b-22b1-0f06-947a-fd83e5bd7c96"],
+              "children": ["5c32b3ca-b838-ed17-8689-c069846f8c9b"],
+              "data": {
+                "navbar": { "type": "link" },
+                "link": { "mode": "external", "url": "#" },
+                "eventIds": [],
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "5c32b3ca-b838-ed17-8689-c069846f8c9b",
+              "text": true,
+              "v": "PortFolio"
+            },
+            {
+              "_id": "ea2dad00-dcc9-b8e6-6bf8-0599991e0c1b",
+              "type": "NavbarLink",
+              "tag": "a",
+              "classes": ["07354e9b-22b1-0f06-947a-fd83e5bd7c96"],
+              "children": ["b614328e-0342-ff94-d43d-7fa149e2c0c6"],
+              "data": {
+                "navbar": { "type": "link" },
+                "link": { "mode": "external", "url": "#" },
+                "eventIds": [],
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "b614328e-0342-ff94-d43d-7fa149e2c0c6",
+              "text": true,
+              "v": "Contact"
+            },
+            {
+              "_id": "2f5c1103-dec0-c42a-cef9-ef74d12aaa2b",
+              "type": "NavbarButton",
+              "tag": "div",
+              "classes": ["aa7f36bc-e8ad-837b-edc1-de899c8ab92a"],
+              "children": ["f430f057-dcb7-9285-7bf5-016f234f87cc"],
+              "data": {
+                "tag": "div",
+                "navbar": { "type": "button" },
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "f430f057-dcb7-9285-7bf5-016f234f87cc",
+              "type": "Block",
+              "tag": "div",
+              "classes": ["13575414-f6e3-9bb8-bbba-2d98e80022a0"],
+              "children": ["b09d820b-9a48-d3b9-3cde-d82f89a11df3"],
+              "data": {
+                "tag": "div",
+                "text": false,
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "b09d820b-9a48-d3b9-3cde-d82f89a11df3",
+              "type": "Block",
+              "tag": "div",
+              "classes": ["eeb941b6-0bf6-e688-b905-4a21288b4676"],
+              "children": [
+                "209fb48d-d554-d69c-e3b1-7af60b4f2cf4",
+                "ff2bdec1-577b-0eae-d788-bfe6b70faae3",
+                "e8eda56c-a748-32ac-3b80-846fc644f807"
+              ],
+              "data": {
+                "tag": "div",
+                "text": false,
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "209fb48d-d554-d69c-e3b1-7af60b4f2cf4",
+              "type": "Block",
+              "tag": "div",
+              "classes": ["9b387965-8c14-bee9-8b01-247435470d23"],
+              "children": [],
+              "data": {
+                "tag": "div",
+                "text": false,
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "ff2bdec1-577b-0eae-d788-bfe6b70faae3",
+              "type": "Block",
+              "tag": "div",
+              "classes": ["9b387965-8c14-bee9-8b01-247435470d23"],
+              "children": [],
+              "data": {
+                "tag": "div",
+                "text": false,
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            },
+            {
+              "_id": "e8eda56c-a748-32ac-3b80-846fc644f807",
+              "type": "Block",
+              "tag": "div",
+              "classes": ["9b387965-8c14-bee9-8b01-247435470d23"],
+              "children": [],
+              "data": {
+                "tag": "div",
+                "text": false,
+                "devlink": { "runtimeProps": {}, "slot": "" },
+                "displayName": "",
+                "attr": { "id": "" },
+                "xattr": [],
+                "search": { "exclude": false },
+                "visibility": {
+                  "conditions": [],
+                  "keepInHtml": { "tag": "False", "val": {} }
+                }
+              }
+            }
+          ],
+          "styles": [
+            {
+              "_id": "aa7f36bc-e8ad-837b-edc1-de899c8ab92a",
+              "fake": false,
+              "type": "class",
+              "name": "humberger-button",
+              "namespace": "",
+              "comb": "",
+              "styleLess": "",
+              "variants": {
+                "medium": {
+                  "styleLess": "display: flex; width: 2.5rem; height: 2.5rem; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; flex-direction: column; flex-wrap: nowrap; border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem; border-bottom-left-radius: 0.5rem; border-bottom-right-radius: 0.5rem; background-color: hsla(0, 0.00%, 0.00%, 1.00);"
+                },
+                "medium_open": {
+                  "styleLess": "background-color: hsla(0, 0.00%, 0.00%, 1.00);"
+                }
+              },
+              "children": [],
+              "createdBy": "586aa9980dca55161330cbbb",
+              "origin": null,
+              "selector": null
+            },
+            {
+              "_id": "68245080-0df9-d61d-adad-28e756efd301",
+              "fake": false,
+              "type": "class",
+              "name": "tw-navbar-row",
+              "namespace": "",
+              "comb": "",
+              "styleLess": "display: flex; justify-content: space-between; align-items: center;",
+              "variants": {},
+              "children": [],
+              "createdBy": "586aa9980dca55161330cbbb",
+              "origin": null,
+              "selector": null
+            },
+            {
+              "_id": "13575414-f6e3-9bb8-bbba-2d98e80022a0",
+              "fake": false,
+              "type": "class",
+              "name": "humberger-btn-wrap",
+              "namespace": "",
+              "comb": "",
+              "styleLess": "",
+              "variants": {
+                "medium": {
+                  "styleLess": "display: flex; width: 100%; height: 100%; justify-content: center; align-items: center;"
+                }
+              },
+              "children": [],
+              "createdBy": "586aa9980dca55161330cbbb",
+              "origin": null,
+              "selector": null
+            },
+            {
+              "_id": "55354be1-40d6-b453-9b10-c6268b6d5424",
+              "fake": false,
+              "type": "class",
+              "name": "tw-navigation",
+              "namespace": "",
+              "comb": "",
+              "styleLess": "",
+              "variants": {
+                "medium": {
+                  "styleLess": "left: 0%; top: 4.5rem; right: 0%; bottom: auto; background-color: hsla(0, 0.00%, 100.00%, 1.00); height: @raw<|calc(100dvh - 4.5rem)|>;"
+                }
+              },
+              "children": [],
+              "createdBy": "586aa9980dca55161330cbbb",
+              "origin": null,
+              "selector": null
+            },
+            {
+              "_id": "9b387965-8c14-bee9-8b01-247435470d23",
+              "fake": false,
+              "type": "class",
+              "name": "humberger-line",
+              "namespace": "",
+              "comb": "",
+              "styleLess": "",
+              "variants": {
+                "medium": {
+                  "styleLess": "position: absolute; left: 0%; top: 0%; right: 0%; bottom: auto; width: 100%; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: hsla(0, 0.00%, 100.00%, 1.00); border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem; border-bottom-left-radius: 0.5rem; border-bottom-right-radius: 0.5rem; transition-property: all; transition-duration: 300ms; transition-timing-function: ease;"
+                }
+              },
+              "children": [],
+              "createdBy": "586aa9980dca55161330cbbb",
+              "origin": null,
+              "selector": null
+            },
+            {
+              "_id": "590d3e90-925e-38d3-3e1e-1b6cf3b8b169",
+              "fake": false,
+              "type": "class",
+              "name": "tw-logo-link",
+              "namespace": "",
+              "comb": "",
+              "styleLess": "font-size: 1.5rem; line-height: 1;",
+              "variants": {
+                "small": {
+                  "styleLess": "padding-left: 0px; font-size: 1.75rem;"
+                }
+              },
+              "children": [],
+              "createdBy": "586aa9980dca55161330cbbb",
+              "origin": null,
+              "selector": null
+            },
+            {
+              "_id": "eeb941b6-0bf6-e688-b905-4a21288b4676",
+              "fake": false,
+              "type": "class",
+              "name": "humberger-lines-holder",
+              "namespace": "",
+              "comb": "",
+              "styleLess": "",
+              "variants": {
+                "medium": {
+                  "styleLess": "position: relative; width: 1.5rem; height: 1rem;"
+                }
+              },
+              "children": [],
+              "createdBy": "586aa9980dca55161330cbbb",
+              "origin": null,
+              "selector": null
+            },
+            {
+              "_id": "07354e9b-22b1-0f06-947a-fd83e5bd7c96",
+              "fake": false,
+              "type": "class",
+              "name": "tw-navigation-link",
+              "namespace": "",
+              "comb": "",
+              "styleLess": "padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; font-size: 1.125rem; line-height: 1;",
+              "variants": {
+                "medium": {
+                  "styleLess": "margin-right: 0px; margin-left: 0px; font-size: 1.5rem;"
+                },
+                "small": { "styleLess": "font-size: 1.25rem;" }
+              },
+              "children": [],
+              "createdBy": "586aa9980dca55161330cbbb",
+              "origin": null,
+              "selector": null
+            },
+            {
+              "_id": "ffeea984-ab57-0a70-d1dc-be8c75a71170",
+              "fake": false,
+              "type": "class",
+              "name": "navbar-cs",
+              "namespace": "",
+              "comb": "",
+              "styleLess": "",
+              "variants": { "medium": { "styleLess": "display: none;" } },
+              "children": [],
+              "createdBy": "586aa9980dca55161330cbbb",
+              "origin": null,
+              "selector": null
+            },
+            {
+              "_id": "0d44531e-ad82-9206-4a9a-f90b6d9f546a",
+              "fake": false,
+              "type": "class",
+              "name": "tw-navbar",
+              "namespace": "",
+              "comb": "",
+              "styleLess": "position: fixed; left: 0%; top: 0%; right: 0%; bottom: auto; padding-top: 1rem; padding-bottom: 1rem; background-color: hsla(0, 0.00%, 86.67%, 0.00);",
+              "variants": { "medium": { "styleLess": "height: 4.5rem;" } },
+              "children": [],
+              "createdBy": "586aa9980dca55161330cbbb",
+              "origin": null,
+              "selector": null
+            },
+            {
+              "_id": "bc050999-8f85-bba5-8de2-727480782865",
+              "fake": false,
+              "type": "class",
+              "name": "tw-navigation-content",
+              "namespace": "",
+              "comb": "",
+              "styleLess": "display: flex; grid-column-gap: 1.25rem; grid-row-gap: 1.25rem;",
+              "variants": {
+                "medium": {
+                  "styleLess": "overflow: auto; height: 100%; padding-right: 2.5rem; padding-left: 2.5rem; flex-direction: column; justify-content: flex-start; flex-wrap: nowrap; align-items: flex-start;"
+                },
+                "small": {
+                  "styleLess": "padding-right: 1.25rem; padding-left: 1.25rem;"
+                }
+              },
+              "children": [],
+              "createdBy": "586aa9980dca55161330cbbb",
+              "origin": null,
+              "selector": null
+            },
+            {
+              "_id": "70e71ac8-6730-b402-7234-cc8e22a5bffe",
+              "fake": false,
+              "type": "class",
+              "name": "container",
+              "namespace": "",
+              "comb": "",
+              "styleLess": "padding-right: 2.5rem; padding-left: 2.5rem;",
+              "variants": {
+                "small": {
+                  "styleLess": "padding-right: 1.25rem; padding-left: 1.25rem;"
+                }
+              },
+              "children": [],
+              "createdBy": "586aa9980dca55161330cbbb",
+              "origin": null,
+              "selector": null
+            }
+          ],
+          "assets": [],
+          "ix1": [],
+          "ix2": { "interactions": [], "events": [], "actionLists": [] }
+        },
+        "meta": {
+          "droppedLinks": 0,
+          "dynBindRemovedCount": 0,
+          "dynListBindRemovedCount": 0,
+          "paginationRemovedCount": 0,
+          "universalBindingsRemovedCount": 0,
+          "unlinkedSymbolCount": 0,
+          "codeComponentsRemovedCount": 0,
+          "richTextComponentsStripped": false
+        }
+      }
+    </script>
+
+    <div class="page-wrapper">
+      <main class="main-wrapper">
+        <!-- NAV -->
+        <nav class="navbar">
+          <div class="container">
+            <div class="nav-inner">
+              <a
+                href="https://jswebflow.netlify.app/techwise/"
+                class="nav-logo"
+              >
+                <span></span> TechWise
+              </a>
+            </div>
+          </div>
+        </nav>
+
+        <!-- ─── HERO ─────────────────────────────────────────────── -->
+        <header class="section-main">
+          <div class="padding-section-medium">
+            <div class="container">
+              <div class="header-content">
+                <div class="badge">TechWise Navbar — Zero Dependencies</div>
+                <h1 class="heading-style-h1">Responsive Navbar</h1>
+                <p class="global-desc">
+                  A fixed, fully responsive navigation bar for Webflow — no
+                  libraries, no custom code setup required. Paste it into any
+                  project and get a polished desktop nav with an animated
+                  hamburger drawer on mobile, all driven by native Webflow
+                  interactions.
+                </p>
+
+                
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- ─── DEMO ─────────────────────────────────────────────── -->
+        <section class="section-main">
+          <div class="padding-section-medium">
+            <div class="container">
+              <div class="section-header-left">
+                <!-- ─── DOCUMENTATION ────────────────────────────── -->
+                  <h2 class="heading-style-h2">Documentation</h2>
+                  <p class="global-desc">
+                    Everything you need to get this navbar into your Webflow
+                    project in seconds — no plugins, no custom code panel setup,
+                    no dependencies.
+                  </p>
+
+                  <div class="layout-grid extra-margin">
+                    <div class="section-header-left">
+                      <h3 class="heading-style-h3">Preview the Navbar</h3>
+                      <p class="global-desc">
+                        Click the <strong>Preview Link</strong> button above to
+                        open a live demo in a new tab. Resize the browser window
+                        to see how the navbar transitions from the full desktop
+                        layout to the animated hamburger menu on mobile and
+                        tablet screens.
+                      </p>
+                    </div>
+
+                    <div class="section-header-left">
+                      <h3 class="heading-style-h3">
+                        Copy &amp; Paste into Webflow
+                      </h3>
+                      <p class="global-desc">
+                        Click the <strong>Copy For Webflow</strong> button above
+                        — the component is instantly copied to your clipboard.
+                        Open your Webflow project in the Designer, click
+                        anywhere on the canvas, and press
+                        <strong>Cmd / Ctrl + V</strong> to paste. The full
+                        navbar — structure, styles, and all — drops straight in,
+                        ready to use.
+                      </p>
+                    </div>
+
+                    <div class="section-header-left">
+                      <h3 class="heading-style-h3">Fully Responsive</h3>
+                      <p class="global-desc">
+                        The navbar is built to look great on every device. On
+                        desktop it displays a horizontal link row. On tablets
+                        and mobiles it collapses into a full-screen overlay menu
+                        triggered by an animated hamburger button — no extra
+                        setup required.
+                      </p>
+                    </div>
+
+                    <div class="section-header-left">
+                      <h3 class="heading-style-h3">Zero Dependencies</h3>
+                      <p class="global-desc">
+                        No JavaScript libraries, no npm packages, no third-party
+                        scripts. The hamburger animation and scroll-lock
+                        behaviour run entirely on CSS, using Webflow's native
+                        <code>w--open</code> class — keeping your project fast
+                        and clean.
+                      </p>
+                    </div>
+
+                    <div class="section-header-left">
+                      <h3 class="heading-style-h3">Easy to Customise</h3>
+                      <p class="global-desc">
+                        Every part of the navbar is styled with named Webflow
+                        classes. Update colours, fonts, spacing, or link labels
+                        directly in the Style Panel — no code editing needed.
+                        Swap the logo text for an image in seconds.
+                      </p>
+                    </div>
+
+                    <div class="section-header-left">
+                      <h3 class="heading-style-h3">
+                        Fixed &amp; Always Visible
+                      </h3>
+                      <p class="global-desc">
+                        The navbar is fixed to the top of the viewport so it
+                        stays visible as users scroll through your page. The
+                        background starts transparent — ideal for layering over
+                        hero sections — and can easily be set to a solid colour
+                        via the Style Panel.
+                      </p>
+                    </div>
+                  </div>
+
+                <h2 class="heading-style-h2">Live Preview</h2>
+                <p class="global-desc">
+                  See the navbar in action — resize the window to trigger the
+                  mobile hamburger menu. The overlay takes full viewport height
+                  and locks body scroll until closed.
+                </p>
+
+                <img
+                  class="navbar-img"
+                  src="/gif/Navbar Image.png"
+                  alt="TechWise Navbar preview showing desktop and mobile states"
+                />
+
+                <div class="navbar-buttons-holder">
+                  <a
+                    href="https://tw-component-library.webflow.io/tw-navbar"
+                    target="_blank"
+                    class="global-button"
+                    >Preview Link</a
+                  >
+                  <button
+                    data-copy-btn
+                    data-component-name="Navbar"
+                    data-payload-id="payload-navbar"
+                    class="global-button"
+                  >
+                    Copy For Webflow
+                  </button>
+                </div>
+              </div>
+              <!-- /section-header-left -->
+            </div>
+            <!-- /container -->
+          </div>
+          <!-- /padding-section-medium -->
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+          <div class="container">
+            <p class="footer-copy">© 2026 TechWise. Built for Webflow.</p>
+          </div>
+        </footer>
+      </main>
+    </div>
+
+    <script src="https://jswebflow.netlify.app/techwise/webflowcopy.js"></script>
+  </body>
+</html>
