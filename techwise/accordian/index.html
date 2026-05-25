@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   
+
     <title>Accordian Element</title>
 
     <!-- Fonts -->
@@ -14,247 +14,10 @@
       rel="stylesheet"
     />
 
+    <link rel="stylesheet" href="https://jswebflow.netlify.app/techwise/style.css" />
+
     <!-- Page Styles -->
     <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      body {
-        font-family: "Inter", system-ui, sans-serif;
-        background: #0d0f14;
-        color: #e8eaf0;
-        line-height: 1.6;
-        -webkit-font-smoothing: antialiased;
-      }
-
-      .container {
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 0 24px;
-      }
-
-      .section-header {
-        text-align: center;
-        padding: 80px 24px 60px;
-        border-bottom: 1px solid #1e2230;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .section-header-content {
-        display: flex;
-        max-width: 560px;
-        gap: 24px;
-        margin: 0 auto;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 4px 14px;
-        border-radius: 999px;
-        font-family: "Space Grotesk", sans-serif;
-        font-size: 12px;
-        font-weight: 600;
-        background: rgba(230, 160, 32, 0.1);
-        color: #e6a020;
-        border: 1px solid rgba(230, 160, 32, 0.2);
-      }
-
-      .heading-style-h1 {
-        font-family: "Space Grotesk", sans-serif;
-        font-size: clamp(2rem, 5vw, 3.5rem);
-        font-weight: 700;
-        letter-spacing: -0.02em;
-        line-height: 1;
-        position: relative;
-      }
-
-      .heading-style-h2 {
-        font-family: "Space Grotesk", sans-serif;
-        font-size: 1.5rem;
-        font-weight: 700;
-      }
-
-      .heading-style-h3 {
-        font-family: "Space Grotesk", sans-serif;
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: #e8eaf0;
-      }
-         /* ── NAV ── */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      border-bottom: 1px solid #1e2230;
-      backdrop-filter: blur(12px);
-      background: rgba(13, 15, 20, 0.88);
-    }
-
-    .nav-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 60px;
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    .nav-logo {
-      font-family: "Space Grotesk", sans-serif;
-      font-weight: 700;
-      font-size: 1.1rem;
-      letter-spacing: -0.02em;
-      color: #e8eaf0;;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .nav-logo-dot {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background:  #e6a020;;
-      box-shadow: 0 0 8px  #e6a020;;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 8px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      color: #6b7280;;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 500;
-      padding: 6px 14px;
-      border-radius: 999px;
-      transition: color 0.2s, background 0.2s;
-      font-family: "Space Grotesk", sans-serif;
-    }
-
-    .nav-links a:hover { color: #e8eaf0; background: rgba(255,255,255,0.05); }
-
-      /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid #1e2230;;
-      padding: 28px 0;
-      position: relative;
-      z-index: 1;
-    }
-
-    .footer-inner {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .footer-copy { font-size: 13px; color: #6b7280; }
-
-    .footer-links {
-      display: flex;
-      gap: 20px;
-      list-style: none;
-    }
-
-    .footer-links a {
-      font-size: 13px;
-      color: #6b7280;
-      text-decoration: none;
-      font-family: "Space Grotesk", sans-serif;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-
-    .footer-links a:hover { color: #e8eaf0; }
-
-      .global-desc {
-        color: #6b7280;
-        font-size: 1.1rem;
-      }
-
-      .section-content {
-        padding: 80px 0;
-      }
-
-      .tw-tabs {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-      }
-
-      .tw-tabs-pane {
-        display: none;
-      }
-
-      .tw-tabs-pane.is-active {
-        display: block;
-      }
-
-      .tw-tabs-menu {
-        display: inline-flex;
-        gap: 6px;
-        padding: 6px;
-        border-radius: 999px;
-        background: rgba(21, 24, 32, 0.8);
-        border: 1px solid #1e2230;
-        backdrop-filter: blur(8px);
-      }
-
-      .tw-tabs-link {
-        appearance: none;
-        border: 1px solid transparent;
-        background: transparent;
-        color: #9ca3af;
-        padding: 10px 14px;
-        border-radius: 999px;
-        font-family: "Space Grotesk", sans-serif;
-        font-weight: 600;
-        font-size: 13px;
-        cursor: pointer;
-        transition:
-          background 0.2s ease,
-          color 0.2s ease;
-      }
-
-      .tw-tabs-link.is-active {
-        background: rgba(230, 160, 32, 0.12);
-        color: #e6a020;
-        border: 1px solid rgba(230, 160, 32, 0.22);
-      }
-
-      .tw-tabs-content {
-        margin-top: 2rem;
-        color: #e8eaf0;
-        width: 100%;
-      }
-
-      .tw-tabs-pane {
-        width: 100%;
-      }
-
       .accordian-list {
         display: flex;
         flex-direction: column;
@@ -303,77 +66,6 @@
 
       [tw-accordion="trigger"].open .accordian-icon-wrap {
         transform: rotate(45deg);
-      }
-
-      .code-block {
-        background: #151820;
-        border: 1px solid #1e2230;
-        border-radius: 12px;
-        padding: 24px;
-        overflow-x: auto;
-        margin-top: 1rem;
-      }
-
-      .code-block pre {
-        font-family: "SF Mono", "Fira Code", Consolas, monospace;
-        font-size: 13px;
-        color: #9ca3af;
-        line-height: 1.7;
-        white-space: pre;
-      }
-
-      .code-block pre .comment {
-        color: #4b5563;
-      }
-
-      .code-block pre .tag {
-        color: #38bdf8;
-      }
-
-      .code-block pre .attr {
-        color: #e6a020;
-      }
-
-      .code-block pre .val {
-        color: #34d399;
-      }
-
-      .code-block pre .attr {
-        color: #e6a020;
-      }
-
-      .element-copy-btn {
-        margin: 2rem auto 0;
-        appearance: none;
-        border: 1px solid rgba(230, 160, 32, 0.22);
-        background: rgba(230, 160, 32, 0.12);
-        color: #e6a020;
-        padding: 10px 14px;
-        border-radius: 999px;
-        font-family: "Space Grotesk", sans-serif;
-        font-weight: 600;
-        font-size: 13px;
-        cursor: pointer;
-        transition:
-          background 0.2s ease,
-          color 0.2s ease;
-      }
-
-      .doc-section {
-        display: flex;
-        flex-direction: column;
-        gap: 2.5rem;
-      }
-
-      .doc-block {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-      }
-
-      .doc-divider {
-        border: none;
-        border-top: 1px solid #1e2230;
       }
     </style>
   </head>
@@ -756,224 +448,229 @@
     </script>
     <div class="page-wrapper">
       <main class="main-wrapper">
-        <nav>
-  <div class="nav-inner">
-    <a href="https://jswebflow.netlify.app/techwise/" class="nav-logo">
-      <span class="nav-logo-dot"></span> TechWise
-    </a>
-  </div>
-</nav>
-        <header class="section-header">
+        <!-- NAV -->
+        <nav class="navbar">
           <div class="container">
-            <div class="section-header-content">
-              <div class="badge">
-                Universal Accordian element Build by TechWise
+            <div class="nav-inner">
+              <a href="https://jswebflow.netlify.app/techwise/" class="nav-logo"> <span></span> TechWise </a>
+            </div>
+          </div>
+        </nav>
+        <header class="section-main">
+          <div class="padding-section-medium">
+            <div class="container">
+              <div class="header-content">
+                <div class="badge">
+                  Universal Accordian element Build by TechWise
+                </div>
+                <h1 class="heading-style-h1">Accordian Element</h1>
+                <p class="global-desc">
+                  Flexible and accessible accordion component for Webflow
+                  projects with schema support, smooth animations, and
+                  developer-friendly integration.
+                </p>
               </div>
-              <h1 class="heading-style-h1">Accordian Element</h1>
-              <p class="global-desc">
-                Flexible and accessible accordion component for Webflow projects
-                with schema support, smooth animations, and developer-friendly
-                integration.
-              </p>
             </div>
           </div>
         </header>
 
-        <section class="section-content">
-          <div class="container">
-            <div tw-tabs="wrapper" class="tw-tabs">
-              <div tw-tabs="menu" class="tw-tabs-menu">
-                <button tw-tabs-trigger="demo" class="tw-tabs-link">
-                  Demo
-                </button>
-                <button tw-tabs-trigger="documentation" class="tw-tabs-link">
-                  Documentation
-                </button>
-                <button
-                  tw-tabs-trigger="documentation-for-webflow"
-                  class="tw-tabs-link"
-                >
-                  Documentation for Webflow
-                </button>
-              </div>
-              <div tw-tabs="content" class="tw-tabs-content">
-                <!-- ── DEMO TAB ── -->
-                <div tw-tabs-pane="demo" class="tw-tabs-pane">
-                  <div
-                    itemscope=""
-                    tw-accordion="wrapper"
-                    itemtype="https://schema.org/FAQPage"
-                    class="accordian-list"
+        <section class="section-main">
+          <div class="padding-section-medium">
+            <div class="container">
+              <div tw-tabs="wrapper" class="tw-tabs">
+                <div tw-tabs="menu" class="tw-tabs-menu">
+                  <button tw-tabs-trigger="demo" class="tw-tabs-link">
+                    Demo
+                  </button>
+                  <button tw-tabs-trigger="documentation" class="tw-tabs-link">
+                    Documentation
+                  </button>
+                  <button
+                    tw-tabs-trigger="documentation-for-webflow"
+                    class="tw-tabs-link"
                   >
+                    Documentation for Webflow
+                  </button>
+                </div>
+                <div tw-tabs="content" class="tw-tabs-content">
+                  <!-- ── DEMO TAB ── -->
+                  <div tw-tabs-pane="demo" class="tw-tabs-pane">
                     <div
-                      itemtype="https://schema.org/Question"
-                      tw-accordion="item"
                       itemscope=""
-                      itemprop="mainEntity"
-                      class="accordian"
+                      tw-accordion="wrapper"
+                      itemtype="https://schema.org/FAQPage"
+                      class="accordian-list"
                     >
-                      <button tw-accordion="trigger" class="accordian-head">
-                        <h3 itemprop="name" class="accordian-heading">
-                          What is the accordion component?
-                        </h3>
-                        <svg
-                          viewBox="0 0 14 14"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          class="accordian-icon-wrap"
-                        >
-                          <path d="M7 2v10M2 7h10"></path>
-                        </svg>
-                      </button>
                       <div
-                        itemtype="https://schema.org/Answer"
-                        tw-accordion="answer"
+                        itemtype="https://schema.org/Question"
+                        tw-accordion="item"
                         itemscope=""
-                        itemprop="acceptedAnswer"
-                        class="accordian-body"
+                        itemprop="mainEntity"
+                        class="accordian"
                       >
-                        <div itemprop="text" class="accordian-body-content">
-                          <div class="accordian-richtext">
-                            <p class="global-desc">
-                              The accordion is a UI pattern that shows one
-                              expanded content panel at a time. Ideal for FAQs,
-                              settings menus, and content-heavy pages.
-                            </p>
+                        <button tw-accordion="trigger" class="accordian-head">
+                          <h3 itemprop="name" class="accordian-heading">
+                            What is the accordion component?
+                          </h3>
+                          <svg
+                            viewBox="0 0 14 14"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            class="accordian-icon-wrap"
+                          >
+                            <path d="M7 2v10M2 7h10"></path>
+                          </svg>
+                        </button>
+                        <div
+                          itemtype="https://schema.org/Answer"
+                          tw-accordion="answer"
+                          itemscope=""
+                          itemprop="acceptedAnswer"
+                          class="accordian-body"
+                        >
+                          <div itemprop="text" class="accordian-body-content">
+                            <div class="accordian-richtext">
+                              <p class="global-desc">
+                                The accordion is a UI pattern that shows one
+                                expanded content panel at a time. Ideal for
+                                FAQs, settings menus, and content-heavy pages.
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      itemtype="https://schema.org/Question"
-                      tw-accordion="item"
-                      itemscope=""
-                      itemprop="mainEntity"
-                      class="accordian"
-                    >
-                      <button tw-accordion="trigger" class="accordian-head">
-                        <h3 itemprop="name" class="accordian-heading">
-                          How do I integrate it into my project?
-                        </h3>
-                        <svg
-                          viewBox="0 0 14 14"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          class="accordian-icon-wrap"
-                        >
-                          <path d="M7 2v10M2 7h10"></path>
-                        </svg>
-                      </button>
                       <div
-                        itemtype="https://schema.org/Answer"
-                        tw-accordion="answer"
+                        itemtype="https://schema.org/Question"
+                        tw-accordion="item"
                         itemscope=""
-                        itemprop="acceptedAnswer"
-                        class="accordian-body"
+                        itemprop="mainEntity"
+                        class="accordian"
                       >
-                        <div itemprop="text" class="accordian-body-content">
-                          <div class="accordian-richtext">
-                            <p class="global-desc">
-                              Drop in the CDN script tag before the closing
-                              &lt;/body&gt; tag, then wrap your content using
-                              the required <code>tw-accordion</code> data
-                              attributes on the wrapper, each item, trigger, and
-                              answer element.
-                            </p>
+                        <button tw-accordion="trigger" class="accordian-head">
+                          <h3 itemprop="name" class="accordian-heading">
+                            How do I integrate it into my project?
+                          </h3>
+                          <svg
+                            viewBox="0 0 14 14"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            class="accordian-icon-wrap"
+                          >
+                            <path d="M7 2v10M2 7h10"></path>
+                          </svg>
+                        </button>
+                        <div
+                          itemtype="https://schema.org/Answer"
+                          tw-accordion="answer"
+                          itemscope=""
+                          itemprop="acceptedAnswer"
+                          class="accordian-body"
+                        >
+                          <div itemprop="text" class="accordian-body-content">
+                            <div class="accordian-richtext">
+                              <p class="global-desc">
+                                Drop in the CDN script tag before the closing
+                                &lt;/body&gt; tag, then wrap your content using
+                                the required <code>tw-accordion</code> data
+                                attributes on the wrapper, each item, trigger,
+                                and answer element.
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      itemtype="https://schema.org/Question"
-                      tw-accordion="item"
-                      itemscope=""
-                      itemprop="mainEntity"
-                      class="accordian"
-                    >
-                      <button tw-accordion="trigger" class="accordian-head">
-                        <h3 itemprop="name" class="accordian-heading">
-                          Does it support SEO structured data?
-                        </h3>
-                        <svg
-                          viewBox="0 0 14 14"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          class="accordian-icon-wrap"
-                        >
-                          <path d="M7 2v10M2 7h10"></path>
-                        </svg>
-                      </button>
                       <div
-                        itemtype="https://schema.org/Answer"
-                        tw-accordion="answer"
+                        itemtype="https://schema.org/Question"
+                        tw-accordion="item"
                         itemscope=""
-                        itemprop="acceptedAnswer"
-                        class="accordian-body"
+                        itemprop="mainEntity"
+                        class="accordian"
                       >
-                        <div itemprop="text" class="accordian-body-content">
-                          <div class="accordian-richtext">
-                            <p class="global-desc">
-                              Yes. The component ships with full Schema.org
-                              FAQPage markup baked in. Google can read and
-                              display your accordion Q&amp;A directly in search
-                              results as rich snippets.
-                            </p>
+                        <button tw-accordion="trigger" class="accordian-head">
+                          <h3 itemprop="name" class="accordian-heading">
+                            Does it support SEO structured data?
+                          </h3>
+                          <svg
+                            viewBox="0 0 14 14"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            class="accordian-icon-wrap"
+                          >
+                            <path d="M7 2v10M2 7h10"></path>
+                          </svg>
+                        </button>
+                        <div
+                          itemtype="https://schema.org/Answer"
+                          tw-accordion="answer"
+                          itemscope=""
+                          itemprop="acceptedAnswer"
+                          class="accordian-body"
+                        >
+                          <div itemprop="text" class="accordian-body-content">
+                            <div class="accordian-richtext">
+                              <p class="global-desc">
+                                Yes. The component ships with full Schema.org
+                                FAQPage markup baked in. Google can read and
+                                display your accordion Q&amp;A directly in
+                                search results as rich snippets.
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <!-- ── DOCUMENTATION TAB ── -->
-                <div tw-tabs-pane="documentation" class="tw-tabs-pane">
-                  <div class="doc-section">
-                    <!-- Overview -->
-                    <div class="doc-block">
-                      <h2 class="heading-style-h2">Overview</h2>
-                      <p class="global-desc">
-                        The TechWise Accordion is a lightweight, dependency-free
-                        vanilla JS component. It handles open/close toggling,
-                        smooth height animations, keyboard navigation, ARIA
-                        attributes, and Schema.org FAQPage markup — all from a
-                        single script tag. One item is open at a time; clicking
-                        an open item closes it.
-                      </p>
-                    </div>
-
-                    <hr class="doc-divider" />
-
-                    <!-- Option 1 — CDN -->
-                    <div class="doc-block">
-                      <h2 class="heading-style-h2">Option 1 — CDN</h2>
-                      <p class="global-desc">
-                        The quickest way to get started. Paste the script tag
-                        anywhere in your HTML — typically just before the
-                        closing <code>&lt;/body&gt;</code> tag.
-                      </p>
-                      <div class="code-block">
-                        <pre><span class="comment">&lt;!-- TechWise Accordion — CDN --&gt;</span>
-<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="val">"https://jswebflow.netlify.app/techwise/accordian/script.js"</span> <span class="attr">defer</span><span class="tag">&gt;&lt;/script&gt;</span></pre>
+                  <!-- ── DOCUMENTATION TAB ── -->
+                  <div tw-tabs-pane="documentation" class="tw-tabs-pane">
+                    <div class="content-list">
+                      <!-- Overview -->
+                      <div class="section-header-left">
+                        <h2 class="heading-style-h2">Overview</h2>
+                        <p class="global-desc">
+                          The TechWise Accordion is a lightweight,
+                          dependency-free vanilla JS component. It handles
+                          open/close toggling, smooth height animations,
+                          keyboard navigation, ARIA attributes, and Schema.org
+                          FAQPage markup — all from a single script tag. One
+                          item is open at a time; clicking an open item closes
+                          it.
+                        </p>
                       </div>
-                    </div>
 
-                   <p class="heading-style-h2">
-                        OR
-                      </p>
+                      <hr class="sec-divider" />
 
-                    <!-- Option 2 — Self-hosted script -->
-                    <div class="doc-block">
-                      <h2 class="heading-style-h2">
-                        Option 2 — Self-hosted script
-                      </h2>
-                      <p class="global-desc">
-                        Instead of loading via CDN, you can paste the JavaScript code directly into your page using a script tag — no external dependency needed.
-                      </p>
-                      <div class="code-block">
-                        <pre><span class="comment">&lt;!-- TechWise Accordion — self-hosted --&gt;</span>
+                      <!-- Option 1 — CDN -->
+                      <div class="section-header-left">
+                        <h2 class="heading-style-h2">Option 1 — CDN</h2>
+                        <p class="global-desc">
+                          The quickest way to get started. Paste the script tag
+                          anywhere in your HTML — typically just before the
+                          closing <code>&lt;/body&gt;</code> tag.
+                        </p>
+                        <div class="code-block">
+                          <pre><span class="comment">&lt;!-- TechWise Accordion — CDN --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="val">"https://jswebflow.netlify.app/techwise/accordian/script.js"</span> <span class="attr">defer</span><span class="tag">&gt;&lt;/script&gt;</span></pre>
+                        </div>
+                      </div>
+
+                      <p class="heading-style-h2">OR</p>
+
+                      <!-- Option 2 — Self-hosted script -->
+                      <div class="section-header-left">
+                        <h2 class="heading-style-h2">
+                          Option 2 — Self-hosted script
+                        </h2>
+                        <p class="global-desc">
+                          Instead of loading via CDN, you can paste the
+                          JavaScript code directly into your page using a script
+                          tag — no external dependency needed.
+                        </p>
+                        <div class="code-block">
+                          <pre><span class="comment">&lt;!-- TechWise Accordion — self-hosted --&gt;</span>
 <span class="tag">&lt;script&gt;</span> 
 <span class="val">(function () {
   function initAccordion() {
@@ -1071,24 +768,26 @@
   }
 })();</span>
 <span class="tag">&lt;/script&gt;</span></pre>
+                        </div>
                       </div>
-                    </div>
 
-                    <hr class="doc-divider" />
+                      <hr class="sec-divider" />
 
-                    <!-- Option 3 — Full HTML markup -->
-                    <div class="doc-block">
-                      <h2 class="heading-style-h2">
-                        Option 3 — Full HTML markup
-                      </h2>
-                      <p class="global-desc">
-                        Copy the markup below and paste it into your page. Each
-                        <code>tw-accordion="item"</code> block is one accordion
-                        entry. Duplicate the item block as many times as you
-                        need and update the heading text and body content.
-                      </p>
-                      <div class="code-block">
-                        <pre><span class="tag">&lt;div</span>
+                      <!-- Option 3 — Full HTML markup -->
+                      <div class="section-header-left">
+                        <h2 class="heading-style-h2">
+                          Option 3 — Full HTML markup
+                        </h2>
+                        <p class="global-desc">
+                          Copy the markup below and paste it into your page.
+                          Each
+                          <code>tw-accordion="item"</code> block is one
+                          accordion entry. Duplicate the item block as many
+                          times as you need and update the heading text and body
+                          content.
+                        </p>
+                        <div class="code-block">
+                          <pre><span class="tag">&lt;div</span>
   <span class="attr">itemscope</span>=<span class="val">""</span>
   <span class="attr">tw-accordion</span>=<span class="val">"wrapper"</span>
   <span class="attr">itemtype</span>=<span class="val">"https://schema.org/FAQPage"</span>
@@ -1126,89 +825,94 @@
   <span class="tag">&lt;/div&gt;</span>
 
 <span class="tag">&lt;/div&gt;</span></pre>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <!-- ── DOCUMENTATION FOR WEBFLOW TAB ── -->
-                <div
-                  tw-tabs-pane="documentation-for-webflow"
-                  class="tw-tabs-pane"
-                >
-                  <div class="doc-section">
-                    <!-- Overview -->
-                    <div class="doc-block">
-                      <h2 class="heading-style-h2">Overview</h2>
-                      <p class="global-desc">
-                        The steps below walk you through adding the TechWise
-                        Accordion to any Webflow project — no custom code
-                        experience required. You will add one script tag in
-                        Project Settings and then paste the pre-built Webflow
-                        element directly into your canvas using the Copy Element
-                        button.
-                      </p>
-                    </div>
-
-                    <hr class="doc-divider" />
-
-                    <!-- Step 1 — Add the CDN script -->
-                    <div class="doc-block">
-                      <h2 class="heading-style-h2">Step 1 — Add the script</h2>
-                      <p class="global-desc">
-                        In Webflow, go to
-                        <strong
-                          >Project Settings → Custom Code → Footer Code</strong
-                        >
-                        and paste the snippet below. This loads the accordion
-                        logic on every published page.
-                      </p>
-                      <div class="code-block">
-                        <pre><span class="comment">&lt;!-- TechWise Accordion — paste in Webflow Footer Code --&gt;</span>
-<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="val">"https://jswebflow.netlify.app/techwise/accordian/script.js"</span> <span class="attr">defer</span><span class="tag">&gt;&lt;/script&gt;</span></pre>
+                  <!-- ── DOCUMENTATION FOR WEBFLOW TAB ── -->
+                  <div
+                    tw-tabs-pane="documentation-for-webflow"
+                    class="tw-tabs-pane"
+                  >
+                    <div class="content-list">
+                      <!-- Overview -->
+                      <div class="section-header-left">
+                        <h2 class="heading-style-h2">Overview</h2>
+                        <p class="global-desc">
+                          The steps below walk you through adding the TechWise
+                          Accordion to any Webflow project — no custom code
+                          experience required. You will add one script tag in
+                          Project Settings and then paste the pre-built Webflow
+                          element directly into your canvas using the Copy
+                          Element button.
+                        </p>
                       </div>
-                    </div>
 
-                    <hr class="doc-divider" />
+                      <hr class="sec-divider" />
 
-                    <!-- Step 2 — Copy the Webflow element -->
-                    <div class="doc-block">
-                      <h2 class="heading-style-h2">
-                        Step 2 — Copy the Webflow element
-                      </h2>
-                      <p class="global-desc">
-                        Click <strong>Copy Accordion</strong> below. Then open
-                        your Webflow project, click anywhere on the canvas, and
-                        press <strong>Ctrl + V</strong> (Windows) or
-                        <strong>Cmd + V</strong> (Mac) to paste. The full
-                        accordion structure — including classes, attributes, and
-                        schema markup — will appear instantly.
-                      </p>
-                      <button
-                        data-copy-btn
-                        data-component-name="Accordian"
-                        data-payload-id="payload-Accordian"
-                        class="element-copy-btn"
-                        style="margin-top: 1rem"
-                      >
-                        Copy Accordion
-                      </button>
-                    </div>
+                      <!-- Step 1 — Add the CDN script -->
+                      <div class="section-header-left">
+                        <h2 class="heading-style-h2">
+                          Step 1 — Add the script
+                        </h2>
+                        <p class="global-desc">
+                          In Webflow, go to
+                          <strong
+                            >Project Settings → Custom Code → Footer
+                            Code</strong
+                          >
+                          and paste the snippet below. This loads the accordion
+                          logic on every published page.
+                        </p>
+                        <div class="code-block">
+                          <pre><span class="comment">&lt;!-- TechWise Accordion — paste in Webflow Footer Code --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="val">"https://jswebflow.netlify.app/techwise/accordian/script.js"</span> <span class="attr">defer</span><span class="tag">&gt;&lt;/script&gt;</span></pre>
+                        </div>
+                      </div>
 
-                    <hr class="doc-divider" />
+                      <hr class="sec-divider" />
 
-                    <!-- Step 3 — Full HTML reference -->
-                    <div class="doc-block">
-                      <h2 class="heading-style-h2">Step 3 — HTML reference</h2>
-                      <p class="global-desc">
-                        If you prefer to build the structure manually in
-                        Webflow's Embed element, or need to inspect the required
-                        attributes, use the markup below as your reference.
-                        Every <code>tw-accordion</code> attribute is required
-                        for the script to function correctly.
-                      </p>
-                      <div class="code-block">
-                        <pre><span class="tag">&lt;div</span>
+                      <!-- Step 2 — Copy the Webflow element -->
+                      <div class="section-header-left">
+                        <h2 class="heading-style-h2">
+                          Step 2 — Copy the Webflow element
+                        </h2>
+                        <p class="global-desc">
+                          Click <strong>Copy Accordion</strong> below. Then open
+                          your Webflow project, click anywhere on the canvas,
+                          and press <strong>Ctrl + V</strong> (Windows) or
+                          <strong>Cmd + V</strong> (Mac) to paste. The full
+                          accordion structure — including classes, attributes,
+                          and schema markup — will appear instantly.
+                        </p>
+                        <button
+                          data-copy-btn
+                          data-component-name="Accordian"
+                          data-payload-id="payload-Accordian"
+                          class="global-button"
+                          style="margin-top: 1rem"
+                        >
+                          Copy Accordion
+                        </button>
+                      </div>
+
+                      <hr class="sec-divider" />
+
+                      <!-- Step 3 — Full HTML reference -->
+                      <div class="section-header-left">
+                        <h2 class="heading-style-h2">
+                          Step 3 — HTML reference
+                        </h2>
+                        <p class="global-desc">
+                          If you prefer to build the structure manually in
+                          Webflow's Embed element, or need to inspect the
+                          required attributes, use the markup below as your
+                          reference. Every <code>tw-accordion</code> attribute
+                          is required for the script to function correctly.
+                        </p>
+                        <div class="code-block">
+                          <pre><span class="tag">&lt;div</span>
   <span class="attr">itemscope</span>=<span class="val">""</span>
   <span class="attr">tw-accordion</span>=<span class="val">"wrapper"</span>
   <span class="attr">itemtype</span>=<span class="val">"https://schema.org/FAQPage"</span>
@@ -1246,6 +950,7 @@
   <span class="tag">&lt;/div&gt;</span>
 
 <span class="tag">&lt;/div&gt;</span></pre>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1254,185 +959,17 @@
             </div>
           </div>
         </section>
-        <footer>
-  <div class="footer-inner">
-    <p class="footer-copy">© 2026 TechWise. Built for Webflow.</p>
-      </div>
-</footer>
+        <footer class="footer">
+          <div class="container">
+            <p class="footer-copy">© 2026 TechWise. Built for Webflow.</p>
+          </div>
+        </footer>
       </main>
     </div>
 
-    <script src="https://jswebflow.netlify.app/techwise/accordian/script.js">  </script>
+    <script src="https://jswebflow.netlify.app/techwise/accordian/script.js"></script>
     <!-- Tabs JS -->
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const twTabsWrappers = document.querySelectorAll('[tw-tabs="wrapper"]');
-
-        twTabsWrappers.forEach((twTabsWrapper, wrapperIndex) => {
-          const twTabsMenu = twTabsWrapper.querySelector('[tw-tabs="menu"]');
-
-          const twTabsTriggers =
-            twTabsWrapper.querySelectorAll("[tw-tabs-trigger]");
-
-          const twTabsPanes = twTabsWrapper.querySelectorAll("[tw-tabs-pane]");
-
-          // Accessibility
-          if (twTabsMenu) {
-            twTabsMenu.setAttribute("role", "tablist");
-            twTabsMenu.setAttribute("aria-label", "Tabs Navigation");
-          }
-
-          // Generate IDs + ARIA
-          twTabsTriggers.forEach((twTabsTrigger, triggerIndex) => {
-            const twTabsValue = twTabsTrigger.getAttribute("tw-tabs-trigger");
-
-            const twTabsTriggerId = `tw-tab-${wrapperIndex}-${triggerIndex}`;
-
-            const twTabsPaneId = `tw-pane-${wrapperIndex}-${triggerIndex}`;
-
-            // Tab attributes
-            twTabsTrigger.setAttribute("role", "tab");
-
-            twTabsTrigger.setAttribute("id", twTabsTriggerId);
-
-            twTabsTrigger.setAttribute("aria-controls", twTabsPaneId);
-
-            twTabsTrigger.setAttribute("aria-selected", "false");
-
-            // Matching pane
-            const twTabsPane = twTabsWrapper.querySelector(
-              `[tw-tabs-pane="${twTabsValue}"]`,
-            );
-
-            if (twTabsPane) {
-              twTabsPane.setAttribute("role", "tabpanel");
-
-              twTabsPane.setAttribute("id", twTabsPaneId);
-
-              twTabsPane.setAttribute("aria-labelledby", twTabsTriggerId);
-
-              twTabsPane.hidden = true;
-            }
-          });
-
-          // Activate tab
-          function twTabsActivateTab(targetValue) {
-            twTabsTriggers.forEach((twTabsTrigger) => {
-              const isActive =
-                twTabsTrigger.getAttribute("tw-tabs-trigger") === targetValue;
-
-              twTabsTrigger.setAttribute(
-                "aria-selected",
-                isActive ? "true" : "false",
-              );
-
-              twTabsTrigger.classList.toggle("is-active", isActive);
-            });
-
-            twTabsPanes.forEach((twTabsPane) => {
-              const isActive =
-                twTabsPane.getAttribute("tw-tabs-pane") === targetValue;
-
-              twTabsPane.hidden = !isActive;
-
-              twTabsPane.classList.toggle("is-active", isActive);
-            });
-          }
-
-          // Events
-          twTabsTriggers.forEach((twTabsTrigger) => {
-            // Click
-            twTabsTrigger.addEventListener("click", () => {
-              const twTabsTargetValue =
-                twTabsTrigger.getAttribute("tw-tabs-trigger");
-
-              twTabsActivateTab(twTabsTargetValue);
-
-              twTabsTrigger.focus();
-            });
-
-            // Keyboard navigation
-            twTabsTrigger.addEventListener("keydown", (event) => {
-              const keys = ["ArrowRight", "ArrowLeft", "Home", "End"];
-
-              if (!keys.includes(event.key)) return;
-
-              event.preventDefault();
-
-              const twTabsCurrentIndex = [...twTabsTriggers].indexOf(
-                twTabsTrigger,
-              );
-
-              let twTabsNextIndex = twTabsCurrentIndex;
-
-              if (event.key === "ArrowRight") {
-                twTabsNextIndex =
-                  (twTabsCurrentIndex + 1) % twTabsTriggers.length;
-              }
-
-              if (event.key === "ArrowLeft") {
-                twTabsNextIndex =
-                  (twTabsCurrentIndex - 1 + twTabsTriggers.length) %
-                  twTabsTriggers.length;
-              }
-
-              if (event.key === "Home") {
-                twTabsNextIndex = 0;
-              }
-
-              if (event.key === "End") {
-                twTabsNextIndex = twTabsTriggers.length - 1;
-              }
-
-              const twTabsNextTrigger = twTabsTriggers[twTabsNextIndex];
-
-              const twTabsNextValue =
-                twTabsNextTrigger.getAttribute("tw-tabs-trigger");
-
-              twTabsActivateTab(twTabsNextValue);
-
-              twTabsNextTrigger.focus();
-            });
-          });
-
-          // Default first active
-          if (twTabsTriggers.length) {
-            const twTabsDefaultValue =
-              twTabsTriggers[0].getAttribute("tw-tabs-trigger");
-
-            twTabsActivateTab(twTabsDefaultValue);
-          }
-        });
-      });
-    </script>
-
-    <script>
-      (function () {
-        var currentPayload = "";
-        var hiddenTrigger = document.createElement("button");
-        hiddenTrigger.contentEditable = "true";
-        hiddenTrigger.style.cssText =
-          "position:fixed;clip:rect(1px,1px,1px,1px);overflow:hidden;height:1px;width:1px;padding:0;border:0;";
-        document.body.appendChild(hiddenTrigger);
-
-        hiddenTrigger.addEventListener("copy", function (e) {
-          e.clipboardData.setData("application/json", currentPayload);
-          e.preventDefault();
-        });
-
-        document.querySelectorAll("[data-copy-btn]").forEach(function (btn) {
-          btn.addEventListener("click", function () {
-            var id = btn.getAttribute("data-payload-id");
-            currentPayload = document.getElementById(id).textContent.trim();
-            hiddenTrigger.focus();
-            document.execCommand("copy");
-            btn.textContent = "✅ Copied!";
-            setTimeout(function () {
-              btn.textContent = "Copy Element";
-            }, 2000);
-          });
-        });
-      })();
-    </script>
+    <script src="https://jswebflow.netlify.app/techwise/tab.js"></script>
+    <script src="https://jswebflow.netlify.app/techwise/webflowcopy.js"></script>
   </body>
 </html>
