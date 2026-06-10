@@ -22,7 +22,6 @@
                                  (all siblings sharing this attr are grouped)
    ══════════════════════════════════════════════ */
 
-gsap.registerPlugin(ScrollTrigger);
 
 const DEFAULTS = {
   duration:  0.9,
