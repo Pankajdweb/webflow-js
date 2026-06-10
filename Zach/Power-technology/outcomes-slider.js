@@ -6,15 +6,27 @@ const outcomePreviousButton = document.querySelector("[outcome-prev]");
 let currentOutcomeTranslateX = 0;
 const outcomeSlideStep = 190;
 
-// Get dimensions on page load
 const outcomeViewportWidth = outcomeSliderViewport.offsetWidth;
 const outcomeTrackWidth = outcomeSliderTrack.scrollWidth;
-
-// Maximum distance the track can move
 const outcomeMaxTranslate = outcomeTrackWidth - outcomeViewportWidth;
+
+function updateOutcomeSliderButtons() {
+  // Beginning of slider
+  outcomePreviousButton.classList.toggle(
+    "disabled",
+    currentOutcomeTranslateX === 0
+  );
+
+  // End of slider
+  outcomeNextButton.classList.toggle(
+    "disabled",
+    Math.abs(currentOutcomeTranslateX) >= outcomeMaxTranslate
+  );
+}
 
 function updateOutcomeSliderPosition() {
   outcomeSliderTrack.style.transform = `translateX(${currentOutcomeTranslateX}px)`;
+  updateOutcomeSliderButtons();
 }
 
 outcomeNextButton.addEventListener("click", () => {
@@ -36,3 +48,6 @@ outcomePreviousButton.addEventListener("click", () => {
 
   updateOutcomeSliderPosition();
 });
+
+// Set initial button states
+updateOutcomeSliderButtons();
