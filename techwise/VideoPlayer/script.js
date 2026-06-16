@@ -115,12 +115,13 @@
 
   async function getVimeoThumbnailUrl(originalUrl) {
     // oEmbed gives a ready-to-use thumbnail URL
-    var endpoint = "https://vimeo.com/api/oembed.json?url=" + encodeURIComponent(originalUrl);
+    var endpoint = "https://vimeo.com/api/oembed.json?url=" + encodeURIComponent(originalUrl) + "&width=1920";
     var res = await fetch(endpoint, { method: "GET" });
     if (!res.ok) throw new Error("Vimeo oEmbed failed: " + res.status);
     var data = await res.json();
     if (data && isUsableUrl(data.thumbnail_url)) return data.thumbnail_url;
     throw new Error("Vimeo oEmbed missing thumbnail_url");
+    
   }
 
   function isFrameMostlyBlack(ctx, w, h) {
