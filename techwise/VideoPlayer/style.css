@@ -2,6 +2,12 @@
     pointer-events: none;
   }
 
+ .tw-vp-click-overlay{
+    position: absolute;
+    z-index: 3;
+    inset: 0%;
+}
+
   .tw-vp-container video,
   .tw-vp-container iframe {
     position: absolute;
