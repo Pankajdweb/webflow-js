@@ -395,5 +395,5 @@ function renderMobileDay(date) {
 function isMobileCal() {
     return window.innerWidth < 768;
 }
- }, 2000); // 1000ms = 1 second
+ }, 100); // 1000ms = 1 second
 });
