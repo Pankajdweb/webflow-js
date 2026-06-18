@@ -1,5 +1,4 @@
-$(document).ready(function () {
-    setTimeout(function () {
+
 var selectedMobileDate = new Date();
 
 function isMobileCal() {
@@ -395,5 +394,3 @@ function renderMobileDay(date) {
 function isMobileCal() {
     return window.innerWidth < 768;
 }
- }, 100); // 1000ms = 1 second
-});
