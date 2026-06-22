@@ -212,8 +212,8 @@ body:has(.no-events) .cal-load-more{
    				 border: 1px solid #4B324A;
 				}
         
-        .fc-grid .fc-other-month .fc-day-number{
-         opacity:0;
+        .fc-grid .fc-other-month {
+         opacity:80%;
         }
         
         .fc-state-highlight{
