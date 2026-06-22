@@ -1,5 +1,5 @@
-body:has(.no-events) .cal-load-more{
-    display:none !important;
+body:has(.no-events) .cal-load-more {
+  display: none !important;
 }
 
 /* Calendar page - layout and container */
@@ -9,239 +9,285 @@ body:has(.no-events) .cal-load-more{
   padding: 0 1rem;
 }
 
- .w-pagination-wrapper{
-    display: none;
-  }
-  
+.w-pagination-wrapper {
+  display: none;
+}
+
 .cal-page .events-calender-wrap {
   position: relative;
 }
-    /* Calendar page - light gray design */
-    .cal-page {
-        background: #e8e8e8;
-        min-height: 100vh;
-        padding: 2rem 0;
-      }
-      .cal-page-title {
-        font-size: 1rem;
-        font-weight: 400;
-        color: #888;
-        margin: 0 0 1.5rem 0;
-      }
-      .cal-header {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 1.5rem;
-        margin-bottom: 1.5rem;
-      }
-      .cal-month-nav {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-      }
-    
-      .cal-nav-btn {
-        background: none;
-        border: none;
-        color: #555;
-        font-size: 1.25rem;
-        cursor: pointer;
-        padding: 0.25rem 0.5rem;
-      }
-      .cal-nav-btn:hover { color: #333; }
-      .cal-event-listings-label {
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.05em;
-        color: #333;
-      }
-      .cal-location-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        background: #2563eb;
-        color: #fff;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 999px;
-        font-size: 0.875rem;
-        cursor: pointer;
-      }
-      .cal-location-arrow { font-size: 0.875rem; }
-      .cal-view-toggle {
-        margin-left: auto;
-        display: flex;
-        gap: 0.25rem;
-      }
-      .cal-view-btn {
-        background: none;
-        border: none;
-        color: #555;
-        padding: 0.35rem 0.5rem;
-        cursor: pointer;
-        font-size: 1rem;
-      }
-      .cal-view-btn.active { background: #4B324A; color: #FFFFFF; }
-  
-      /* FullCalendar overrides - light gray grid */
-      .cal-page .fc {
-        background: #e8e8e8;
-      }
-      .cal-page .fc-header { display: none !important; }
-      .cal-page .fc-widget-header {
-        background: transparent !important;
-        border: none !important;
-       
-        color: #333 !important;
-        font-size: 0.7rem !important;
-        font-weight: 600 !important;
-        letter-spacing: 0.05em !important;
-        padding: 0.5rem 0 !important;
-      }
-      .cal-page .fc-widget-content {
-        padding: 0.5rem !important;
-        border: 1px solid #d0d0d0 !important;
-        background: #f5f5f5 !important;
-        min-height: 100px;
-      }
-      .cal-page .fc-day-number {
-        float: right !important;
-        color: #999 !important;
-        font-size: 0.8rem !important;
-        padding: 0.25rem 0.35rem 0 0 !important;
-      }
-      .cal-page .fc-day-content { margin-top: 0.25rem; }
-      .cal-page .fc-state-highlight .fc-day-number { color: #2d7d4a !important; font-weight: 600 !important; }
-      .cal-page .fc-state-highlight .fc-widget-content { background: #f0f7f2 !important; }
-      .cal-page .fc-event {
-        background: transparent !important;
-        border: none !important;
-        color: #333 !important;
-        margin: 0.25rem 0 !important;
-        padding: 0 !important;
-        box-shadow: none !important;
-      }
-      .cal-page .fc-event-inner {
-        background: transparent !important;
-        border: none !important;
-        padding: 0 !important;
-      }
-      .cal-page .fc-event-title {
-        font-size: 0.75rem !important;
-        color: #333 !important;
-      }
-      .cal-page .fc-event a { color: #2563eb !important; text-decoration: none !important; }
-      .cal-page .fc-event a:hover { text-decoration: underline !important; }
-      .cal-page .fc-event-time { color: #555; font-size: 0.7rem; margin-right: 0.25rem; }
-      .cal-page .fc-event-location { display: block; color: #666; font-size: 0.7rem; margin-top: 0.15rem; }
-      .cal-page .fc-other-month .fc-day-number { opacity: 0.5 !important; }
-      .cal-page .fc-other-month .fc-widget-content { background: #eee !important; }
-      .ec-col-list-wrap { display: none !important; }
+/* Calendar page - light gray design */
+.cal-page {
+  background: #e8e8e8;
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+.cal-page-title {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #888;
+  margin: 0 0 1.5rem 0;
+}
+.cal-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.cal-month-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
 
-      /* List view - target by id */
-      #calListView {
-        display: block;
-        
-        padding: 0;
-      }
-      #divCalendar { display: block; }
-      #calListView .cal-list-content { margin-bottom: 1.5rem; }
-     
-      
-      #calListView .cal-list-date-header:first-child { margin-top: 0; }
-     
-     
-      #calListView .cal-list-event-row:last-child { border-bottom: none; }
-      
-      #calListView .cal-list-event-title { flex: 1; font-weight: 500;  }
+.cal-nav-btn {
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+}
+.cal-nav-btn:hover {
+  color: #333;
+}
+.cal-event-listings-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #333;
+}
+.cal-location-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.cal-location-arrow {
+  font-size: 0.875rem;
+}
+.cal-view-toggle {
+  margin-left: auto;
+  display: flex;
+  gap: 0.25rem;
+}
+.cal-view-btn {
+  background: none;
+  border: none;
+  color: #555;
+  padding: 0.35rem 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.cal-view-btn.active {
+  background: #4b324a;
+  color: #ffffff;
+}
 
-    
-      #calListView .cal-load-more {
-        display: none !important;
-        width: 100%;
-        max-width: 200px;
-        margin: 1rem auto 0;
-        padding: 0.75rem 1.5rem;
-        background: #4c1d95;
-        color: #fff;
-        border: none;
-        font-size: 0.875rem;
-        font-weight: 600;
-        letter-spacing: 0.03em;
-        cursor: pointer;
-      }
-      #calListView .cal-load-more:hover { background: #5b21b6; }
+/* FullCalendar overrides - light gray grid */
+.cal-page .fc {
+  background: #e8e8e8;
+}
+.cal-page .fc-header {
+  display: none !important;
+}
+.cal-page .fc-widget-header {
+  background: transparent !important;
+  border: none !important;
 
+  color: #333 !important;
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.05em !important;
+  padding: 0.5rem 0 !important;
+}
+.cal-page .fc-widget-content {
+  padding: 0.5rem !important;
+  border: 1px solid #d0d0d0 !important;
+  background: #f5f5f5 !important;
+  min-height: 100px;
+}
+.cal-page .fc-day-number {
+  float: right !important;
+  color: #999 !important;
+  font-size: 0.8rem !important;
+  padding: 0.25rem 0.35rem 0 0 !important;
+}
+.cal-page .fc-day-content {
+  margin-top: 0.25rem;
+}
+.cal-page .fc-state-highlight .fc-day-number {
+  color: #2d7d4a !important;
+  font-weight: 600 !important;
+}
+.cal-page .fc-state-highlight .fc-widget-content {
+  background: #f0f7f2 !important;
+}
+.cal-page .fc-event {
+  background: transparent !important;
+  border: none !important;
+  color: #333 !important;
+  margin: 0.25rem 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+.cal-page .fc-event-inner {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+.cal-page .fc-event-title {
+  font-size: 0.75rem !important;
+  color: #333 !important;
+}
+.cal-page .fc-event a {
+  color: #2563eb !important;
+  text-decoration: none !important;
+}
+.cal-page .fc-event a:hover {
+  text-decoration: underline !important;
+}
+.cal-page .fc-event-time {
+  color: #555;
+  font-size: 0.7rem;
+  margin-right: 0.25rem;
+}
+.cal-page .fc-event-location {
+  display: block;
+  color: #666;
+  font-size: 0.7rem;
+  margin-top: 0.15rem;
+}
+.cal-page .fc-other-month .fc-day-number {
+  opacity: 0.5 !important;
+}
+.cal-page .fc-other-month .fc-widget-content {
+  background: #eee !important;
+}
+.ec-col-list-wrap {
+  display: none !important;
+}
 
-      .wf-force-outline-none[tabindex="-1"]:focus {
-        outline: none;
-      }
-			.cal-list-event-title{
-      	font-weight:700;
-      }
-      .fc th {
-       padding-bottom: 1.5rem;
-       vertical-align: top;
-        }   
-        
-			.fc td {
-       padding: 0.75rem;
-       vertical-align: top;
-        }      
-       a{
-       	text-decoration:none;
-        color:inherit;
-       }
-        .fc-border-separate tbody tr.fc-first td, .fc-border-separate tbody tr.fc-first th{
-   			border-top-width: 1px;
-        border-color:#4B324A;
-				}
-       .fc-event{
-       	background-color:transparent;
-        color:#4B324A;
-        font-size:1rem;
-       	border:none;
-        font-weight:600;
-       }
-        .fc-day-header {
-        	border:none;
-          text-transform:uppercase;
-        }
-        .fc-widget-content {
-   				 border: 1px solid #4B324A;
-				}
-        
-        .fc-grid .fc-other-month .fc-day-number{
-         opacity:0;
-        }
-        
-        .fc-state-highlight{
-         background-color:transparent;
-        }
- 
- @media screen and (max-width:768px){
-   .fc th {
-       padding-bottom: 0.625rem;
-        } 
-        
-     .fc td {
+/* List view - target by id */
+#calListView {
+  display: block;
+
+  padding: 0;
+}
+#divCalendar {
+  display: block;
+}
+#calListView .cal-list-content {
+  margin-bottom: 1.5rem;
+}
+
+#calListView .cal-list-date-header:first-child {
+  margin-top: 0;
+}
+
+#calListView .cal-list-event-row:last-child {
+  border-bottom: none;
+}
+
+#calListView .cal-list-event-title {
+  flex: 1;
+  font-weight: 500;
+}
+
+#calListView .cal-load-more {
+  display: none !important;
+  width: 100%;
+  max-width: 200px;
+  margin: 1rem auto 0;
+  padding: 0.75rem 1.5rem;
+  background: #4c1d95;
+  color: #fff;
+  border: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+}
+#calListView .cal-load-more:hover {
+  background: #5b21b6;
+}
+
+.wf-force-outline-none[tabindex="-1"]:focus {
+  outline: none;
+}
+.cal-list-event-title {
+  font-weight: 700;
+}
+.fc th {
+  padding-bottom: 1.5rem;
+  vertical-align: top;
+}
+
+.fc td {
+  padding: 0.75rem;
+  vertical-align: top;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+.fc-border-separate tbody tr.fc-first td,
+.fc-border-separate tbody tr.fc-first th {
+  border-top-width: 1px;
+  border-color: #4b324a;
+}
+.fc-event {
+  background-color: transparent;
+  color: #4b324a;
+  font-size: 1rem;
+  border: none;
+  font-weight: 600;
+}
+.fc-day-header {
+  border: none;
+  text-transform: uppercase;
+}
+.fc-widget-content {
+  border: 1px solid #4b324a;
+}
+
+.fc-grid .fc-other-month .fc-day-number {
+  opacity: 0;
+}
+
+.fc-state-highlight {
+  background-color: transparent;
+}
+
+@media screen and (max-width: 768px) {
+  .fc th {
+    padding-bottom: 0.625rem;
+  }
+
+  .fc td {
     padding: 0.5rem;
-}
-.fc-day-content{
- display:none;
+  }
+  .fc-day-content {
+    display: none;
+  }
+
+  .fc-state-highlight {
+    background-color: #30ac67;
+  }
+
+  .fc-state-highlight .fc-day-number {
+    color: #ffffff;
+  }
 }
 
-.fc-state-highlight{
- background-color:#30AC67;
-}
-
-.fc-state-highlight .fc-day-number{
- color:#FFFFFF;
-}
- }
-    
-    img[src=""] {
+img[src=""] {
   display: none;
 }
 
@@ -250,5 +296,5 @@ body:has(.no-events) .cal-load-more{
 }
 
 .cal-list-event-row .cal-list-header {
-grid-area: span 1 / span 2 / span 1 / span 2;
+  grid-area: span 1 / span 2 / span 1 / span 2;
 }
