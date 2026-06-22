@@ -141,7 +141,7 @@ body:has(.no-events) .cal-load-more{
 
       /* List view - target by id */
       #calListView {
-        display: block;
+        display: none;
         
         padding: 0;
       }
