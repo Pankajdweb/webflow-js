@@ -101,6 +101,7 @@ $(document).ready(function () {
     var calendar = $('#divCalendar').fullCalendar({
         header: false,
         firstDay: 1,
+        weekMode: 'variable',
         selectable: true,
         events: myEvents,
        eventRender: function (event, element) {
@@ -341,7 +342,7 @@ $(document).ready(function () {
         }
     });
 
-    }, 2000);
+    }, 200);
 });
 
 function renderMobileDay(date) {
