@@ -157,7 +157,7 @@ body:has(.no-events) .cal-load-more{
       #calListView .cal-list-event-title { flex: 1; font-weight: 500;  }
 
     
-      #calListView .cal-load-more {
+      /* #calListView .cal-load-more {
         display: none !important;
         width: 100%;
         max-width: 200px;
@@ -171,7 +171,7 @@ body:has(.no-events) .cal-load-more{
         letter-spacing: 0.03em;
         cursor: pointer;
       }
-      #calListView .cal-load-more:hover { background: #5b21b6; }
+      #calListView .cal-load-more:hover { background: #5b21b6; } */
 
 
       .wf-force-outline-none[tabindex="-1"]:focus {
