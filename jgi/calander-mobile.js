@@ -1,6 +1,8 @@
 
 var selectedMobileDate = new Date();
 
+
+
 function isMobileCal() {
     return window.innerWidth < 768;
 }
@@ -79,12 +81,15 @@ $(document).ready(function () {
         console.log(webflowLink);
         console.log(eventvenue);
         var isAllDay = (eventAllday === 'true' || eventAllday === '');
+        // Auto-detect user's local timezone
+var SITE_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
         myEvents.push({
             title: eventTitle,
             //start: new Date(startDate),
-            start: (function() {
+     start: (function() {
     var d = new Date(startDate);
-    return new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds());
+    var localStr = d.toLocaleString('en-US', { timeZone: SITE_TZ });
+    return new Date(localStr);
 })(),
             url: webflowLink,
             popup: popupTrigger,   // 👈 ADD THIS
