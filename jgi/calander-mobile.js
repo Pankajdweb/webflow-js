@@ -81,7 +81,11 @@ $(document).ready(function () {
         var isAllDay = (eventAllday === 'true' || eventAllday === '');
         myEvents.push({
             title: eventTitle,
-            start: new Date(startDate),
+            //start: new Date(startDate),
+            start: (function() {
+    var d = new Date(startDate);
+    return new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds());
+})(),
             url: webflowLink,
             popup: popupTrigger,   // 👈 ADD THIS
             allDay: isAllDay,
