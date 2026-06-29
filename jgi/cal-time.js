@@ -3,9 +3,9 @@ var SITE_TZ = 'America/New_York';
 
 var selectedMobileDate = new Date();
 
-// ✅ Convert UTC date to New York timezone
-// If raw string has no time part, treat as local date directly to avoid day shift
+// ✅ Convert UTC date to New York timezone using same method as working script
 function toLocalDate(d, rawStr) {
+    // If no time part in raw string, parse date directly to avoid UTC shift
     if (rawStr && !rawStr.includes('T') && !rawStr.includes(' ')) {
         var parts = rawStr.trim().split('-');
         var year = parseInt(parts[0], 10);
@@ -13,7 +13,9 @@ function toLocalDate(d, rawStr) {
         var day = parseInt(parts[2], 10);
         return new Date(year, month, day, 12, 0, 0);
     }
-    var dateParts = d.toLocaleDateString('en-US', { timeZone: SITE_TZ }).split('/');
+    // ✅ Use toLocaleDateString exactly like the working script
+    var dateKey = d.toLocaleDateString('en-US', { timeZone: SITE_TZ });
+    var dateParts = dateKey.split('/');
     var month = parseInt(dateParts[0], 10) - 1;
     var day = parseInt(dateParts[1], 10);
     var year = parseInt(dateParts[2], 10);
@@ -70,6 +72,9 @@ function getMonthName(date) {
 $(document).ready(function () {
     setTimeout(function () {
 
+        // ✅ Clear myEvents to prevent duplicate loading
+        myEvents = [];
+
         var listViewDate = null;
         var listViewVisibleCount = 5;
         var LIST_VIEW_PAGE_SIZE = 5;
@@ -106,6 +111,8 @@ $(document).ready(function () {
                 image: eventImage || ''
             });
         });
+
+        console.log('Total events loaded:', myEvents.length);
 
         // ✅ Today in New York timezone
         var date = toLocalDate(new Date());
