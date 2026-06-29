@@ -344,7 +344,7 @@ $(document).ready(function () {
         }
     });
 
-    }, 500);
+    }, 800);
 });
 
 function renderMobileDay(date) {
