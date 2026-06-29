@@ -1,10 +1,16 @@
+// ✅ Define timezone ONCE at the very top
+var SITE_TZ = 'America/New_York';
 
 var selectedMobileDate = new Date();
 
-
-
 function isMobileCal() {
     return window.innerWidth < 768;
+}
+
+// ✅ Convert any Date to New York local Date object
+function toNYDate(d) {
+    var nyStr = d.toLocaleString('en-US', { timeZone: SITE_TZ });
+    return new Date(nyStr);
 }
 
 function sameDay(d1, d2) {
@@ -13,7 +19,6 @@ function sameDay(d1, d2) {
         d1.getDate() === d2.getDate();
 }
 
-// my events array
 var myEvents = [];
 
 function formatListTime(event) {
@@ -37,33 +42,25 @@ function padDay(d) {
 
 function formatDateHeader(date) {
     var days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
-    // Use 3-letter month names in list view headers
     var months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
     return days[date.getDay()] + ', ' + months[date.getMonth()] + ' ' + padDay(date.getDate());
 }
 
 function getMonthName(date) {
-    // Return 3-letter month name for header (e.g. Jan, Feb)
     var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     return months[date.getMonth()].substring(0, 3);
 }
 
 $(document).ready(function () {
     setTimeout(function () {
-    var eventTitle = 0;
-    var startDate = 0;
-    var eventUrl = 0;
-    var allday = 0;
-    var venue = 0;
-    var classname = 0;
-    var webflowLink = 0;
+
     var listViewDate = null;
     var listViewVisibleCount = 5;
     var LIST_VIEW_PAGE_SIZE = 5;
 
     $('.ec-col-item').each(function () {
         var eventTitle = $(this).find('[title]').text();
-        var eventImage = $(this).find('[event-image]').attr('src'); // used in calendar + list as event.image
+        var eventImage = $(this).find('[event-image]').attr('src');
         var startDate = $(this).find('[start-date]').text().replace(/-/g, '-');
         var eventUrl = $(this).find('[url]').text();
         var eventAllday = $(this).find('[allday]').text();
@@ -73,26 +70,17 @@ $(document).ready(function () {
         var eventLocation = $(this).find('.location').text().trim();
         var popupTrigger = $(this).find('.webflow-link').attr('popup-trigger');
 
-        console.log(eventTitle);
-        console.log(startDate);
-        console.log(eventUrl);
-        console.log(eventAllday);
-        console.log(eventClassName);
-        console.log(webflowLink);
-        console.log(eventvenue);
         var isAllDay = (eventAllday === 'true' || eventAllday === '');
-        // Auto-detect user's local timezone
-var SITE_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        // ✅ Convert UTC date from CMS to New York local date
+        var rawDate = new Date(startDate);
+        var nyStart = toNYDate(rawDate);
+
         myEvents.push({
             title: eventTitle,
-            //start: new Date(startDate),
-     start: (function() {
-    var d = new Date(startDate);
-    var localStr = d.toLocaleString('en-US', { timeZone: SITE_TZ });
-    return new Date(localStr);
-})(),
+            start: nyStart,  // ✅ Now correctly in NY time
             url: webflowLink,
-            popup: popupTrigger,   // 👈 ADD THIS
+            popup: popupTrigger,
             allDay: isAllDay,
             venue: eventvenue,
             className: eventClassName,
@@ -102,7 +90,7 @@ var SITE_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
         });
     });
 
-    var date = new Date();
+    var date = toNYDate(new Date()); // ✅ Today in NY time
     var d = date.getDate();
     var m = date.getMonth();
     var y = date.getFullYear();
@@ -113,35 +101,36 @@ var SITE_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
         weekMode: 'variable',
         selectable: true,
         events: myEvents,
-       eventRender: function (event, element) {
-    var timeStr = '';
-    if (event.timeDisplay) {
-        timeStr = event.timeDisplay.trim();
-    } else if (!event.allDay && event.start) {
-        var h = event.start.getHours();
-        var m = event.start.getMinutes();
-        var ampm = h >= 12 ? 'PM' : 'AM';
-        h = h % 12 || 12;
-        timeStr = h + (m ? ':' + (m < 10 ? '0' : '') + m : '') + ' ' + ampm;
-    }
-    var iconSrc = event.image ;
-    var venueText = event.venue || event.location || '';
+        eventRender: function (event, element) {
+            var timeStr = '';
+            if (event.timeDisplay) {
+                timeStr = event.timeDisplay.trim();
+            } else if (!event.allDay && event.start) {
+                var h = event.start.getHours();
+                var m = event.start.getMinutes();
+                var ampm = h >= 12 ? 'PM' : 'AM';
+                h = h % 12 || 12;
+                timeStr = h + (m ? ':' + (m < 10 ? '0' : '') + m : '') + ' ' + ampm;
+            }
+            var iconSrc = event.image;
+            var venueText = event.venue || event.location || '';
 
-    var innerHtml = '<div class="calender-data">' +
-        '<div class="calender-data-row">' +
-        '<img src="' + iconSrc + '" loading="lazy" alt="" class="calender-icon">' +
-        '<div>' + timeStr + '</div>' +
-        '</div>' +
-        '<div class="calender-data-title">' + event.title + '</div>' +
-        '<div>' + venueText + '</div>' +
-        '</div>';
+            var innerHtml = '<div class="calender-data">' +
+                '<div class="calender-data-row">' +
+                '<img src="' + iconSrc + '" loading="lazy" alt="" class="calender-icon">' +
+                '<div>' + timeStr + '</div>' +
+                '</div>' +
+                '<div class="calender-data-title">' + event.title + '</div>' +
+                '<div>' + venueText + '</div>' +
+                '</div>';
 
-    if (event.popup && event.popup !== 'undefined') {
-        innerHtml = '<a href="#" popup-trigger="' + event.popup + '" class="fc-event-title-link">' + innerHtml + '</a>';
-    }
+            if (event.popup && event.popup !== 'undefined') {
+                innerHtml = '<a href="#" popup-trigger="' + event.popup + '" class="fc-event-title-link">' + innerHtml + '</a>';
+            }
 
-    element.find('.fc-event-inner').html(innerHtml);
-},
+            element.find('.fc-event-inner').html(innerHtml);
+        },
+
         eventClick: function (calEvent, jsEvent, view) {
             if (calEvent.popup && calEvent.popup !== 'undefined') {
                 jsEvent.preventDefault();
@@ -155,22 +144,12 @@ var SITE_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
             }
         },
 
-        // viewDisplay: function (view) {
-        //     var title = view.title;
-        //     if (title && title.indexOf(' ') !== -1) {
-        //         title = title.split(' ')[0];
-        //     }
-        //     $('#calMonthTitle').text(title || '');
-        // }
         dayClick: function (date, jsEvent, view) {
             if (!isMobileCal()) return;
-
             var clickedDate = date && typeof date.toDate === 'function' ? date.toDate() : (date instanceof Date ? date : new Date(date.getFullYear(), date.getMonth(), date.getDate()));
             selectedMobileDate = clickedDate;
-
             $('.fc-day').removeClass('fc-state-highlight');
             $(jsEvent.currentTarget).addClass('fc-state-highlight');
-
             renderMobileDay(selectedMobileDate);
         },
 
@@ -182,7 +161,7 @@ var SITE_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
             $('#calMonthTitle').text(title || '');
 
             if (isMobileCal()) {
-                var today = new Date();
+                var today = toNYDate(new Date()); // ✅ NY today
                 var currentRaw = $('#divCalendar').fullCalendar('getDate');
                 var current = currentRaw && typeof currentRaw.toDate === 'function' ? currentRaw.toDate() : (currentRaw instanceof Date ? currentRaw : today);
 
@@ -194,14 +173,13 @@ var SITE_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
                 }
 
                 $('.fc-day').removeClass('fc-state-highlight');
-                var m = selectedMobileDate.getMonth() + 1, d = selectedMobileDate.getDate();
-                var dateStr = selectedMobileDate.getFullYear() + '-' + (m < 10 ? '0' + m : m) + '-' + (d < 10 ? '0' + d : d);
+                var mo = selectedMobileDate.getMonth() + 1, dy = selectedMobileDate.getDate();
+                var dateStr = selectedMobileDate.getFullYear() + '-' + (mo < 10 ? '0' + mo : mo) + '-' + (dy < 10 ? '0' + dy : dy);
                 $('#divCalendar .fc-day[data-date="' + dateStr + '"]').addClass('fc-state-highlight');
 
                 renderMobileDay(selectedMobileDate);
             }
 
-            // Show single-digit dates as 01, 02, ... 09 in calendar grid
             $('#divCalendar .fc-day-number').each(function () {
                 var $cell = $(this).closest('.fc-day');
                 var dataDate = $cell.attr('data-date');
@@ -212,8 +190,6 @@ var SITE_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
                 }
             });
         }
-
-
     });
 
     function buildListView(monthDate, showAll) {
@@ -232,7 +208,6 @@ var SITE_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
         var dateGroups = keys.map(function (k) {
             var parts = k.split('-');
             var events = grouped[k];
-            // Sort events within the day by start time (ascending)
             events = events.slice().sort(function (a, b) {
                 if (!a.start || !b.start) return 0;
                 return a.start.getTime() - b.start.getTime();
@@ -244,7 +219,6 @@ var SITE_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
         }
         var html = '';
         if (dateGroups.length === 0) {
-            // No events in this month for list view
             html = '<div class="no-events">Check back soon for more listings</div>';
         } else {
             for (var g = 0; g < dateGroups.length; g++) {
@@ -258,33 +232,16 @@ var SITE_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
                     var popupAttr = hasPopup ? ' popup-trigger="' + event.popup + '"' : '';
                     html += `
 <a href="${linkHref}"${popupAttr} class="cal-list-event-row w-inline-block">
-
-  <div id="w-node-_3c15c504-42af-02bd-af92-08aad5ebfe0e-710cc151" class="cal-list-header">
-    
-    <div class="cal-list-event-icon"
-         style="background-image:url('${event.image || ''}')">
-    </div>
-
-    <div class="cal-list-event-title">
-      ${event.title}
-    </div>
-
+  <div class="cal-list-header">
+    <div class="cal-list-event-icon" style="background-image:url('${event.image || ''}')"></div>
+    <div class="cal-list-event-title">${event.title}</div>
   </div>
-
-  <div id="w-node-c767a613-2eda-5551-06f7-be3e45ab3ad8-710cc151" class="cal-list-event-meta-holder">
+  <div class="cal-list-event-meta-holder">
     <div class="cal-list-event-meta">${timeStr || ''}</div>
     <div class="cal-list-event-meta">${event.venue || ''}</div>
   </div>
-
-  <div id="w-node-c767a613-2eda-5551-06f7-be3e45ab3add-710cc151" class="cal-list-event-arrow">
-    →
-  </div>
-
-</a>
-
-`;
-
-
+  <div class="cal-list-event-arrow">→</div>
+</a>`;
                 }
             }
         }
@@ -305,7 +262,6 @@ var SITE_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
         $('#divCalendar').hide();
         $('#mobilelist').hide();
         $('#calListView').show();
-        $('.cal-page-title').text('Calendar Page - LIST');
         var calDate = $('#divCalendar').fullCalendar('getDate');
         listViewDate = new Date(calDate.getFullYear(), calDate.getMonth(), 1);
         listViewVisibleCount = LIST_VIEW_PAGE_SIZE;
@@ -319,7 +275,6 @@ var SITE_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
         $('#calListView').hide();
         $('#divCalendar').show();
         $('#mobilelist').css('display', '');
-        $('.cal-page-title').text('Calendar Page - CAL');
         $('.cal-view-list').removeClass('active');
         $('.cal-view-grid').addClass('active');
     });
@@ -357,53 +312,34 @@ var SITE_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
 });
 
 function renderMobileDay(date) {
-
     var html = '';
     var found = false;
 
     myEvents.forEach(function (event) {
-
         if (!event.start) return;
         if (!sameDay(event.start, date)) return;
 
         found = true;
         var timeStr = formatListTime(event);
         var hasPopup = event.popup && event.popup !== 'undefined';
-        var linkHref = hasPopup ? '#' : (event.url && event.url !== '#' ? event.url : '#');
         var popupAttr = hasPopup ? ' popup-trigger="' + event.popup + '"' : '';
 
         html += `
-   <a popup-trigger="${event.popup}" class="cal-list-event-row w-inline-block">
-
-  <div id="w-node-_3c15c504-42af-02bd-af92-08aad5ebfe0e-710cc151" class="cal-list-header">
-    
-    <div class="cal-list-event-icon"
-         style="background-image:url('${event.image || ''}')">
-    </div>
-
-    <div class="cal-list-event-title">
-      ${event.title}
-    </div>
-
+<a popup-trigger="${event.popup}" class="cal-list-event-row w-inline-block">
+  <div class="cal-list-header">
+    <div class="cal-list-event-icon" style="background-image:url('${event.image || ''}')"></div>
+    <div class="cal-list-event-title">${event.title}</div>
   </div>
-
-  <div id="w-node-c767a613-2eda-5551-06f7-be3e45ab3ad8-710cc151" class="cal-list-event-meta-holder">
+  <div class="cal-list-event-meta-holder">
     <div class="cal-list-event-meta">${timeStr || ''}</div>
     <div class="cal-list-event-meta">${event.venue || ''}</div>
   </div>
-
-  <div id="w-node-c767a613-2eda-5551-06f7-be3e45ab3add-710cc151" class="cal-list-event-arrow">
-    →
-  </div>
-
-</a>
-
-
-`;
+  <div class="cal-list-event-arrow">→</div>
+</a>`;
     });
 
     if (!found) {
-        html = `<div class="no-events">Check Back Soon for more listings</div>`;
+        html = '<div class="no-events">Check Back Soon for more listings</div>';
     }
 
     $('#mobilelist').html(html);
