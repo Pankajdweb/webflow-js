@@ -4,7 +4,15 @@ var SITE_TZ = 'America/New_York';
 var selectedMobileDate = new Date();
 
 // ✅ Convert UTC date to New York timezone
-function toLocalDate(d) {
+// If raw string has no time part, treat as local date directly to avoid day shift
+function toLocalDate(d, rawStr) {
+    if (rawStr && !rawStr.includes('T') && !rawStr.includes(' ')) {
+        var parts = rawStr.trim().split('-');
+        var year = parseInt(parts[0], 10);
+        var month = parseInt(parts[1], 10) - 1;
+        var day = parseInt(parts[2], 10);
+        return new Date(year, month, day, 12, 0, 0);
+    }
     var dateParts = d.toLocaleDateString('en-US', { timeZone: SITE_TZ }).split('/');
     var month = parseInt(dateParts[0], 10) - 1;
     var day = parseInt(dateParts[1], 10);
@@ -69,7 +77,7 @@ $(document).ready(function () {
         $('.ec-col-item').each(function () {
             var eventTitle = $(this).find('[title]').text();
             var eventImage = $(this).find('[event-image]').attr('src');
-            var startDate = $(this).find('[start-date]').text().replace(/-/g, '-');
+            var startDate = $(this).find('[start-date]').text().trim();
             var eventUrl = $(this).find('[url]').text();
             var eventAllday = $(this).find('[allday]').text();
             var eventvenue = $(this).find('[venue-wrap]').text();
@@ -80,8 +88,8 @@ $(document).ready(function () {
 
             var isAllDay = (eventAllday === 'true' || eventAllday === '');
 
-            // ✅ Convert UTC date from CMS to New York timezone
-            var localStart = toLocalDate(new Date(startDate));
+            // ✅ Pass raw startDate string so toLocalDate can detect missing time
+            var localStart = toLocalDate(new Date(startDate), startDate);
 
             console.log('Event:', eventTitle, '| UTC:', startDate, '| NY Date:', localStart.toString());
 
@@ -320,7 +328,7 @@ $(document).ready(function () {
             }
         });
 
-    }, 1200);
+    }, 800);
 });
 
 function renderMobileDay(date) {
