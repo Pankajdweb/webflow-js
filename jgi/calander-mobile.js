@@ -1,12 +1,20 @@
-// ✅ Auto-detect browser/computer timezone
+// ✅ Auto-detect browser/computer timezone (same as working script)
 var SITE_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 var selectedMobileDate = new Date();
 
-// ✅ Convert any UTC date to local timezone date object
+// ✅ Convert UTC date to local timezone using same method as working script
 function toLocalDate(d) {
-    var localStr = d.toLocaleString('en-US', { timeZone: SITE_TZ });
-    return new Date(localStr);
+    var dateParts = d.toLocaleDateString('en-US', { timeZone: SITE_TZ }).split('/');
+    var month = parseInt(dateParts[0], 10) - 1;
+    var day = parseInt(dateParts[1], 10);
+    var year = parseInt(dateParts[2], 10);
+    var timeStr = d.toLocaleTimeString('en-US', { timeZone: SITE_TZ, hour12: false });
+    var timeParts = timeStr.split(':');
+    var hours = parseInt(timeParts[0], 10);
+    var minutes = parseInt(timeParts[1], 10);
+    var seconds = parseInt(timeParts[2], 10);
+    return new Date(year, month, day, hours, minutes, seconds);
 }
 
 function isMobileCal() {
@@ -72,12 +80,14 @@ $(document).ready(function () {
 
             var isAllDay = (eventAllday === 'true' || eventAllday === '');
 
-            // ✅ Convert UTC date from CMS to local timezone date
-            var nyStart = toLocalDate(new Date(startDate));
+            // ✅ Convert UTC date from CMS to local timezone
+            var localStart = toLocalDate(new Date(startDate));
+
+            console.log('Event:', eventTitle, '| UTC:', startDate, '| Local:', localStart.toString());
 
             myEvents.push({
                 title: eventTitle,
-                start: nyStart,
+                start: localStart,
                 url: webflowLink,
                 popup: popupTrigger,
                 allDay: isAllDay,
@@ -324,7 +334,6 @@ function renderMobileDay(date) {
 
         found = true;
         var timeStr = formatListTime(event);
-        var hasPopup = event.popup && event.popup !== 'undefined';
 
         html += `
 <a popup-trigger="${event.popup}" class="cal-list-event-row w-inline-block">
