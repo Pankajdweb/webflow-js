@@ -321,7 +321,7 @@ $(document).ready(function () {
             }
         });
 
-    }, 1200);
+    }, 2000);
 });
 
 function renderMobileDay(date) {
