@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dynamic Calendar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="data.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.css" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js"></script>
+    <script src="calender.js"></script>
+  </head>
+  <body class="cal-page">
+    <div class="container-2">
+      <div class="events-calender-wrap">
+        <div class="calendar-header">
+          <div class="calendar-left-col">
+            <button type="button" class="cal-nav-btn cal-prev" aria-label="Previous month">◀</button>
+            <h1 id="calMonthTitle" class="cal-month-title">NOV</h1>
+            <button type="button" class="cal-nav-btn cal-next" aria-label="Next month">▶</button>
+          </div>
+
+          <div class="calendar-center-col">
+            <div class="calendar-label-wrap">
+              <p class="calander-label">JAZZ<br>LISTINGS</p>
+            </div>
+            <a href="#" class="calandary-button w-button">New York</a>
+          </div>
+
+          <div class="calendar-button-holder">
+            <button type="button" class="calendar-button-wrap active cal-view-btn cal-view-grid" aria-label="Calendar view">⊞</button>
+            <button type="button" class="calendar-button-wrap cal-view-btn cal-view-list" aria-label="List view">☰</button>
+          </div>
+        </div>
+
+        <div id="divCalendar"></div>
+        <div id="mobilelist" class="cal-mobile-day-list"></div>
+        <div id="calListView" class="cal-list-view" style="display:none;">
+          <div class="cal-list-content"></div>
+          <a href="#" class="cal-load-more w-button">Load More</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="eventPopupOverlay" class="event-popup-overlay">
+      <div class="event-popup-card">
+        <button type="button" class="event-popup-close" aria-label="Close">&times;</button>
+        <div class="event-popup-image"></div>
+        <div class="event-popup-body">
+          <div class="event-popup-badge">
+            <span class="event-popup-badge-icon"></span>
+            <span class="event-popup-badge-text"></span>
+          </div>
+          <h2 class="event-popup-title"></h2>
+          <div class="event-popup-meta event-popup-date"></div>
+          <div class="event-popup-meta event-popup-venue"></div>
+          <div class="event-popup-meta event-popup-time"></div>
+          <div class="event-popup-desc"></div>
+          <a class="event-popup-button" href="#" target="_blank" rel="noopener"></a>
+          <div class="event-popup-tags"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
