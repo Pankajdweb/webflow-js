@@ -587,9 +587,7 @@ function renderMobileDay(date) {
 
   <div id="w-node-_3c15c504-42af-02bd-af92-08aad5ebfe0e-710cc151" class="cal-list-header">
 
-    <div class="cal-list-event-icon"
-         style="background-image:url('${event.image || ''}')">
-    </div>
+
     ${featureIconHtml}
     <div class="cal-list-event-title">
       ${event.title}
