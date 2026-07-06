@@ -90,9 +90,34 @@ function formatPopupDate(date) {
     return months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
 }
 
-function openEventPopup(event) {
+var EVENT_SLUG_PARAM = 'event';
+
+// Adds/removes the event slug query param so the popup URL can be copied and shared.
+function setEventSlugInUrl(slug, replace) {
+    var url = new URL(window.location.href);
+    if (slug) {
+        url.searchParams.set(EVENT_SLUG_PARAM, slug);
+    } else {
+        url.searchParams.delete(EVENT_SLUG_PARAM);
+    }
+    if (replace) {
+        window.history.replaceState(window.history.state, '', url);
+    } else {
+        window.history.pushState({ eventSlug: slug || null }, '', url);
+    }
+}
+
+function getEventSlugFromUrl() {
+    return new URL(window.location.href).searchParams.get(EVENT_SLUG_PARAM);
+}
+
+function openEventPopup(event, skipUrlUpdate) {
     if (!event) return;
     var $overlay = $('[data-js="event-popup-overlay"]');
+
+    if (!skipUrlUpdate) {
+        setEventSlugInUrl(event.slug || '', false);
+    }
 
     $overlay.find('[data-js="event-popup-badge-text"]').text(event.category || '');
     $overlay.find('[data-js="event-popup-badge"]').css('display', event.category ? 'flex' : 'none');
@@ -155,6 +180,7 @@ function openEventPopup(event) {
 function closeEventPopup() {
     $('[data-js="event-popup-overlay"]').removeClass('open');
     document.body.style.overflow = '';
+    setEventSlugInUrl('', true);
 }
 
 $(document).ready(function () {
@@ -170,6 +196,16 @@ $(document).ready(function () {
         var id = $(this).attr('data-event-id');
         var event = myEvents.filter(function (ev) { return ev.id === id; })[0];
         openEventPopup(event);
+    });
+    $(window).on('popstate', function () {
+        var slug = getEventSlugFromUrl();
+        if (!slug) {
+            $('[data-js="event-popup-overlay"]').removeClass('open');
+            document.body.style.overflow = '';
+            return;
+        }
+        var event = myEvents.filter(function (ev) { return ev.slug === slug; })[0];
+        if (event) openEventPopup(event, true);
     });
 });
 
@@ -207,6 +243,7 @@ $(document).ready(function () {
 
             return {
                 id: item && item.id || '',
+                slug: fieldData.slug || '',
                 title: title,
                 start: hasValidDate ? start : null,
                 url: buttonLink,
@@ -262,6 +299,9 @@ $(document).ready(function () {
                 .then(function (payload) {
                     var sourceItems = getDataItems(payload);
                     return sourceItems
+                        .filter(function (item) {
+                            return item && !item.isArchived && !item.isDraft;
+                        })
                         .map(normalizeEventItem)
                         .filter(function (event) {
                             return event && event.title && event.start &&
@@ -272,6 +312,12 @@ $(document).ready(function () {
 
         function initCalendar(events) {
             myEvents = events || [];
+
+            var sharedSlug = getEventSlugFromUrl();
+            if (sharedSlug) {
+                var sharedEvent = myEvents.filter(function (ev) { return ev.slug === sharedSlug; })[0];
+                if (sharedEvent) openEventPopup(sharedEvent, true);
+            }
 
             var date = new Date();
             var d = date.getDate();
