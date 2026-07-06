@@ -18,9 +18,9 @@
       <div class="events-calender-wrap">
         <div class="calendar-header">
           <div class="calendar-left-col">
-            <button type="button" class="cal-nav-btn cal-prev" aria-label="Previous month">◀</button>
-            <h1 id="calMonthTitle" class="cal-month-title">NOV</h1>
-            <button type="button" class="cal-nav-btn cal-next" aria-label="Next month">▶</button>
+            <button type="button" class="cal-nav-btn cal-prev" data-js="cal-prev" aria-label="Previous month">◀</button>
+            <h1 id="calMonthTitle" class="cal-month-title" data-js="cal-month-title">NOV</h1>
+            <button type="button" class="cal-nav-btn cal-next" data-js="cal-next" aria-label="Next month">▶</button>
           </div>
 
           <div class="calendar-center-col">
@@ -31,36 +31,36 @@
           </div>
 
           <div class="calendar-button-holder">
-            <button type="button" class="calendar-button-wrap active cal-view-btn cal-view-grid" aria-label="Calendar view">⊞</button>
-            <button type="button" class="calendar-button-wrap cal-view-btn cal-view-list" aria-label="List view">☰</button>
+            <button type="button" class="calendar-button-wrap active cal-view-btn cal-view-grid" data-js="cal-view-grid" aria-label="Calendar view">⊞</button>
+            <button type="button" class="calendar-button-wrap cal-view-btn cal-view-list" data-js="cal-view-list" aria-label="List view">☰</button>
           </div>
         </div>
 
-        <div id="divCalendar"></div>
-        <div id="mobilelist" class="cal-mobile-day-list"></div>
-        <div id="calListView" class="cal-list-view" style="display:none;">
-          <div class="cal-list-content"></div>
-          <a href="#" class="cal-load-more w-button">Load More</a>
+        <div id="divCalendar" data-js="calendar-grid"></div>
+        <div id="mobilelist" class="cal-mobile-day-list" data-js="mobile-list"></div>
+        <div id="calListView" class="cal-list-view" data-js="cal-list-view" style="display:none;">
+          <div class="cal-list-content" data-js="cal-list-content"></div>
+          <a href="#" class="cal-load-more w-button" data-js="cal-load-more">Load More</a>
         </div>
       </div>
     </div>
 
-    <div id="eventPopupOverlay" class="event-popup-overlay">
-      <div class="event-popup-card">
-        <button type="button" class="event-popup-close" aria-label="Close">&times;</button>
-        <div class="event-popup-image"></div>
+    <div id="eventPopupOverlay" class="event-popup-overlay" data-js="event-popup-overlay">
+      <div class="event-popup-card" data-js="event-popup-card">
+        <button type="button" class="event-popup-close" data-js="event-popup-close" aria-label="Close">&times;</button>
+        <div class="event-popup-image" data-js="event-popup-image"></div>
         <div class="event-popup-body">
-          <div class="event-popup-badge">
-            <span class="event-popup-badge-icon"></span>
-            <span class="event-popup-badge-text"></span>
+          <div class="event-popup-badge" data-js="event-popup-badge">
+            <span class="event-popup-badge-icon" data-js="event-popup-badge-icon"></span>
+            <span class="event-popup-badge-text" data-js="event-popup-badge-text"></span>
           </div>
-          <h2 class="event-popup-title"></h2>
-          <div class="event-popup-meta event-popup-date"></div>
-          <div class="event-popup-meta event-popup-venue"></div>
-          <div class="event-popup-meta event-popup-time"></div>
-          <div class="event-popup-desc"></div>
-          <a class="event-popup-button" href="#" target="_blank" rel="noopener"></a>
-          <div class="event-popup-tags"></div>
+          <h2 class="event-popup-title" data-js="event-popup-title"></h2>
+          <div class="event-popup-meta event-popup-date" data-js="event-popup-date"></div>
+          <a class="event-popup-meta event-popup-venue" data-js="event-popup-venue" href="#" target="_blank" rel="noopener noreferrer"></a>
+          <div class="event-popup-meta event-popup-time" data-js="event-popup-time"></div>
+          <div class="event-popup-desc" data-js="event-popup-desc"></div>
+          <a class="event-popup-button" data-js="event-popup-button" href="#" target="_blank" rel="noopener"></a>
+          <div class="event-popup-tags" data-js="event-popup-tags"></div>
         </div>
       </div>
     </div>

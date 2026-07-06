@@ -92,40 +92,46 @@ function formatPopupDate(date) {
 
 function openEventPopup(event) {
     if (!event) return;
-    var $overlay = $('#eventPopupOverlay');
+    var $overlay = $('[data-js="event-popup-overlay"]');
 
-    $overlay.find('.event-popup-badge-text').text(event.category || '');
-    $overlay.find('.event-popup-badge').css('display', event.category ? 'flex' : 'none');
+    $overlay.find('[data-js="event-popup-badge-text"]').text(event.category || '');
+    $overlay.find('[data-js="event-popup-badge"]').css('display', event.category ? 'flex' : 'none');
 
     var featureIconClass = getFeatureIconClass(event.feature);
-    var $badgeIcon = $overlay.find('.event-popup-badge-icon').removeClass('feature-icon-live feature-icon-pick');
+    var $badgeIcon = $overlay.find('[data-js="event-popup-badge-icon"]').removeClass('feature-icon-live feature-icon-pick');
     if (featureIconClass) {
         $badgeIcon.addClass(featureIconClass).css('display', 'inline-block');
     } else {
         $badgeIcon.css('display', 'none');
     }
 
-    $overlay.find('.event-popup-title').text(event.title || '');
-    $overlay.find('.event-popup-date').text(event.start ? formatPopupDate(event.start) : '');
+    $overlay.find('[data-js="event-popup-title"]').text(event.title || '');
+    $overlay.find('[data-js="event-popup-date"]').text(event.start ? formatPopupDate(event.start) : '');
 
-    $overlay.find('.event-popup-venue').text(event.venue ? event.venue + ' →' : '');
-    $overlay.find('.event-popup-venue').toggle(!!event.venue);
+    var $venue = $overlay.find('[data-js="event-popup-venue"]');
+    $venue.text(event.venue ? event.venue + ' →' : '');
+    if (event.venueLink) {
+        $venue.attr('href', event.venueLink);
+    } else {
+        $venue.removeAttr('href');
+    }
+    $venue.toggle(!!event.venue);
 
     var timeStr = formatListTime(event);
-    $overlay.find('.event-popup-time').text(timeStr || '');
+    $overlay.find('[data-js="event-popup-time"]').text(timeStr || '');
 
-    $overlay.find('.event-popup-desc').html(event.description || '');
-    $overlay.find('.event-popup-desc').toggle(!!event.description);
+    $overlay.find('[data-js="event-popup-desc"]').html(event.description || '');
+    $overlay.find('[data-js="event-popup-desc"]').toggle(!!event.description);
 
     if (event.image) {
-        $overlay.find('.event-popup-image').css('background-image', 'url(' + event.image + ')');
-        $overlay.find('.event-popup-card').removeClass('no-image');
+        $overlay.find('[data-js="event-popup-image"]').css('background-image', 'url(' + event.image + ')');
+        $overlay.find('[data-js="event-popup-card"]').removeClass('no-image');
     } else {
-        $overlay.find('.event-popup-image').css('background-image', '');
-        $overlay.find('.event-popup-card').addClass('no-image');
+        $overlay.find('[data-js="event-popup-image"]').css('background-image', '');
+        $overlay.find('[data-js="event-popup-card"]').addClass('no-image');
     }
 
-    var $button = $overlay.find('.event-popup-button');
+    var $button = $overlay.find('[data-js="event-popup-button"]');
     if (event.url && event.url !== '#') {
         $button.attr('href', event.url).text(event.buttonText || 'DETAILS').show();
     } else {
@@ -133,7 +139,7 @@ function openEventPopup(event) {
     }
 
     var tags = event.tags || [];
-    var $tags = $overlay.find('.event-popup-tags');
+    var $tags = $overlay.find('[data-js="event-popup-tags"]');
     if (tags.length) {
         $tags.html(tags.map(function (t) {
             return '<span class="event-popup-tag">' + t + '</span>';
@@ -147,19 +153,19 @@ function openEventPopup(event) {
 }
 
 function closeEventPopup() {
-    $('#eventPopupOverlay').removeClass('open');
+    $('[data-js="event-popup-overlay"]').removeClass('open');
     document.body.style.overflow = '';
 }
 
 $(document).ready(function () {
-    $('#eventPopupOverlay').on('click', function (e) {
+    $('[data-js="event-popup-overlay"]').on('click', function (e) {
         if (e.target === this) closeEventPopup();
     });
-    $('.event-popup-close').on('click', closeEventPopup);
+    $('[data-js="event-popup-close"]').on('click', closeEventPopup);
     $(document).on('keydown', function (e) {
         if (e.key === 'Escape') closeEventPopup();
     });
-    $(document).on('click', '.cal-list-event-row', function (e) {
+    $(document).on('click', '[data-js="cal-list-event-row"]', function (e) {
         e.preventDefault();
         var id = $(this).attr('data-event-id');
         var event = myEvents.filter(function (ev) { return ev.id === id; })[0];
@@ -168,7 +174,14 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
+    console.log('[cal-debug] document ready. calendar-grid visible=' + $('[data-js="calendar-grid"]').is(':visible') +
+        ' width=' + $('[data-js="calendar-grid"]').width());
+    $(window).on('resize', function () {
+        console.log('[cal-debug] window resize. calendar-grid visible=' + $('[data-js="calendar-grid"]').is(':visible') +
+            ' width=' + $('[data-js="calendar-grid"]').width());
+    });
     setTimeout(function () {
+        console.log('[cal-debug] 200ms delay elapsed, starting loadEvents(). calendar-grid width=' + $('[data-js="calendar-grid"]').width());
         var eventTitle = 0;
         var startDate = 0;
         var eventUrl = 0;
@@ -190,6 +203,7 @@ $(document).ready(function () {
             var hasValidDate = start && !isNaN(start.getTime());
             var buttonLink = fieldData['button-link'] || fieldData.url || '';
             var venueText = fieldData['venue-name'] || fieldData.venueName || '';
+            var venueLink = fieldData['venue-link'] || fieldData.venueLink || '';
 
             return {
                 id: item && item.id || '',
@@ -198,6 +212,7 @@ $(document).ready(function () {
                 url: buttonLink,
                 allDay: !timeValue,
                 venue: venueText,
+                venueLink: venueLink,
                 city: fieldData['city-name'] || '',
                 category: fieldData['category-name'] || '',
                 feature: fieldData['feature-name'] || '',
@@ -233,6 +248,9 @@ $(document).ready(function () {
             return [];
         }
 
+        // Only events tagged with this city (case-insensitive) are loaded into the calendar.
+        var EVENT_CITY_FILTER = 'NYC';
+
         function loadEvents() {
             return fetch('https://raw.githubusercontent.com/Pankajdweb/Jgi-Events/main/public/data.json')
                 .then(function (response) {
@@ -246,7 +264,8 @@ $(document).ready(function () {
                     return sourceItems
                         .map(normalizeEventItem)
                         .filter(function (event) {
-                            return event && event.title && event.start;
+                            return event && event.title && event.start &&
+                                (event.city || '').trim().toLowerCase() === EVENT_CITY_FILTER.toLowerCase();
                         });
                 });
         }
@@ -259,13 +278,23 @@ $(document).ready(function () {
             var m = date.getMonth();
             var y = date.getFullYear();
 
-            var calendar = $('#divCalendar').fullCalendar({
+            var $calGrid = $('[data-js="calendar-grid"]');
+            console.log('[cal-debug] initCalendar called. container visible=' + $calGrid.is(':visible') +
+                ' width=' + $calGrid.width() + ' eventsCount=' + myEvents.length +
+                ' eventsWithUrl=' + myEvents.filter(function (e) { return !!e.url; }).length);
+
+            var calendar = $calGrid.fullCalendar({
                 header: false,
                 firstDay: 1,
                 weekMode: 'variable',
                 selectable: true,
                 events: myEvents,
                 eventRender: function (event, element) {
+                    console.log('[cal-debug] eventRender id=' + event.id +
+                        ' title="' + event.title + '"' +
+                        ' url=' + JSON.stringify(event.url) +
+                        ' tag=' + element.prop('tagName') +
+                        ' containerWidth=' + $calGrid.width());
                     var timeStr = '';
                     if (event.timeDisplay) {
                         timeStr = event.timeDisplay.trim();
@@ -290,9 +319,19 @@ $(document).ready(function () {
                     element.find('.fc-event-inner').html(innerHtml);
                 },
                 eventClick: function (calEvent, jsEvent, view) {
+                    console.log('[cal-debug] eventClick fired id=' + calEvent.id + ' targetTag=' + jsEvent.target.tagName);
                     jsEvent.preventDefault();
                     openEventPopup(calEvent);
                     return false;
+                },
+                eventAfterAllRender: function (view) {
+                    var $events = $calGrid.find('.fc-event');
+                    var anchorCount = $events.filter('a').length;
+                    var divCount = $events.filter('div').length;
+                    console.log('[cal-debug] eventAfterAllRender: total=' + $events.length +
+                        ' asAnchor=' + anchorCount + ' asDiv=' + divCount +
+                        ' containerVisible=' + $calGrid.is(':visible') +
+                        ' containerWidth=' + $calGrid.width());
                 },
                 dayClick: function (date, jsEvent, view) {
                     if (!isMobileCal()) return;
@@ -310,11 +349,11 @@ $(document).ready(function () {
                     if (title) {
                         title = title.split(' ')[0].substring(0, 3);
                     }
-                    $('#calMonthTitle').text(title || '');
+                    $('[data-js="cal-month-title"]').text(title || '');
 
                     if (isMobileCal()) {
                         var today = new Date();
-                        var currentRaw = $('#divCalendar').fullCalendar('getDate');
+                        var currentRaw = $('[data-js="calendar-grid"]').fullCalendar('getDate');
                         var current = currentRaw && typeof currentRaw.toDate === 'function' ? currentRaw.toDate() : (currentRaw instanceof Date ? currentRaw : today);
 
                         if (today.getMonth() === current.getMonth() &&
@@ -327,12 +366,12 @@ $(document).ready(function () {
                         $('.fc-day').removeClass('fc-state-highlight');
                         var m = selectedMobileDate.getMonth() + 1, d = selectedMobileDate.getDate();
                         var dateStr = selectedMobileDate.getFullYear() + '-' + (m < 10 ? '0' + m : m) + '-' + (d < 10 ? '0' + d : d);
-                        $('#divCalendar .fc-day[data-date="' + dateStr + '"]').addClass('fc-state-highlight');
+                        $('[data-js="calendar-grid"] .fc-day[data-date="' + dateStr + '"]').addClass('fc-state-highlight');
 
                         renderMobileDay(selectedMobileDate);
                     }
 
-                    $('#divCalendar .fc-day-number').each(function () {
+                    $('[data-js="calendar-grid"] .fc-day-number').each(function () {
                         var $cell = $(this).closest('.fc-day');
                         var dataDate = $cell.attr('data-date');
                         if (dataDate) {
@@ -382,7 +421,7 @@ $(document).ready(function () {
                             var featureIconClass = getFeatureIconClass(event.feature);
                             var featureIconHtml = featureIconClass ? '<span class="calender-feature-icon cal-list-feature-icon ' + featureIconClass + '"></span>' : '';
                             html += `
-<a href="#" data-event-id="${event.id}" class="cal-list-event-row w-inline-block">
+<a href="#" data-event-id="${event.id}" data-js="cal-list-event-row" class="cal-list-event-row w-inline-block">
 
   <div id="w-node-_3c15c504-42af-02bd-af92-08aad5ebfe0e-710cc151" class="cal-list-header">
 
@@ -409,68 +448,68 @@ $(document).ready(function () {
                         }
                     }
                 }
-                $('.cal-list-content').html(html);
+                $('[data-js="cal-list-content"]').html(html);
                 var totalGroups = Object.keys(grouped).length;
                 if (showAll || totalGroups <= listViewVisibleCount) {
-                    $('.cal-load-more').hide();
+                    $('[data-js="cal-load-more"]').hide();
                 } else {
-                    $('.cal-load-more').show();
+                    $('[data-js="cal-load-more"]').show();
                 }
             }
 
             listViewDate = new Date(y, m, 1);
             buildListView(listViewDate, false);
-            $('#calMonthTitle').text(getMonthName(listViewDate));
+            $('[data-js="cal-month-title"]').text(getMonthName(listViewDate));
 
-            $('.cal-view-list').on('click', function () {
-                $('#divCalendar').hide();
-                $('#mobilelist').hide();
-                $('#calListView').show();
+            $('[data-js="cal-view-list"]').on('click', function () {
+                $('[data-js="calendar-grid"]').hide();
+                $('[data-js="mobile-list"]').hide();
+                $('[data-js="cal-list-view"]').show();
                 $('.cal-page-title').text('Calendar Page - LIST');
-                var calDate = $('#divCalendar').fullCalendar('getDate');
+                var calDate = $('[data-js="calendar-grid"]').fullCalendar('getDate');
                 listViewDate = new Date(calDate.getFullYear(), calDate.getMonth(), 1);
                 listViewVisibleCount = LIST_VIEW_PAGE_SIZE;
                 buildListView(listViewDate, false);
-                $('#calMonthTitle').text(getMonthName(listViewDate));
-                $('.cal-view-grid').removeClass('active');
-                $('.cal-view-list').addClass('active');
+                $('[data-js="cal-month-title"]').text(getMonthName(listViewDate));
+                $('[data-js="cal-view-grid"]').removeClass('active');
+                $('[data-js="cal-view-list"]').addClass('active');
             });
 
-            $('.cal-view-grid').on('click', function () {
-                $('#calListView').hide();
-                $('#divCalendar').show();
-                $('#mobilelist').css('display', '');
+            $('[data-js="cal-view-grid"]').on('click', function () {
+                $('[data-js="cal-list-view"]').hide();
+                $('[data-js="calendar-grid"]').show();
+                $('[data-js="mobile-list"]').css('display', '');
                 $('.cal-page-title').text('Calendar Page - CAL');
-                $('.cal-view-list').removeClass('active');
-                $('.cal-view-grid').addClass('active');
+                $('[data-js="cal-view-list"]').removeClass('active');
+                $('[data-js="cal-view-grid"]').addClass('active');
             });
 
-            $('.cal-load-more').on('click', function () {
+            $('[data-js="cal-load-more"]').on('click', function () {
                 listViewVisibleCount += LIST_VIEW_PAGE_SIZE;
                 buildListView(listViewDate, false);
             });
 
-            $('.cal-prev').on('click', function () {
-                if ($('#calListView').is(':visible')) {
+            $('[data-js="cal-prev"]').on('click', function () {
+                if ($('[data-js="cal-list-view"]').is(':visible')) {
                     listViewDate = new Date(listViewDate.getFullYear(), listViewDate.getMonth() - 1, 1);
                     listViewVisibleCount = LIST_VIEW_PAGE_SIZE;
                     buildListView(listViewDate, false);
-                    $('#calMonthTitle').text(getMonthName(listViewDate));
-                    $('.cal-load-more').show();
+                    $('[data-js="cal-month-title"]').text(getMonthName(listViewDate));
+                    $('[data-js="cal-load-more"]').show();
                 } else {
-                    $('#divCalendar').fullCalendar('prev');
+                    $('[data-js="calendar-grid"]').fullCalendar('prev');
                 }
             });
 
-            $('.cal-next').on('click', function () {
-                if ($('#calListView').is(':visible')) {
+            $('[data-js="cal-next"]').on('click', function () {
+                if ($('[data-js="cal-list-view"]').is(':visible')) {
                     listViewDate = new Date(listViewDate.getFullYear(), listViewDate.getMonth() + 1, 1);
                     listViewVisibleCount = LIST_VIEW_PAGE_SIZE;
                     buildListView(listViewDate, false);
-                    $('#calMonthTitle').text(getMonthName(listViewDate));
-                    $('.cal-load-more').show();
+                    $('[data-js="cal-month-title"]').text(getMonthName(listViewDate));
+                    $('[data-js="cal-load-more"]').show();
                 } else {
-                    $('#divCalendar').fullCalendar('next');
+                    $('[data-js="calendar-grid"]').fullCalendar('next');
                 }
             });
         }
@@ -498,7 +537,7 @@ function renderMobileDay(date) {
         var featureIconHtml = featureIconClass ? '<span class="calender-feature-icon cal-list-feature-icon ' + featureIconClass + '"></span>' : '';
 
         html += `
-   <a href="#" data-event-id="${event.id}" class="cal-list-event-row w-inline-block">
+   <a href="#" data-event-id="${event.id}" data-js="cal-list-event-row" class="cal-list-event-row w-inline-block">
 
   <div id="w-node-_3c15c504-42af-02bd-af92-08aad5ebfe0e-710cc151" class="cal-list-header">
 
@@ -531,7 +570,7 @@ function renderMobileDay(date) {
         html = `<div class="no-events">Check Back Soon for more listings</div>`;
     }
 
-    $('#mobilelist').html(html);
+    $('[data-js="mobile-list"]').html(html);
 }
 
 function isMobileCal() {
