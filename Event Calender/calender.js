@@ -53,6 +53,15 @@ function sameDay(d1, d2) {
 // my events array
 var myEvents = [];
 
+// Same ordering FullCalendar 1.6.4 uses inside a day cell (compareDaySegments):
+// all-day events first, then start time, then title. Used by the list and
+// mobile views so every view shows a day's events in the same order.
+function compareEvents(a, b) {
+    return ((b.allDay ? 1 : 0) - (a.allDay ? 1 : 0)) ||
+        ((a.start && b.start) ? a.start.getTime() - b.start.getTime() : 0) ||
+        (a.title || '').localeCompare(b.title || '');
+}
+
 function formatListTime(event) {
     if (event.timeDisplay) return event.timeDisplay;
     if (event.allDay || !event.start) return '';
@@ -445,10 +454,7 @@ $(document).ready(function () {
                 var dateGroups = keys.map(function (k) {
                     var parts = k.split('-');
                     var events = grouped[k];
-                    events = events.slice().sort(function (a, b) {
-                        if (!a.start || !b.start) return 0;
-                        return a.start.getTime() - b.start.getTime();
-                    });
+                    events = events.slice().sort(compareEvents);
                     return { date: new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10)), events: events };
                 });
                 if (!showAll && dateGroups.length > listViewVisibleCount) {
@@ -572,11 +578,11 @@ function renderMobileDay(date) {
     var html = '';
     var found = false;
 
-    myEvents.forEach(function (event) {
+    var dayEvents = myEvents.filter(function (event) {
+        return event.start && sameDay(event.start, date);
+    }).sort(compareEvents);
 
-        if (!event.start) return;
-        if (!sameDay(event.start, date)) return;
-
+    dayEvents.forEach(function (event) {
         found = true;
         var timeStr = formatListTime(event);
         var featureIconClass = getFeatureIconClass(event.feature);
@@ -586,8 +592,6 @@ function renderMobileDay(date) {
    <a href="#" data-event-id="${event.id}" data-js="cal-list-event-row" class="cal-list-event-row w-inline-block">
 
   <div id="w-node-_3c15c504-42af-02bd-af92-08aad5ebfe0e-710cc151" class="cal-list-header">
-
-
     ${featureIconHtml}
     <div class="cal-list-event-title">
       ${event.title}
