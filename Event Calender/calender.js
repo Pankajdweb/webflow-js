@@ -289,7 +289,7 @@ $(document).ready(function () {
         var EVENT_CITY_FILTER = 'NYC';
 
         function loadEvents() {
-            return fetch('https://raw.githubusercontent.com/Pankajdweb/Jgi-Events/main/public/data.json')
+            return fetch('https://jgivent.netlify.app/data.json')
                 .then(function (response) {
                     if (!response.ok) {
                         throw new Error('Failed to load calendar data');
