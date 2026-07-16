@@ -441,11 +441,15 @@ $(document).ready(function () {
             function buildListView(monthDate, showAll) {
                 var y = monthDate.getFullYear();
                 var m = monthDate.getMonth();
+                var now = new Date();
+                var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                var isCurrentMonth = (y === today.getFullYear() && m === today.getMonth());
                 var grouped = {};
                 for (var i = 0; i < myEvents.length; i++) {
                     var ev = myEvents[i];
                     if (!ev.start) continue;
                     if (ev.start.getFullYear() !== y || ev.start.getMonth() !== m) continue;
+                    if (isCurrentMonth && ev.start < today) continue;
                     var key = getDateKey(ev.start);
                     if (!grouped[key]) grouped[key] = [];
                     grouped[key].push(ev);
