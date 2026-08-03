@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ECA Medical | Surgery-Ready™ Single-Use Instrument Kits</title>
+<meta name="description" content="ECA Medical builds sterile, procedure-specific, single-use instrument kits and torque limiters that make surgery predictable for OEMs, ASCs, and ORs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   ECA Medical — Homepage (Surgery-Ready Solutions revamp)
+   Design language reused from the live site: navy/orange brand palette,
+   blue gradient stat band, rounded geometric headline face, card + pill
+   button patterns. See notes.md for asset + content assumptions.
+   ========================================================================== */
+
+:root {
+  --navy: #011e9a;
+  --navy-deep: #051454;
+  --blue-accent: #08b3e9;
+  --grad-start: #5bbee7;
+  --grad-end: #06289f;
+  --orange: #e97818;
+  --orange-dark: #c66614;
+  --gray-bg: #eeeeee;
+  --gray-dark: #3a3a3a;
+  --gray-darker: #3d3d3d;
+  --text-body: #333333;
+  --text-muted: #6b6f76;
+  --white: #ffffff;
+  --border-soft: #e2e6ea;
+
+  --font-display: "Poppins", "Century Gothic", sans-serif;
+  --font-body: "Open Sans", "Segoe UI", sans-serif;
+
+  --container: 1200px;
+  --radius: 6px;
+  --radius-pill: 999px;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.75rem;
+  --space-lg: 3rem;
+  --space-xl: 5rem;
+}
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--text-body);
+  font-size: 16px;
+  line-height: 1.65;
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+ul { margin: 0; padding: 0; list-style: none; }
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--navy);
+  margin: 0 0 var(--space-sm);
+  font-weight: 600;
+  line-height: 1.2;
+}
+p { margin: 0 0 var(--space-sm); }
+:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: var(--orange);
+  margin-bottom: var(--space-xs);
+}
+
+.section-head {
+  max-width: 760px;
+  margin: 0 auto var(--space-lg);
+  text-align: center;
+}
+.section-head h2 { font-size: clamp(1.6rem, 3vw, 2.1rem); }
+.section-head p { color: var(--text-muted); font-size: 1.05rem; }
+
+.section-head--left {
+  margin: 0 0 var(--space-lg);
+  text-align: left;
+  max-width: 720px;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.9rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+.btn-primary {
+  background: var(--orange);
+  color: var(--white);
+}
+.btn-primary:hover { background: var(--orange-dark); transform: translateY(-1px); }
+.btn-outline {
+  background: transparent;
+  border-color: var(--navy);
+  color: var(--navy);
+}
+.btn-outline:hover { background: var(--navy); color: var(--white); }
+.btn-outline-light {
+  background: transparent;
+  border-color: var(--white);
+  color: var(--white);
+}
+.btn-outline-light:hover { background: var(--white); color: var(--navy); }
+.btn-block { width: 100%; }
+
+/* ---------- Top utility bar ---------- */
+.topbar {
+  background: var(--navy-deep);
+  color: var(--white);
+  font-size: 0.82rem;
+}
+.topbar .container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.75rem;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.topbar a { color: var(--white); }
+.topbar a:hover { color: var(--blue-accent); }
+
+/* ---------- Header / nav ---------- */
+.site-header {
+  border-bottom: 1px solid var(--border-soft);
+  position: sticky;
+  top: 0;
+  background: var(--white);
+  z-index: 100;
+}
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  gap: 1.5rem;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--navy);
+}
+.logo span { color: var(--blue-accent); }
+.logo small {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  flex: 1;
+  justify-content: center;
+}
+.main-nav > ul { display: flex; gap: 1.6rem; align-items: center; }
+.main-nav > ul > li { position: relative; }
+.main-nav > ul > li > a,
+.main-nav > ul > li > button.nav-toggle {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--gray-dark);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 2px;
+}
+.main-nav > ul > li > a:hover,
+.main-nav > ul > li > button.nav-toggle:hover { color: var(--navy); }
+.main-nav .caret { font-size: 0.6rem; margin-top: 2px; }
+
+.has-dropdown { position: relative; }
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 230px;
+  background: var(--white);
+  box-shadow: 0 12px 28px rgba(1, 30, 154, 0.14);
+  border-radius: var(--radius);
+  padding: 10px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition: all 0.15s ease;
+}
+.has-dropdown:hover .dropdown,
+.has-dropdown:focus-within .dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.dropdown a {
+  display: block;
+  padding: 9px 18px;
+  font-size: 0.88rem;
+  color: var(--gray-dark);
+  font-weight: 500;
+}
+.dropdown a:hover { background: var(--gray-bg); color: var(--navy); }
+
+.header-cta { display: flex; align-items: center; gap: 1rem; }
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+}
+.menu-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--navy);
+  margin: 5px 0;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  background: linear-gradient(45deg, var(--navy) 0%, #60c7ec 100%);
+  overflow: hidden;
+  position: relative;
+}
+.hero .container {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: var(--space-xl);
+  align-items: center;
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xl);
+}
+.hero h1 {
+  font-size: clamp(2.2rem, 4.2vw, 3.35rem);
+  margin-bottom: var(--space-sm);
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+.hero .subhead {
+  color: rgba(255,255,255,0.88);
+  font-size: 1.12rem;
+  max-width: 48ch;
+}
+.hero .subhead strong { color: var(--white); font-weight: 700; }
+.hero .support-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--white);
+  font-size: 0.98rem;
+  margin: var(--space-sm) 0 var(--space-md);
+  padding: 0.4rem 0.9rem 0.4rem 0.7rem;
+  background: rgba(255,255,255,0.14);
+  border-radius: var(--radius-pill);
+}
+.hero .support-line::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--orange);
+  flex-shrink: 0;
+}
+.hero-actions { display: flex; align-items: center; gap: 1.75rem; flex-wrap: wrap; margin-top: 0.5rem; }
+.hero-actions .link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--white);
+  font-size: 0.95rem;
+  line-height: 1;
+}
+.hero-actions .link-arrow svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+.hero-actions .link-arrow:hover svg { transform: translateX(3px); }
+
+.hero-media {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.hero-collage {
+  position: relative;
+  aspect-ratio: 4 / 2.9;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
+}
+.hero-collage .tile {
+  border-radius: 16px;
+  background: linear-gradient(150deg, var(--grad-start), var(--grad-end));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  color: rgba(255,255,255,0.95);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-align: left;
+  padding: 16px;
+  box-shadow: 0 16px 32px -12px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.18);
+  position: relative;
+  overflow: hidden;
+}
+.hero-collage .tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0) 55%);
+}
+.hero-collage .tile span, .hero-collage .tile .tile-icon { position: relative; }
+.hero-collage .tile-icon { width: 26px; height: 26px; margin-bottom: 10px; opacity: 0.9; }
+.hero-collage .tile--a { grid-row: 1 / 3; background: linear-gradient(160deg, #0e2499, #06289f 60%, #08b3e9); }
+.hero-collage .tile--b { background: linear-gradient(150deg, #08b3e9, #5bbee7); }
+.hero-collage .tile--c { background: linear-gradient(150deg, var(--orange), #f2ae74); color: #4a2e00; }
+.hero-collage .tile--c::before { display: none; }
+
+.hero-badge {
+  background: var(--white);
+  border-radius: 14px;
+  box-shadow: 0 16px 32px -14px rgba(1, 30, 154, 0.28);
+  padding: 0.8rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  align-self: flex-start;
+}
+.hero-badge .badge-num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--navy);
+  line-height: 1;
+}
+.hero-badge .badge-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.25;
+  max-width: 16ch;
+}
+
+/* ---------- Stats band ---------- */
+.stats-lede {
+  text-align: center;
+  padding: var(--space-lg) 24px var(--space-md);
+}
+.stats-lede h2 { font-size: clamp(1.5rem, 3vw, 2rem); }
+
+.stats-band {
+  background: linear-gradient(100deg, var(--grad-start) 0%, var(--grad-end) 100%);
+  color: var(--white);
+  padding: var(--space-lg) 0;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+  text-align: center;
+}
+.stats-grid .stat { position: relative; padding: 0 var(--space-sm); }
+.stats-grid .stat:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: 10%;
+  bottom: 10%;
+  width: 1px;
+  background: rgba(255,255,255,0.22);
+}
+.stats-grid .stat-number {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+  margin-bottom: 6px;
+}
+.stats-grid .stat-label {
+  font-size: 0.92rem;
+  opacity: 0.92;
+  line-height: 1.4;
+}
+
+/* ---------- Generic content section ---------- */
+.section { padding: var(--space-xl) 0; }
+.section--alt { background: var(--gray-bg); }
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  align-items: center;
+}
+.split.reverse .split-media { order: 2; }
+.split.reverse .split-copy { order: 1; }
+
+.split-media .media-frame {
+  border-radius: 16px;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.9);
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-align: center;
+  padding: 2rem;
+}
+.media-frame--split {
+  background: linear-gradient(135deg, var(--navy), var(--grad-end));
+}
+.media-frame--motion {
+  background: linear-gradient(135deg, var(--navy) 0%, #08b3e9 100%);
+}
+.media-frame small {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 0.78rem;
+  opacity: 0.85;
+  margin-top: 8px;
+}
+
+/* Process-chain comparison: reusable-tray chain vs Surgery-Ready chain */
+.chain-compare {
+  background: linear-gradient(160deg, var(--navy) 0%, var(--navy-deep) 100%);
+  border-radius: 18px;
+  padding: 2.25rem 2rem;
+  color: var(--white);
+}
+.chain-compare .chain-row { margin-bottom: 1.75rem; }
+.chain-compare .chain-row:last-child { margin-bottom: 0; }
+.chain-compare .chain-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 0.7rem;
+}
+.chain-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
+.chain-chip {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: var(--radius-pill);
+  padding: 0.4rem 0.85rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.85);
+}
+.chain-arrow { color: rgba(255,255,255,0.35); font-size: 0.85rem; }
+.chain-row--ready .chain-chip {
+  background: rgba(233,120,24,0.16);
+  border-color: rgba(233,120,24,0.4);
+  color: var(--white);
+  font-weight: 700;
+}
+.chain-row--ready .chain-arrow { color: rgba(233,120,24,0.6); }
+.chain-divider {
+  border: none;
+  border-top: 1px dashed rgba(255,255,255,0.15);
+  margin: 1.5rem 0;
+}
+.chain-result {
+  margin-top: 1.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  font-size: 0.92rem;
+  color: rgba(255,255,255,0.8);
+}
+.chain-result strong { color: var(--white); }
+
+/* ---------- What Surgery-Ready means: tiles ---------- */
+.means-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+.means-card {
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 1.75rem 1.4rem;
+  text-align: left;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.means-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(1, 30, 154, 0.12);
+}
+.means-card .icon {
+  width: 46px;
+  height: 46px;
+  margin-bottom: 1rem;
+  color: var(--orange);
+}
+.means-card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.4rem;
+}
+.means-card p { font-size: 0.92rem; color: var(--text-muted); margin: 0; }
+
+.means-promise {
+  text-align: center;
+  background: linear-gradient(135deg, rgba(1,30,154,0.04), rgba(8,179,233,0.06));
+  border: 1px solid var(--border-soft);
+  border-radius: 18px;
+  padding: var(--space-lg) var(--space-lg);
+}
+.means-promise .promise-icon {
+  width: 40px;
+  height: 40px;
+  color: var(--orange);
+  margin: 0 auto 1rem;
+}
+.means-promise p {
+  font-size: 1.25rem;
+  color: var(--navy);
+  font-weight: 500;
+  max-width: 62ch;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* ---------- Dual track: OEM / ASC ---------- */
+.track-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+.track-card {
+  background: var(--white);
+  border-radius: 14px;
+  padding: var(--space-lg) var(--space-md);
+  box-shadow: 0 10px 30px rgba(1, 30, 154, 0.08);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.track-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px rgba(1, 30, 154, 0.14);
+}
+.track-card--oem { border-top: 5px solid var(--navy); }
+.track-card--asc { border-top: 5px solid var(--orange); }
+.track-card .track-kicker {
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+.track-card h3 { font-size: 1.3rem; margin-bottom: 0.4rem; }
+.track-card .lead-line {
+  color: var(--text-body);
+  font-weight: 600;
+  margin-bottom: var(--space-sm);
+}
+.track-list { margin-bottom: var(--space-md); flex: 1; }
+.track-list li {
+  position: relative;
+  padding-left: 2rem;
+  margin-bottom: 0.85rem;
+  font-size: 0.96rem;
+  color: var(--text-body);
+}
+.track-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(233, 120, 24, 0.14);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c66614' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 11px;
+}
+.track-card--oem .track-list li::before {
+  background-color: rgba(1, 30, 154, 0.1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23011e9a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 11px;
+}
+
+.dual-visual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+.dual-visual .panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: var(--white);
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-align: center;
+  padding: 2.25rem 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 14px 30px -10px rgba(1,30,154,0.3);
+}
+.dual-visual .panel-icon { width: 38px; height: 38px; }
+.dual-visual .panel--oem { background: linear-gradient(150deg, var(--navy), var(--grad-end)); }
+.dual-visual .panel--asc { background: linear-gradient(150deg, var(--orange), var(--orange-dark)); }
+
+/* ---------- One source / process ---------- */
+.process-copy ul.checklist { margin-top: var(--space-sm); }
+.process-copy .checklist li {
+  position: relative;
+  padding-left: 1.7rem;
+  margin-bottom: 0.6rem;
+  font-size: 0.96rem;
+}
+.process-copy .checklist li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--orange);
+  font-weight: 700;
+}
+
+/* Step-ring diagram: 6 numbered stages arranged in a circle around the eca mark */
+.process-ring-wrap { display: flex; align-items: center; justify-content: center; padding: 1.5rem 0; }
+.process-ring {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 1;
+}
+.process-ring .ring-center {
+  position: absolute;
+  inset: 31%;
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: 0 10px 30px rgba(1,30,154,0.14), inset 0 0 0 1px var(--border-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--navy);
+  font-size: 1rem;
+  line-height: 1.3;
+  z-index: 2;
+  text-align: center;
+  padding: 0.5rem;
+}
+.process-ring .ring-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px dashed rgba(1,30,154,0.16);
+}
+.process-ring .step {
+  position: absolute;
+  width: 104px;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.process-ring .step .step-dot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 6px;
+  box-shadow: 0 8px 18px rgba(1,30,154,0.25);
+}
+.process-ring .step.pos-2 .step-dot { background: var(--grad-end); }
+.process-ring .step.pos-3 .step-dot { background: var(--blue-accent); }
+.process-ring .step.pos-4 .step-dot { background: var(--orange); }
+.process-ring .step.pos-5 .step-dot { background: var(--grad-end); }
+.process-ring .step.pos-6 .step-dot { background: var(--navy); }
+.process-ring .step-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--navy);
+}
+.process-ring .step.pos-1 { top: 8%; left: 50%; }
+.process-ring .step.pos-2 { top: 29%; left: 86.4%; }
+.process-ring .step.pos-3 { top: 71%; left: 86.4%; }
+.process-ring .step.pos-4 { top: 92%; left: 50%; }
+.process-ring .step.pos-5 { top: 71%; left: 13.6%; }
+.process-ring .step.pos-6 { top: 29%; left: 13.6%; }
+
+/* ---------- Section 3 big-stat badge ---------- */
+.stat-badge {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--navy);
+  background: linear-gradient(135deg, rgba(8,179,233,0.12), rgba(1,30,154,0.06));
+  border-radius: 12px;
+  padding: 0.3rem 0.9rem;
+  font-size: 1.1rem;
+}
+.stat-badge .big { font-size: 1.6rem; }
+
+/* ---------- Outside validation ---------- */
+.validation {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
+  color: var(--white);
+  padding: var(--space-xl) 0;
+}
+.validation .section-head h2,
+.validation .eyebrow { color: var(--white); }
+.validation .section-head p { color: rgba(255,255,255,0.75); }
+
+.quote-panel {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: var(--space-lg);
+  align-items: flex-start;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 20px;
+  padding: var(--space-lg);
+}
+.quote-text-col { position: relative; }
+.quote-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  border: 2px solid rgba(233,120,24,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--white);
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+.quote-avatar-wrap { text-align: center; }
+.quote-avatar-wrap .avatar-name {
+  margin-top: 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--white);
+}
+.quote-avatar-wrap .avatar-role {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.55);
+}
+.quote-panel blockquote {
+  margin: 0 0 var(--space-md);
+  font-family: var(--font-display);
+  font-size: 1.28rem;
+  line-height: 1.5;
+  font-weight: 500;
+  position: relative;
+  z-index: 1;
+}
+.quote-panel blockquote:last-of-type { margin-bottom: var(--space-md); }
+.quote-divider { border: none; border-top: 1px solid rgba(255,255,255,0.15); margin: var(--space-sm) 0; }
+.quote-cite {
+  font-size: 0.92rem;
+  color: rgba(255,255,255,0.75);
+}
+.quote-cite strong { color: var(--white); }
+.quote-fineprint {
+  margin-top: var(--space-sm);
+  font-size: 0.76rem;
+  color: rgba(255,255,255,0.5);
+}
+
+/* ---------- Closing CTA ---------- */
+.closing-cta { background: var(--white); }
+.closing-cta .closing-line {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto var(--space-lg);
+  font-size: 1.3rem;
+  color: var(--navy);
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+.cta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+.cta-card {
+  border-radius: 14px;
+  padding: var(--space-lg) var(--space-md);
+  text-align: center;
+}
+.cta-card--oem { background: var(--navy); color: var(--white); }
+.cta-card--asc { background: var(--gray-bg); color: var(--gray-darker); }
+.cta-card h3 { font-size: 1.15rem; margin-bottom: 0.5rem; }
+.cta-card--oem h3 { color: var(--white); }
+.cta-card p { margin-bottom: var(--space-md); font-size: 0.98rem; }
+.cta-card--asc h3 { color: var(--navy); }
+
+/* ---------- Contact ---------- */
+.contact-section {
+  background: var(--gray-darker);
+  color: var(--white);
+  padding: var(--space-xl) 0;
+}
+.contact-section .container {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: var(--space-xl);
+}
+.contact-section h2 { color: var(--white); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.form-field { display: flex; flex-direction: column; margin-bottom: 1rem; }
+.form-field label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  color: rgba(255,255,255,0.65);
+}
+.form-field input,
+.form-field textarea {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,0.35);
+  color: var(--white);
+  padding: 0.5rem 0.1rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+}
+.form-field input:focus,
+.form-field textarea:focus { outline: none; border-color: var(--orange); }
+.form-field textarea { resize: vertical; min-height: 90px; }
+
+.contact-info h3 { color: var(--white); font-size: 1.05rem; margin-top: var(--space-md); }
+.contact-info h3:first-child { margin-top: 0; }
+.contact-info p { color: rgba(255,255,255,0.8); font-size: 0.95rem; }
+.contact-info a:hover { color: var(--orange); }
+
+/* ---------- Footer ---------- */
+.site-footer {
+  background: var(--gray-darker);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.75);
+  padding: var(--space-lg) 0 var(--space-md);
+  font-size: 0.88rem;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr 1fr;
+  gap: var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: var(--space-md);
+}
+.footer-brand .footer-logo { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; color: var(--white); margin-bottom: 0.75rem; }
+.footer-brand p { margin-bottom: 0.4rem; }
+.footer-brand a:hover { color: var(--orange); }
+.footer-col h4 {
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.9rem;
+}
+.footer-col li { margin-bottom: 0.55rem; }
+.footer-col a:hover { color: var(--orange); }
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.5);
+}
+
+/* ---------- Skip link ---------- */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  background: var(--navy);
+  color: var(--white);
+  padding: 10px 16px;
+  z-index: 1000;
+}
+.skip-link:focus { left: 12px; top: 12px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1024px) {
+  .hero .container { grid-template-columns: 1fr; }
+  .hero-media { order: -1; max-width: 480px; margin: 0 auto 1.5rem; }
+  .process-ring { max-width: 320px; }
+  .process-ring .step { width: 96px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); row-gap: var(--space-lg); }
+  .means-grid { grid-template-columns: repeat(2, 1fr); }
+  .split { grid-template-columns: 1fr; }
+  .split .split-media { order: -1; }
+  .track-grid { grid-template-columns: 1fr; }
+  .dual-visual { grid-template-columns: 1fr; }
+  .means-promise { grid-template-columns: 1fr; }
+  .cta-grid { grid-template-columns: 1fr; }
+  .contact-section .container { grid-template-columns: 1fr; }
+  .quote-panel { grid-template-columns: 1fr; text-align: center; }
+  .quote-panel blockquote { border-left: none; border-top: 3px solid var(--orange); padding-left: 0; padding-top: 1rem; text-align: left; }
+  .quote-photo { max-width: 160px; margin: 0 auto; }
+}
+
+@media (max-width: 860px) {
+  .topbar { display: none; }
+  .main-nav { display: none; }
+  .menu-toggle { display: block; }
+  .site-header .container { flex-wrap: wrap; }
+  .header-cta .btn-outline { display: none; }
+
+  .main-nav.open {
+    display: flex;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--white);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem 24px 1.5rem;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+  }
+  .main-nav.open > ul { flex-direction: column; align-items: flex-start; gap: 0.25rem; width: 100%; }
+  .main-nav.open .dropdown {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    display: none;
+    padding-left: 12px;
+  }
+  .main-nav.open .has-dropdown.dropdown-open .dropdown { display: block; }
+}
+
+.process-steps-list { display: none; }
+
+@media (max-width: 640px) {
+  :root { --space-xl: 3rem; --space-lg: 2rem; }
+  .means-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .stats-grid .stat:nth-child(2)::after { display: none; }
+  .form-row { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .quote-panel { padding: var(--space-md); }
+  .quote-panel { grid-template-columns: 1fr; }
+
+  /* Below this width the circular ring gets cramped; swap for a simple numbered list */
+  .process-ring-wrap { display: none; }
+  .process-steps-list {
+    display: block;
+    background: var(--white);
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(1,30,154,0.08);
+    padding: var(--space-md);
+  }
+  .process-steps-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .process-steps-list li:not(:last-child) { border-bottom: 1px dashed var(--border-soft); }
+  .process-steps-list .step-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--white);
+    font-size: 0.78rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ============ TOP UTILITY BAR ============ -->
+<div class="topbar">
+  <div class="container">
+    <a href="tel:+18053762509">+1 (805) 376-2509</a>
+    <a href="mailto:sales@ecamedical.com">sales@ecamedical.com</a>
+  </div>
+</div>
+
+<!-- ============ HEADER / NAV ============ -->
+<header class="site-header">
+  <div class="container">
+    <a class="logo" href="/" aria-label="ECA Medical home">
+      eca<span>medical</span>
+    </a>
+
+    <button class="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" id="menuToggle">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="main-nav" id="mainNav" aria-label="Primary">
+      <ul>
+        <li class="has-dropdown">
+          <button class="nav-toggle" aria-expanded="false">About <span class="caret">▾</span></button>
+          <ul class="dropdown">
+            <li><a href="/why-eca">Who is ECA?</a></li>
+            <li><a href="/mission-values">Mission &amp; Values</a></li>
+          </ul>
+        </li>
+        <li class="has-dropdown">
+          <button class="nav-toggle" aria-expanded="false">Why Surgery-Ready™ <span class="caret">▾</span></button>
+          <ul class="dropdown">
+            <li><a href="/single-use-surgical-instruments">Why Single-Use?</a></li>
+            <li><a href="/procedure-kits">Why Surgery-Ready™ Kits?</a></li>
+            <li><a href="/why-torque-limiting">Why Surgery-Ready™ Torque?</a></li>
+            <li><a href="/environmental">Environmental Impact</a></li>
+          </ul>
+        </li>
+        <li><a href="/developing-your-kit">Procedural Kits</a></li>
+        <li class="has-dropdown">
+          <button class="nav-toggle" aria-expanded="false">Torque Limiters <span class="caret">▾</span></button>
+          <ul class="dropdown">
+            <li><a href="/trutorq">TruTORQ™</a></li>
+            <li><a href="/trupwr">TruPWR™</a></li>
+            <li><a href="/cardio-neuro">Cardio &amp; Neuro</a></li>
+            <li><a href="/ortho-spine">Ortho &amp; Spine</a></li>
+          </ul>
+        </li>
+        <li><a href="/careers">Careers</a></li>
+        <li><a href="/blog">Blog</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-cta">
+      <a class="btn btn-outline" href="/contact">Contact</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ SECTION 1 · HERO ============ -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-copy">
+        <span class="eyebrow">Surgery-ready systems, not just kits</span>
+        <h1>Surgery-Ready Made Easy™</h1>
+        <p class="subhead">ECA Medical is a <strong>Surgery-Ready™ systems and solutions partner</strong>, not only a procedural kit designer. Forty-seven years as a world leader in single-use, sterile-packed instruments now stands behind predictable surgery at scale, for implant OEMs and surgery centers alike.</p>
+        <p class="support-line">Confidence In Hand, now at system scale.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="/solutions">Explore Surgery-Ready™ Solutions</a>
+          <a class="link-arrow" href="#contact">Talk to our team
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="hero-media">
+        <div class="hero-collage" role="img" aria-label="Collage of Surgery-Ready product kits, product design work, a surgeon consultation, and outcome data">
+          <div class="tile tile--a">
+            <svg class="tile-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><rect x="10" y="6" width="28" height="36" rx="4"/><path d="M17 16h14M17 24h14M17 32h8"/></svg>
+            <span>Surgery-Ready™<br>procedure kit</span>
+          </div>
+          <div class="tile tile--b">
+            <svg class="tile-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 38l4-12L30 8l6 6-18 18-12 4z"/><path d="M26 12l6 6"/></svg>
+            <span>Design &amp;<br>consultation</span>
+          </div>
+          <div class="tile tile--c">
+            <svg class="tile-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 38l8-14 8 8 12-18 6 8"/></svg>
+            <span>Predictable<br>outcomes</span>
+          </div>
+        </div>
+        <div class="hero-badge">
+          <span class="badge-num">#1</span>
+          <span class="badge-label">MedTech torque limiter worldwide</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 2 · PROOF STATS ============ -->
+  <div class="stats-lede">
+    <h2>The numbers speak for themselves.</h2>
+  </div>
+  <section class="stats-band" aria-label="ECA Medical by the numbers">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-number">#1</div>
+          <div class="stat-label">MedTech Torque<br>Limiter Worldwide</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">47</div>
+          <div class="stat-label">Years Serving<br>Medical Device Leaders</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">55M+</div>
+          <div class="stat-label">Single-Use Instruments<br>Distributed Worldwide</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">500K+</div>
+          <div class="stat-label">Surgery-Ready™<br>Orthopaedic Kits Distributed</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 3 · WHY NOW ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="split">
+        <div class="split-copy">
+          <span class="eyebrow">Why now</span>
+          <h2>Surgery is moving outpatient. ECA builds the instruments for where it's going.</h2>
+          <p class="stat-badge"><span class="big">70%</span> of surgeries are now moving to the outpatient setting — more than 20% of them orthopedic.</p>
+          <p>The ambulatory surgery centers doing this work run lean: limited storage, lean staffing, and little sterile processing capacity. The reusable tray model was built for hospitals, who had a full sterile processing department down the hall.</p>
+          <p>That's why the instrument's price tag is the wrong number to watch. A reusable tray touches transport, inspection, cleaning, sterilization, storage, and staging before every case. Surgery-Ready™ kits remove that entire chain: open, use, dispose.</p>
+          <p>Which makes switching a systems decision, not just a product decision. The procedural kit is the delivery vehicle. The platform is the value.</p>
+        </div>
+        <div class="split-media">
+          <div class="chain-compare" role="img" aria-label="Comparison: the reusable tray chain of six steps versus the three-step Surgery-Ready process">
+            <div class="chain-row">
+              <div class="chain-label">Reusable Tray, Every Case</div>
+              <div class="chain-steps">
+                <span class="chain-chip">Transport</span><span class="chain-arrow">→</span>
+                <span class="chain-chip">Inspect</span><span class="chain-arrow">→</span>
+                <span class="chain-chip">Clean</span><span class="chain-arrow">→</span>
+                <span class="chain-chip">Sterilize</span><span class="chain-arrow">→</span>
+                <span class="chain-chip">Store</span><span class="chain-arrow">→</span>
+                <span class="chain-chip">Stage</span>
+              </div>
+            </div>
+            <hr class="chain-divider">
+            <div class="chain-row chain-row--ready">
+              <div class="chain-label">Surgery-Ready™, Every Case</div>
+              <div class="chain-steps">
+                <span class="chain-chip">Open</span><span class="chain-arrow">→</span>
+                <span class="chain-chip">Use</span><span class="chain-arrow">→</span>
+                <span class="chain-chip">Dispose</span>
+              </div>
+            </div>
+            <div class="chain-result">Six handling steps collapse into three — every case starts sterile, calibrated, and complete.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 4 · WHAT SURGERY-READY MEANS ============ -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">What it means</span>
+        <h2>What Surgery-Ready™ means</h2>
+      </div>
+
+      <div class="means-grid">
+        <div class="means-card">
+          <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><circle cx="24" cy="24" r="18"/><path d="M16 24l6 6 12-12"/></svg>
+          <h3>Sterile</h3>
+          <p>Sealed and pristine at the point of care. Nothing to reprocess.</p>
+        </div>
+        <div class="means-card">
+          <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="6" width="32" height="36" rx="3"/><path d="M16 16h16M16 24h16M16 32h10"/></svg>
+          <h3>Procedure-specific</h3>
+          <p>Researched, designed, and configured to the surgeon's workflow and the case, not a generic tray.</p>
+        </div>
+        <div class="means-card">
+          <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 40V16l16-10 16 10v24"/><path d="M18 40V24h12v16"/></svg>
+          <h3>ASC-ready</h3>
+          <p>Compact, predictable, and built to run without a sterile processing department.</p>
+        </div>
+        <div class="means-card">
+          <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 40l10-14 8 8 12-18 6 8"/></svg>
+          <h3>Scalable</h3>
+          <p>One system that launches faster and scales across sites of care.</p>
+        </div>
+      </div>
+
+      <div class="means-promise">
+        <svg class="promise-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><path d="M24 4l4.4 9.4L38 15l-7 7.4L32.8 34 24 29 15.2 34 17 22.4 10 15l9.6-1.6L24 4z"/></svg>
+        <p>Surgery-Ready's real promise: predictable surgery today, tomorrow, and at scale. It removes the variance that can cost a surgery center its schedule &mdash; and frankly, its profit.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 5 · BUILT FOR BOTH SIDES OF THE TABLE ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">For OEMs and for ASCs / ORs</span>
+        <h2>Built for both sides of the table.</h2>
+      </div>
+
+      <div class="dual-visual">
+        <div class="panel panel--oem">
+          <svg class="panel-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 40V16l16-10 16 10v24"/><path d="M18 40V24h12v16"/><path d="M18 16h4M26 16h4M18 22h4M26 22h4"/></svg>
+          OEM Product Launch
+        </div>
+        <div class="panel panel--asc">
+          <svg class="panel-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 20h32v20H8z"/><path d="M16 20v-6a4 4 0 014-4h8a4 4 0 014 4v6"/><path d="M24 26v8M20 30h8"/></svg>
+          ASC / OR Workflow
+        </div>
+      </div>
+
+      <div class="track-grid">
+        <article class="track-card track-card--oem">
+          <span class="track-kicker">For implant OEMs</span>
+          <h3>Launch and scale in surgery's growth channel: outpatient surgery</h3>
+          <ul class="track-list">
+            <li>Get to market faster: ECA Medical is the one partner that handles it all, from kit concept and development to validation, manufacturing, regulatory, sterile packaging, and shipping.</li>
+            <li>Free your capital. No loaner sets, no spares inventory; instrument spend matches case volume.</li>
+            <li>Let reps sell. No tray logistics, no field inventory to manage.</li>
+            <li>Co-develop the program with ECA Medical: procedure flow, kit configuration, manufacturing method, and surgeon feedback, then final development.</li>
+          </ul>
+          <a class="btn btn-outline" href="/developing-your-kit">Develop Your Kit</a>
+        </article>
+
+        <article class="track-card track-card--asc">
+          <span class="track-kicker">For ASCs, hospitals &amp; OR teams</span>
+          <h3>Run more cases with the staff you already have.</h3>
+          <ul class="track-list">
+            <li>Eliminate reprocessing. Open, use, dispose.</li>
+            <li>Turn rooms faster: a published cost model built on roughly 17.5 minutes saved per case found that enough to fit an additional case on 51% of 12-hour operating days.</li>
+            <li>Start every case sterile, calibrated, and complete.</li>
+            <li>Surgery centers and hospitals make money on flow, not on the contents of a tray.</li>
+          </ul>
+          <a class="btn btn-primary" href="/solutions">Explore Surgery-Ready™ Solutions</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 6 · ONE SOURCE, ONE PROCESS ============ -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="split reverse">
+        <div class="split-copy process-copy">
+          <span class="eyebrow">A comprehensive solution</span>
+          <h2>One source. One process. One point of contact.</h2>
+          <p>One team owns your program from first concept to sterile delivery, so nothing stalls in a hand-off and nothing falls through the cracks. ECA Medical has run this model for medical device leaders for 47 years; Surgery-Ready™ systems are that model applied to the whole procedure.</p>
+          <ul class="checklist">
+            <li>Concept &amp; design</li>
+            <li>Validation &amp; regulatory</li>
+            <li>Manufacturing &amp; packaging</li>
+            <li>Sterilization &amp; shipping</li>
+          </ul>
+          <a class="btn btn-primary" href="/solutions">Explore Surgery-Ready™ Solutions</a>
+        </div>
+        <div class="split-media">
+          <div class="process-ring-wrap">
+            <div class="process-ring" role="img" aria-label="Six-step capability ring: concept and design, validation and regulatory, manufacturing, packaging, sterilization, and shipping, all owned by ECA">
+              <div class="ring-track"></div>
+              <div class="step pos-1"><div class="step-dot">1</div><div class="step-label">Concept &amp; Design</div></div>
+              <div class="step pos-2"><div class="step-dot">2</div><div class="step-label">Validation &amp; Regulatory</div></div>
+              <div class="step pos-3"><div class="step-dot">3</div><div class="step-label">Manufacturing</div></div>
+              <div class="step pos-4"><div class="step-dot">4</div><div class="step-label">Packaging</div></div>
+              <div class="step pos-5"><div class="step-dot">5</div><div class="step-label">Sterilization</div></div>
+              <div class="step pos-6"><div class="step-dot">6</div><div class="step-label">Shipping</div></div>
+              <div class="ring-center">One Partner,<br>Start to Finish</div>
+            </div>
+          </div>
+          <ol class="process-steps-list">
+            <li><span class="step-num">1</span> Concept &amp; Design</li>
+            <li><span class="step-num">2</span> Validation &amp; Regulatory</li>
+            <li><span class="step-num">3</span> Manufacturing</li>
+            <li><span class="step-num">4</span> Packaging</li>
+            <li><span class="step-num">5</span> Sterilization</li>
+            <li><span class="step-num">6</span> Shipping</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 7 · OUTSIDE VALIDATION ============ -->
+  <section class="validation">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">In the surgeon's own words</span>
+        <h2>Outside validation</h2>
+      </div>
+
+      <div class="quote-panel">
+        <div class="quote-avatar-wrap">
+          <div class="quote-avatar">RS</div>
+          <div class="avatar-name">Rahul Shah, MD</div>
+          <div class="avatar-role">FAAOS</div>
+        </div>
+        <div class="quote-text-col">
+          <blockquote>&ldquo;Speedy turnovers allow more procedures to be completed daily, boosting revenue and patient satisfaction.&rdquo;</blockquote>
+          <hr class="quote-divider">
+          <blockquote>&ldquo;They give surgeons something that is cutting-edge right out of the packaging: instruments that are immediately operating at the peak performance of their manufactured life.&rdquo;</blockquote>
+          <p class="quote-cite">Outpatient Surgery Magazine, September 2025</p>
+          <p class="quote-fineprint">Both quotes are drawn from the same bylined column by Dr. Shah. Verbatim wording and usage clearance pending final confirmation — see notes.md.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 8 · CLOSING CTAs ============ -->
+  <section class="section closing-cta">
+    <div class="container">
+      <p class="closing-line">The future of surgery is Surgery-Ready™. ECA is built to be the partner for the next generation of orthopedic commercialization and patient success.</p>
+      <div class="cta-grid">
+        <div class="cta-card cta-card--oem">
+          <h3>Bringing an implant system to market?</h3>
+          <p>Let's talk about the Surgery-Ready™ Solution.</p>
+          <a class="btn btn-outline-light" href="/nda">Partner With ECA</a>
+        </div>
+        <div class="cta-card cta-card--asc">
+          <h3>Running an ASC or OR?</h3>
+          <p>See what predictable surgery looks like in your schedule.</p>
+          <a class="btn btn-outline" href="/contact">Talk to Our Team</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="contact-section" id="contact">
+    <div class="container">
+      <div class="contact-form">
+        <h2>Contact</h2>
+        <form action="/contact" method="post">
+          <div class="form-row">
+            <div class="form-field">
+              <label for="first-name">First name</label>
+              <input type="text" id="first-name" name="first-name" autocomplete="given-name">
+            </div>
+            <div class="form-field">
+              <label for="last-name">Last name</label>
+              <input type="text" id="last-name" name="last-name" autocomplete="family-name">
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" autocomplete="email">
+          </div>
+          <div class="form-field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message"></textarea>
+          </div>
+          <button class="btn btn-primary" type="submit">Send</button>
+        </form>
+      </div>
+      <div class="contact-info">
+        <h3>ECA Medical</h3>
+        <p>Corporate Offices and Design Center</p>
+        <p>2193 Anchor Court<br>Thousand Oaks, CA 91320</p>
+        <p>Tel: <a href="tel:+18053762509">+1 (805) 376-2509</a></p>
+        <p>Fax: +1 (805) 830-0381</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">eca medical</div>
+        <p>Phone: <a href="tel:+18053762509">+1 (805) 376-2509</a></p>
+        <p>E-Mail: <a href="mailto:sales@ecamedical.com">sales@ecamedical.com</a></p>
+        <p><a href="https://ecamedical.eifuonline.com">For devices with electronic IFUs, please click here</a></p>
+      </div>
+      <nav class="footer-col" aria-label="About">
+        <h4>About</h4>
+        <ul>
+          <li><a href="/why-eca">Who is ECA?</a></li>
+          <li><a href="/procedure-kits">Why Surgery-Ready™ Kits?</a></li>
+          <li><a href="/why-torque-limiting">Why Surgery-Ready™ Torque?</a></li>
+          <li><a href="/patents">Patents &amp; Trademarks</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-col" aria-label="Torque limiters">
+        <h4>Torque Limiters</h4>
+        <ul>
+          <li><a href="/trutorq">TruTORQ™</a></li>
+          <li><a href="/trupwr">TruPWR™</a></li>
+          <li><a href="/ortho-spine">Ortho &amp; Spine</a></li>
+          <li><a href="/cardio-neuro">Cardio &amp; Neuro</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-col" aria-label="Company">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="/developing-your-kit">Procedural Kits</a></li>
+          <li><a href="/careers">Careers</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 ECA Medical. All rights reserved.</span>
+      <span>2193 Anchor Court, Thousand Oaks, CA 91320</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Mobile nav toggle
+  const menuToggle = document.getElementById('menuToggle');
+  const mainNav = document.getElementById('mainNav');
+  menuToggle.addEventListener('click', () => {
+    const isOpen = mainNav.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', isOpen);
+  });
+
+  // Mobile dropdown accordions (About / Why Surgery-Ready / Torque Limiters)
+  document.querySelectorAll('.has-dropdown > .nav-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const parent = btn.closest('.has-dropdown');
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+      parent.classList.toggle('dropdown-open');
+    });
+  });
+</script>
+
+</body>
+</html>
