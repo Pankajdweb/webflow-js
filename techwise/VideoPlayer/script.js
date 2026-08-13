@@ -294,11 +294,11 @@
     var els = ensureThumbnailEls(wrapper);
     if (!els || !els.img) return;
 
-    // If author provided a valid thumbnail already, keep it.
-    if (isUsableUrl(els.img.getAttribute("src"))) {
-      wrapper.dataset.twVpThumbnailReady = "true";
-      return;
-    }
+   var existingSrc = (els.img.getAttribute("src") || "").trim();
+if (existingSrc !== "") {
+  wrapper.dataset.twVpThumbnailReady = "true";
+  return;
+}
 
     var src = detectSource(url);
     try {
@@ -601,23 +601,56 @@
     if (this.autoplay) this.play();
   };
 
-  VideoPlayer.prototype.buildCenterButton = function () {
-    var self = this;
-    var btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "tw-vp-center-button";
-    btn.setAttribute("aria-label", "Play video");
-    btn.innerHTML =
-      '<span class="play-icon">' + ICONS.play + "</span>" +
-      '<span class="pause-icon">' + ICONS.pause + "</span>";
-    this.centerBtn = btn;
-    this.container.appendChild(btn);
-    btn.addEventListener("click", function (e) {
+ VideoPlayer.prototype.buildCenterButton = function () {
+  var self = this;
+
+  // If the author provided a custom play button, use it instead of
+  // rendering the default center button.
+  var customBtn = this.wrapper.querySelector("[tw-data-custom-play-button]");
+  if (customBtn) {
+    this.centerBtn = customBtn;
+    this.centerBtn.classList.add("tw-vp-center-button-custom");
+
+    // Make it keyboard accessible if it isn't already a button/link.
+    if (!this.centerBtn.hasAttribute("tabindex")) {
+      this.centerBtn.setAttribute("tabindex", "0");
+    }
+    if (!this.centerBtn.hasAttribute("role")) {
+      this.centerBtn.setAttribute("role", "button");
+    }
+
+    customBtn.addEventListener("click", function (e) {
       e.stopPropagation();
       self.toggle();
     });
+    customBtn.addEventListener("keydown", function (e) {
+      if (e.key === " " || e.key === "Enter") {
+        e.preventDefault();
+        e.stopPropagation();
+        self.toggle();
+      }
+    });
+
     this.updateCenterButton();
-  };
+    return;
+  }
+
+  // Default built-in center button
+  var btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "tw-vp-center-button";
+  btn.setAttribute("aria-label", "Play video");
+  btn.innerHTML =
+    '<span class="play-icon">' + ICONS.play + "</span>" +
+    '<span class="pause-icon">' + ICONS.pause + "</span>";
+  this.centerBtn = btn;
+  this.container.appendChild(btn);
+  btn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    self.toggle();
+  });
+  this.updateCenterButton();
+};
 
   VideoPlayer.prototype.buildControls = function () {
     var self = this;
