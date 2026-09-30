@@ -1,0 +1,446 @@
+
+  /* =====================================================
+     PORTFOLIO ANIMATIONS — WEBFLOW-READY STRUCTURE
+     -----------------------------------------------------
+     Everything that MOVES lives here; how things LOOK lives
+     in style.css. Load this file AFTER style.css.
+       - every @keyframes
+       - every animation / transition / will-change declaration
+       - the transform / opacity / clip-path values an animation
+         or transition moves between (hidden -> shown, rest -> hover)
+       - rules that exist only for an effect (scroll reveal,
+         split words, boot intro, orbit chips, avatar reveal)
+     Selectors match style.css 1:1, and sections follow the
+     same numbering, so an element's look and motion are easy
+     to find side by side.
+     -----------------------------------------------------
+     INDEX
+     01. BASE / SHARED (smooth scroll, [data-reveal], split words,
+         buttons, rocket + peek icon hovers)
+     02. CUSTOM CURSOR
+     03. BACKGROUND FIELD
+     04. HIRE DRAWER
+     05. NAVBAR
+     06. HERO (title rise, terminal, orbit, boot intro, marquee)
+     07. ABOUT (avatar reveal, quote attribution)
+     08. EXPERTISE GRID
+     09. PROJECTS
+     10. DESIGN-FLOW TABS
+     11. PROCESS LIST
+     REDUCED MOTION (sections 01-11)
+     12. TESTIMONIALS
+     12B. FAQ
+     13. CTA + FOOTER
+     REDUCED MOTION (global)
+     ===================================================== */
+
+  /* =====================================================
+     01. BASE / SHARED
+     ===================================================== */
+  html{scroll-behavior:smooth;}
+  .skip-link{transition:top .3s;}
+
+  /* scroll entrance ([data-reveal] via IntersectionObserver) */
+  [data-reveal]{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1);}
+  [data-reveal].is-visible{opacity:1;transform:translateY(0);}
+
+  /* scroll-scrubbed word reveal ([data-split]) */
+  .split-word{
+    display:inline-block;
+    color:var(--muted-2);opacity:.35;filter:blur(1.5px);
+    transform:translateY(6px);
+    transition:color .35s ease, opacity .35s ease, filter .35s ease, transform .45s cubic-bezier(.2,.8,.2,1);
+  }
+  .split-word.is-lit{color:var(--text);opacity:1;filter:blur(0);transform:translateY(0);}
+  .split-word.split-word--accent.is-lit{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .split-word.split-word--soft{
+    color:inherit;filter:none;opacity:.22;transform:translateY(4px);
+    transition:opacity .28s ease, transform .35s cubic-bezier(.2,.8,.2,1);
+  }
+  .split-word.split-word--soft.is-lit{color:inherit;opacity:1;transform:translateY(0);filter:none;}
+
+  /* buttons */
+  .btn{
+    transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s, background .25s, border-color .25s, color .25s;
+    will-change:transform;
+  }
+  .btn--primary:hover{transform:translateY(-2px);}
+  .btn--ghost:hover{transform:translateY(-2px);}
+
+  /* gradient-ring number badge */
+  .step-badge{transition:box-shadow .3s, color .3s;}
+
+  /* ---- CTA rocket launch (hover) ----
+     Hidden behind the button, pops out over the top edge on
+     hover, then idles with a bob, flickering flame and sparks. */
+  .btn-rocket{
+    opacity:0;
+    transform:translateY(35%) rotate(0deg) scale(.7);
+    transition:transform .5s cubic-bezier(.34,1.6,.64,1), opacity .25s ease;
+  }
+  .btn--launch:hover .btn-rocket{
+    opacity:1;
+    transform:translateY(-115%) rotate(4deg) scale(1);
+    animation:rkIdle 1.8s ease-in-out .5s infinite;
+  }
+  @keyframes rkIdle{
+    0%,100%{transform:translateY(-115%) rotate(4deg) scale(1);}
+    50%    {transform:translateY(-130%) rotate(-4deg) scale(1);}
+  }
+  .rocket-flame{transform-origin:12px 21px;animation:rkFlame .3s ease-in-out infinite alternate;}
+  @keyframes rkFlame{from{transform:scaleY(.6);}to{transform:scaleY(1.25);}}
+  .btn-rocket::before,.btn-rocket::after{opacity:0;}
+  .btn--launch:hover .btn-rocket::before{animation:rkSpark 1.1s ease-out .6s infinite;--sx:-6px;}
+  .btn--launch:hover .btn-rocket::after{animation:rkSpark 1.4s ease-out .95s infinite;--sx:6px;}
+  @keyframes rkSpark{
+    0%  {opacity:0;transform:translate(0,0);}
+    18% {opacity:1;}
+    100%{opacity:0;transform:translate(var(--sx,5px),18px);}
+  }
+  .btn--launch .btn-arrow{transition:transform .35s cubic-bezier(.2,.8,.2,1);}
+  .btn--launch:hover .btn-arrow{transform:translateX(2px) rotate(-40deg);}
+  /* navbar variant: rocket boosts the button from BELOW (no room above) */
+  .btn--launch-down .btn-rocket{transform:translateY(-35%) rotate(0deg) scale(.7);}
+  .btn--launch-down:hover .btn-rocket{
+    transform:translateY(118%) rotate(-4deg) scale(1);
+    animation:rkIdleDown 1.8s ease-in-out .5s infinite;
+  }
+  @keyframes rkIdleDown{
+    0%,100%{transform:translateY(118%) rotate(-4deg) scale(1);}
+    50%    {transform:translateY(132%) rotate(4deg) scale(1);}
+  }
+
+  /* ---- generic label-icon peek system (all other buttons) ---- */
+  .btn-peek-icon{
+    opacity:0;transform:translateY(30%) scale(.6);
+    transition:transform .5s cubic-bezier(.34,1.6,.64,1), opacity .25s ease;
+  }
+  .btn--peek:hover .btn-peek-icon{
+    opacity:1;transform:translateY(-112%) scale(1);
+    animation:pkIdle 1.9s ease-in-out .5s infinite;
+  }
+  @keyframes pkIdle{
+    0%,100%{transform:translateY(-112%) scale(1);}
+    50%    {transform:translateY(-124%) scale(1);}
+  }
+  .peek-icon-pupil{transform-origin:center;animation:pkBlink 2.6s infinite;}
+  @keyframes pkBlink{0%,90%,100%{transform:scaleY(1);}94%{transform:scaleY(.12);}}
+  .peek-icon-badge{transform-origin:center;animation:pkPulse 1.6s ease-in-out infinite;}
+  @keyframes pkPulse{0%,100%{opacity:.6;transform:scale(1);}50%{opacity:1;transform:scale(1.3);}}
+  .peek-icon-shake{transform-origin:12px 12px;animation:pkShake 1.1s ease-in-out .4s infinite;}
+  @keyframes pkShake{0%,100%{transform:rotate(0);}20%{transform:rotate(-9deg);}40%{transform:rotate(8deg);}60%{transform:rotate(-6deg);}80%{transform:rotate(4deg);}}
+  .peek-icon-wave{opacity:0;animation:pkWave 1.3s ease-out infinite;}
+  .peek-icon-wave.peek-icon-wave--delayed{animation-delay:.4s;}
+  @keyframes pkWave{0%{opacity:0;}35%{opacity:1;}100%{opacity:0;}}
+  .peek-icon-trail{animation:pkTrail .7s linear infinite;}
+  @keyframes pkTrail{to{stroke-dashoffset:-14;}}
+  /* mega CTA: rocket boosts up INSIDE the clipped gradient button */
+  .btn-mega-rocket{
+    transform:translateY(125%);
+    transition:transform .5s cubic-bezier(.34,1.6,.64,1);
+  }
+  .btn--mega:hover .btn-mega-rocket{transform:translateY(4%);}
+
+  /* =====================================================
+     02. CUSTOM CURSOR
+     ===================================================== */
+  #cursor-dot, #cursor-ring{will-change:transform;}
+  #cursor-ring{transition:width .2s,height .2s,border-color .2s,background .2s;}
+
+  /* =====================================================
+     03. BACKGROUND FIELD (parallax abstracts, [data-speed])
+     ===================================================== */
+  .bg-shape{will-change:transform;}
+  .bg-shape--dashed-ring{animation:bgSpin 70s linear infinite;}
+  @keyframes bgSpin{to{transform:rotate(360deg);}}
+
+  /* =====================================================
+     04. HIRE DRAWER
+     ===================================================== */
+  #hire-overlay{opacity:0;transition:opacity .45s ease;}
+  #hire-overlay.is-open{opacity:1;}
+  #hire-drawer{
+    transform:translateX(103%);
+    transition:transform .6s cubic-bezier(.2,.8,.2,1);
+  }
+  #hire-drawer.is-open{transform:translateX(0);}
+  .drawer-decor .drawer-decor-ring{animation:bgSpin 50s linear infinite;}
+  #hd-close{transition:color .3s,border-color .3s,transform .4s cubic-bezier(.2,.8,.2,1);}
+  #hd-close:hover{transform:rotate(90deg);}
+  .drawer-field input,.drawer-field textarea{transition:border-color .3s, box-shadow .3s;}
+  .drawer-pills button{transition:color .25s,border-color .25s,background .25s,transform .25s;}
+  .drawer-pills button:hover{transform:translateY(-1px);}
+  .drawer-submit:hover{transform:translateY(-2px);}
+  .drawer-success-icon{animation:popIn .5s cubic-bezier(.2,.8,.2,1);}
+  @keyframes popIn{from{transform:scale(.4);opacity:0;}to{transform:scale(1);opacity:1;}}
+  .drawer-animate{opacity:0;transform:translateX(24px);transition:opacity .5s ease, transform .55s cubic-bezier(.2,.8,.2,1);}
+  #hire-drawer.is-open .drawer-animate{opacity:1;transform:none;}
+
+  /* =====================================================
+     05. NAVBAR
+     ===================================================== */
+  header{transition:background .4s, box-shadow .4s;}
+  nav{transition:padding .4s cubic-bezier(.2,.8,.2,1);}
+  .logo .logo-status-dot::after{animation:pulseRing 2.4s ease-out infinite;}
+  .nav-links a{transition:color .25s, background .25s;}
+  .nav-links a .nav-index{opacity:.65;transition:opacity .25s;}
+  .nav-links a:hover .nav-index, .nav-links a.is-active .nav-index{opacity:1;}
+  /* burger -> X */
+  .menu-toggle span{transition:transform .4s cubic-bezier(.2,.8,.2,1), top .4s, opacity .3s;}
+  .menu-toggle[aria-expanded="true"] span:nth-child(1){transform:rotate(45deg);}
+  .menu-toggle[aria-expanded="true"] span:nth-child(2){transform:rotate(-45deg);}
+  /* full-screen mobile menu: fade in, links stagger up */
+  .mobile-menu{opacity:0;transition:opacity .4s ease;}
+  .mobile-menu.is-open{opacity:1;}
+  .mobile-menu a{
+    opacity:0;transform:translateY(16px);
+    transition:opacity .45s ease, transform .5s cubic-bezier(.2,.8,.2,1);
+  }
+  .mobile-menu.is-open a{opacity:1;transform:none;}
+  .mobile-menu.is-open a:nth-child(1){transition-delay:.08s;}
+  .mobile-menu.is-open a:nth-child(2){transition-delay:.14s;}
+  .mobile-menu.is-open a:nth-child(3){transition-delay:.2s;}
+  .mobile-menu.is-open a:nth-child(4){transition-delay:.26s;}
+  .mobile-menu.is-open a:nth-child(5){transition-delay:.32s;}
+
+  /* =====================================================
+     06. HERO (title rise, terminal, orbit, boot intro, marquee)
+     ===================================================== */
+  .aurora--violet{animation:auroraDrift 16s ease-in-out infinite;}
+  .aurora--cyan{animation:auroraDrift 20s ease-in-out infinite reverse;}
+  @keyframes auroraDrift{
+    0%,100%{transform:translate(0,0) scale(1);}
+    50%{transform:translate(-60px,40px) scale(1.15);}
+  }
+  /* title lines rise out of their overflow mask; line 2 also pans its gradient */
+  .hero-title .hero-title-line span{transform:translateY(110%);animation:riseUp .9s cubic-bezier(.2,.8,.2,1) forwards;}
+  .hero-title .hero-title-line:nth-child(1) span{animation-delay:.05s;}
+  .hero-title .hero-title-line:nth-child(2) span{
+    animation-delay:.18s;
+    animation:riseUp .9s cubic-bezier(.2,.8,.2,1) forwards, gradPan 7s linear 1.2s infinite;
+  }
+  @keyframes gradPan{0%{background-position:220% 0;}100%{background-position:-220% 0;}}
+  @keyframes riseUp{to{transform:translateY(0);}}
+  .hero-subtitle{opacity:0;animation:fadeUp .8s ease forwards;animation-delay:.55s;}
+  .hero-actions{opacity:0;animation:fadeUp .8s ease forwards;animation-delay:.7s;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  /* ----- terminal card ----- */
+  .hero-terminal{opacity:0;animation:fadeUp .9s ease forwards;animation-delay:.6s;}
+  .terminal-float{animation:termFloat 7s ease-in-out infinite;}
+  @keyframes termFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  /* ---- terminal feature orbit: Webflow chips emerge from the console
+     center (occluded), travel outward past the edge, grow, dissolve.
+     7s flight x 3s stagger x 7 chips = 21s cycle, 1-2 visible. ---- */
+  .orbit-item{
+    opacity:0;
+    animation:tfxDrift 7s linear infinite;
+    will-change:transform,opacity,filter;
+  }
+  @keyframes tfxDrift{
+    0%   {opacity:0; transform:translate(-50%,-50%) translate(0,0) scale(.3); filter:blur(4px);}
+    10%  {opacity:1; transform:translate(-50%,-50%) translate(calc(var(--tx)*.18), calc(var(--ty)*.18)) scale(.4);  filter:blur(0);}
+    45%  {opacity:1; transform:translate(-50%,-50%) translate(calc(var(--tx)*.62), calc(var(--ty)*.62)) scale(.68); filter:blur(0);}
+    85%  {opacity:1; transform:translate(-50%,-50%) translate(calc(var(--tx)*.93), calc(var(--ty)*.93)) scale(.9);  filter:blur(0);}
+    100% {opacity:0; transform:translate(-50%,-50%) translate(var(--tx), var(--ty)) scale(.97); filter:blur(5px);}
+  }
+  .orbit-item--1{--tx:-360px; --ty:-220px; animation-delay:0s;}
+  .orbit-item--2{--tx:420px;  --ty:-110px; animation-delay:3s;}
+  .orbit-item--3{--tx:-365px; --ty:170px;  animation-delay:6s;}
+  .orbit-item--4{--tx:400px;  --ty:230px;  animation-delay:9s;}
+  .orbit-item--5{--tx:60px;   --ty:-300px; animation-delay:12s;}
+  .orbit-item--6{--tx:430px;  --ty:100px;  animation-delay:15s;}
+  .orbit-item--7{--tx:-70px;  --ty:295px;  animation-delay:18s;}
+  .orbit-chip-sync-dot{animation:caretBlink 1.4s steps(1) infinite;}
+  .terminal-card{transition:transform .25s ease;}
+  .terminal-caret{animation:caretBlink 1s steps(1) infinite;}
+  @keyframes caretBlink{50%{opacity:0;}}
+  /* ---- boot intro: terminal types first, everything else waits ---- */
+  body.is-booting{overflow:hidden;}
+  body.is-booting header,
+  body.is-booting .hero-copy,
+  body.is-booting .hero-marquee{opacity:0;pointer-events:none;}
+  header, .hero-marquee{transition:opacity .8s ease, background .4s, box-shadow .4s;}
+  .hero-copy{transition:opacity .8s ease;}
+  body.is-booting .hero-copy .hero-title .hero-title-line span,
+  body.is-booting .hero-copy .hero-subtitle,
+  body.is-booting .hero-copy .hero-actions{animation-play-state:paused;}
+  body.is-booting .terminal-orbit .orbit-item{animation-play-state:running;}
+  body.is-booting .hero-terminal{opacity:1;animation:none;}
+  .boot-skip-hint{opacity:0;transition:opacity .5s ease;}
+  body.is-booting .boot-skip-hint{opacity:1;}
+  /* ----- marquee ribbon ----- */
+  .marquee-track{animation:marqueeMove 30s linear infinite;}
+  .hero-marquee:hover .marquee-track{animation-play-state:paused;}
+  @keyframes marqueeMove{to{transform:translateX(-50%);}}
+
+  /* =====================================================
+     07. ABOUT (avatar reveal on .is-visible, quote attribution)
+     ===================================================== */
+  .about-visual .about-orb{animation:float 7s ease-in-out infinite;}
+  @keyframes float{0%,100%{transform:translate(0,0);}50%{transform:translate(20px,-24px);}}
+  .avatar-scene{transition:transform .25s ease;}
+  .avatar-frame{
+    clip-path:circle(0% at 50% 100%);
+    transition:clip-path 1.1s cubic-bezier(.2,.8,.2,1) .15s;
+  }
+  .avatar-img{
+    transform:scale(1.35);
+    transition:transform 1.5s cubic-bezier(.2,.8,.2,1) .15s;
+  }
+  .avatar-sheen{transform:translateX(-130%);}
+  .avatar-ring{
+    opacity:0;transform:scale(.8) rotate(0deg);
+    transition:opacity .9s ease .5s, transform .9s cubic-bezier(.2,.8,.2,1) .5s;
+  }
+  .avatar-orbit{
+    opacity:0;transition:opacity .6s ease 1s;
+    animation:spinSlow 12s linear infinite;
+  }
+  @keyframes spinSlow{to{transform:rotate(360deg);}}
+  .avatar-chip{
+    opacity:0;transform:translateY(14px);
+    transition:opacity .6s ease, transform .7s cubic-bezier(.2,.8,.2,1);
+  }
+  .avatar-chip span{animation:chipFloat 5.5s ease-in-out infinite;}
+  .avatar-chip--top{transition-delay:.95s;}
+  .avatar-chip--bottom{transition-delay:1.15s;}
+  .avatar-chip--bottom span{animation-delay:1.4s;}
+  @keyframes chipFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+  .about-visual.is-visible .avatar-frame{clip-path:circle(75% at 50% 50%);}
+  .about-visual.is-visible .avatar-img{transform:scale(1);}
+  .about-visual.is-visible .avatar-sheen{animation:sheenSweep 1.2s ease .9s forwards;}
+  .about-visual.is-visible .avatar-ring{opacity:1;transform:scale(1) rotate(180deg);}
+  .about-visual.is-visible .avatar-orbit{opacity:1;}
+  .about-visual.is-visible .avatar-chip{opacity:1;transform:translateY(0);}
+  @keyframes sheenSweep{to{transform:translateX(130%);}}
+  .about-quote-attribution{
+    opacity:0;transform:translateY(8px);
+    transition:opacity .6s ease .1s, transform .6s cubic-bezier(.2,.8,.2,1) .1s;
+  }
+  .about-quote-attribution.is-lit{opacity:1;transform:translateY(0);}
+
+  /* =====================================================
+     08. EXPERTISE GRID
+     ===================================================== */
+  .service-card{transition:background .3s;}
+  .service-card::before{opacity:0;transition:opacity .35s;}
+  .service-card:hover::before{opacity:.06;}
+
+  /* =====================================================
+     09. PROJECTS (JS owns image transforms: parallax + hover scale)
+     ===================================================== */
+  .project-card::after{transition:box-shadow .4s;}
+  .project-card-media img{
+    transition:filter .5s ease;
+    will-change:transform;
+  }
+  .project-card-title{transform:translateY(2px);transition:transform .4s cubic-bezier(.2,.8,.2,1);}
+  .project-card:hover .project-card-title{transform:translateY(-2px);}
+  .project-card-tags{
+    opacity:0;transform:translateY(8px);
+    transition:opacity .4s ease .05s, transform .4s cubic-bezier(.2,.8,.2,1) .05s;
+  }
+  .project-card:hover .project-card-tags{opacity:1;transform:translateY(0);}
+  .project-card-arrow{transition:background .35s, color .35s, transform .45s cubic-bezier(.2,.8,.2,1), border-color .35s;}
+  .project-card:hover .project-card-arrow{transform:rotate(45deg);}
+
+  /* =====================================================
+     10. DESIGN-FLOW TABS
+     ===================================================== */
+  .flow-tab{transition:color .3s;}
+  .flow-tab-indicator{
+    transition:left .35s cubic-bezier(.2,.8,.2,1), width .35s cubic-bezier(.2,.8,.2,1), top .35s cubic-bezier(.2,.8,.2,1);
+  }
+  /* active panel: steps + note stagger in */
+  .flow-panel.is-active .flow-step{
+    opacity:0;transform:translateY(18px);
+    animation:stepIn .55s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  .flow-panel.is-active .flow-step:nth-child(1){animation-delay:.03s;}
+  .flow-panel.is-active .flow-step:nth-child(2){animation-delay:.11s;}
+  .flow-panel.is-active .flow-step:nth-child(3){animation-delay:.19s;}
+  .flow-panel.is-active .flow-step:nth-child(4){animation-delay:.27s;}
+  .flow-panel.is-active .flow-note{
+    opacity:0;animation:stepIn .55s ease forwards;animation-delay:.4s;
+  }
+  @keyframes stepIn{to{opacity:1;transform:translateY(0);}}
+  .flow-step{transition:border-color .3s, transform .3s, box-shadow .3s;}
+  .flow-step:hover{transform:translateY(-5px);}
+  .flow-step-ghost-number{transition:-webkit-text-stroke-color .3s, transform .3s;}
+  .flow-step:hover .flow-step-ghost-number{transform:translateY(-4px);}
+
+  /* =====================================================
+     11. PROCESS LIST
+     ===================================================== */
+  .process-item{transition:background .3s;}
+
+  /* =====================================================
+     REDUCED MOTION (sections 01-11)
+     ===================================================== */
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+    .orbit-item{animation:none;opacity:.5;transform:translate(-50%,-50%) translate(calc(var(--tx)*.8), calc(var(--ty)*.8)) scale(.8);}
+    .split-word{color:var(--text);opacity:1;filter:none;transform:none;}
+    .about-quote-attribution{opacity:1;transform:none;}
+    .avatar-frame{clip-path:circle(75% at 50% 50%);}
+    .avatar-img{transform:scale(1);}
+    .avatar-ring,.avatar-orbit,.avatar-chip{opacity:1;transform:none;}
+  }
+
+  /* =====================================================
+     12. TESTIMONIALS (slide crossfade, dot progress fill)
+     ===================================================== */
+  .testimonial-slide{
+    opacity:0;transform:translateY(16px);
+    transition:opacity .55s ease, transform .6s cubic-bezier(.2,.8,.2,1);
+  }
+  .testimonial-slide.is-active{opacity:1;transform:none;}
+  .testimonial-dot span{transition:color .3s;}
+  .testimonial-dot i::after{transform:scaleX(0);transform-origin:left;}
+  .testimonial-dot.is-active i::after{animation:tdFill 7s linear forwards;}
+  @keyframes tdFill{to{transform:scaleX(1);}}
+
+  /* =====================================================
+     12B. FAQ (accordion: grid-rows 0fr -> 1fr height trick)
+     ===================================================== */
+  .faq-item::before{
+    transform:scaleY(0);transform-origin:top;
+    transition:transform .45s cubic-bezier(.2,.8,.2,1);
+  }
+  .faq-item.is-open::before{transform:scaleY(1);}
+  .faq-question{transition:color .3s;}
+  .faq-number{transition:color .3s;}
+  .faq-icon{transition:transform .45s cubic-bezier(.2,.8,.2,1), color .3s, border-color .3s, background .3s;}
+  .faq-item.is-open .faq-icon{transform:rotate(45deg);}
+  .faq-body{transition:grid-template-rows .5s cubic-bezier(.2,.8,.2,1);}
+  .faq-answer{
+    opacity:0;transform:translateY(-6px);
+    transition:opacity .4s ease .1s, transform .45s cubic-bezier(.2,.8,.2,1) .1s, padding .4s;
+  }
+  .faq-item.is-open .faq-answer{opacity:1;transform:none;}
+
+  /* =====================================================
+     13. CTA + FOOTER
+     ===================================================== */
+  .btn--gradient-border:hover{transform:translateY(-2px);}
+  .btn--dashed:hover{transform:translateY(-2px);}
+  .status-dot::after{animation:pulseRing 2s ease-out infinite;}
+  @keyframes pulseRing{0%{transform:scale(.5);opacity:1;}100%{transform:scale(1.7);opacity:0;}}
+  /* mega button: rotating gradient border + shine sweep on hover */
+  .btn-mega-frame::before{animation:rotBorder 3.5s linear infinite;}
+  @keyframes rotBorder{to{transform:rotate(360deg);}}
+  .btn--mega:hover{transform:none;}
+  .btn--mega::after{transition:left .55s ease;}
+  .btn--mega:active{transform:scale(.97);}
+  /* ambient motion inside the box */
+  .contact-orb.contact-orb--violet{animation:float 9s ease-in-out infinite;}
+  .contact-orb.contact-orb--cyan{animation:float 11s ease-in-out infinite reverse;}
+  .contact-beam{animation:beamRun 5s ease-in-out infinite;}
+  @keyframes beamRun{0%{left:-200px;}60%,100%{left:100%;}}
+
+  /* =====================================================
+     REDUCED MOTION (global)
+     ===================================================== */
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+  }
