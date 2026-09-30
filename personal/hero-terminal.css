@@ -1,0 +1,145 @@
+
+/* =====================================================
+   HERO TERMINAL  (css/hero-terminal.css)
+   -----------------------------------------------------
+   Everything for [data-el="hero-terminal"]: the console card,
+   syntax tokens, typing caret, the Webflow feature orbit, and
+   their motion, boot-intro states and responsive rules.
+   Load AFTER global.css and hero.css.
+   Uses the design tokens (--violet, --cyan, …) and the shared
+   @keyframes fadeUp from global.css.
+   -----------------------------------------------------
+   INDEX
+   01. WRAPPER (entrance + float)
+   02. FEATURE ORBIT (chips + panels, flight path)
+   03. CONSOLE CARD (header, body, tokens, caret)
+   04. BOOT INTRO STATES
+   05. RESPONSIVE + REDUCED MOTION
+   ===================================================== */
+
+/* =====================================================
+   01. WRAPPER (entrance + float)
+   ===================================================== */
+.hero-terminal{position:relative;z-index:3;}
+.hero-terminal{opacity:0;animation:fadeUp .9s ease forwards;animation-delay:.6s;}
+.terminal-float{position:relative;z-index:1;}
+.terminal-float{animation:termFloat 7s ease-in-out infinite;}
+@keyframes termFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+
+/* =====================================================
+   02. FEATURE ORBIT — Webflow chips emerge from the console
+   center (occluded), travel outward past the edge, grow, dissolve.
+   7s flight x 3s stagger x 7 chips = 21s cycle, 1-2 visible.
+   ===================================================== */
+.terminal-orbit{position:absolute;inset:-8%;pointer-events:none;z-index:0;}
+.orbit-item{
+  position:absolute;top:50%;left:50%;
+}
+.orbit-item{
+  opacity:0;
+  animation:tfxDrift 7s linear infinite;
+  will-change:transform,opacity,filter;
+}
+@keyframes tfxDrift{
+  0%   {opacity:0; transform:translate(-50%,-50%) translate(0,0) scale(.3); filter:blur(4px);}
+  10%  {opacity:1; transform:translate(-50%,-50%) translate(calc(var(--tx)*.18), calc(var(--ty)*.18)) scale(.4);  filter:blur(0);}
+  45%  {opacity:1; transform:translate(-50%,-50%) translate(calc(var(--tx)*.62), calc(var(--ty)*.62)) scale(.68); filter:blur(0);}
+  85%  {opacity:1; transform:translate(-50%,-50%) translate(calc(var(--tx)*.93), calc(var(--ty)*.93)) scale(.9);  filter:blur(0);}
+  100% {opacity:0; transform:translate(-50%,-50%) translate(var(--tx), var(--ty)) scale(.97); filter:blur(5px);}
+}
+/* per-chip end point (--tx/--ty) + stagger */
+.orbit-item--1{--tx:-360px; --ty:-220px; animation-delay:0s;}
+.orbit-item--2{--tx:420px;  --ty:-110px; animation-delay:3s;}
+.orbit-item--3{--tx:-365px; --ty:170px;  animation-delay:6s;}
+.orbit-item--4{--tx:400px;  --ty:230px;  animation-delay:9s;}
+.orbit-item--5{--tx:60px;   --ty:-300px; animation-delay:12s;}
+.orbit-item--6{--tx:430px;  --ty:100px;  animation-delay:15s;}
+.orbit-item--7{--tx:-70px;  --ty:295px;  animation-delay:18s;}
+/* chip + panel look */
+.orbit-chip--publish{background:#146EF5;border-color:rgba(255,255,255,.18);color:#fff;font-weight:500;}
+.orbit-chip-bolt{color:var(--violet);font-size:13px;}
+.orbit-panel-devices{display:flex;align-items:flex-end;gap:5px;margin-top:2px;}
+.orbit-panel-devices span{border:1.2px solid var(--muted-2);border-radius:2.5px;display:block;}
+.orbit-panel-devices .device-desktop{width:16px;height:11px;}
+.orbit-panel-devices .device-tablet{width:9px;height:11px;}
+.orbit-panel-devices .device-mobile{width:6px;height:10px;border-color:var(--cyan);box-shadow:0 0 6px rgba(63,224,208,.5);}
+.orbit-chip,.orbit-panel{
+  background:rgba(18,21,27,.92);
+  border:1px solid var(--line);border-radius:11px;
+  box-shadow:0 12px 32px rgba(0,0,0,.45), 0 0 0 1px rgba(124,108,240,.08);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  font-family:'JetBrains Mono',monospace;color:var(--text);
+}
+.orbit-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;font-size:9.5px;letter-spacing:.03em;white-space:nowrap;}
+.orbit-chip-logo{
+  width:14px;height:14px;border-radius:4px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:#146EF5;color:#fff;font-weight:700;font-size:9px;
+}
+.orbit-panel{padding:8px 10px;width:96px;}
+.orbit-panel-label{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:5px;margin-bottom:7px;}
+.orbit-panel-label i{font-style:normal;color:var(--cyan);}
+.orbit-panel-row{display:flex;align-items:center;gap:5px;margin-top:5px;}
+.orbit-panel-row:first-of-type{margin-top:0;}
+.orbit-panel-thumb{width:10px;height:10px;border-radius:3px;background:linear-gradient(135deg,var(--violet),var(--cyan));opacity:.85;flex-shrink:0;}
+.orbit-panel-line{height:3px;border-radius:2px;background:var(--muted-2);opacity:.55;}
+.orbit-chip-sync-dot{width:6px;height:6px;border-radius:50%;background:#28C840;box-shadow:0 0 8px rgba(40,200,64,.8);}
+.orbit-chip-sync-dot{animation:caretBlink 1.4s steps(1) infinite;}
+.orbit-panel-swatches{display:flex;gap:5px;margin-bottom:7px;}
+.orbit-panel-swatches span{width:11px;height:11px;border-radius:4px;}
+.orbit-panel-slider{position:relative;height:2.5px;border-radius:2px;background:var(--line);margin-top:7px;}
+.orbit-panel-slider::after{content:'';position:absolute;top:-2.5px;width:7px;height:7px;border-radius:50%;background:var(--text);left:var(--knob,60%);box-shadow:0 0 5px rgba(0,0,0,.5);}
+
+/* =====================================================
+   03. CONSOLE CARD (tilt transform is set by JS on mousemove)
+   ===================================================== */
+.terminal-card{
+  background:#0D1016;border:1px solid var(--line);border-radius:16px;overflow:hidden;
+  box-shadow:0 30px 80px rgba(0,0,0,.55), 0 0 0 1px rgba(124,108,240,.08), 0 0 60px rgba(124,108,240,.12);
+}
+.terminal-card{transition:transform .25s ease;}
+.terminal-header{
+  display:flex;align-items:center;gap:8px;
+  padding:13px 16px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.02);
+}
+.terminal-dot{width:11px;height:11px;border-radius:50%;}
+.terminal-dot.terminal-dot--red{background:#FF5F57;} .terminal-dot.terminal-dot--yellow{background:#FEBC2E;} .terminal-dot.terminal-dot--green{background:#28C840;}
+.terminal-filename{margin-left:10px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted);}
+.terminal-body{
+  padding:20px 20px 24px;font-family:'JetBrains Mono',monospace;
+  font-size:13px;line-height:1.75;white-space:pre-wrap;word-break:break-word;
+  min-height:300px;
+}
+/* syntax tokens (spans created by the typing script) */
+.terminal-body .token-comment{color:var(--muted-2);}
+.terminal-body .token-keyword{color:var(--violet);}
+.terminal-body .token-variable{color:var(--text);}
+.terminal-body .token-punctuation{color:#A7ADBB;}
+.terminal-body .token-string{color:var(--cyan);}
+.terminal-body .token-number{color:#F0A96C;}
+.terminal-body .token-boolean{color:#3ddc5f;}
+.terminal-caret{
+  display:inline-block;width:8px;height:16px;background:var(--cyan);
+  vertical-align:-2px;
+}
+.terminal-caret{animation:caretBlink 1s steps(1) infinite;}
+@keyframes caretBlink{50%{opacity:0;}}
+
+/* =====================================================
+   04. BOOT INTRO STATES (rest of the boot intro: hero.css · MOTION)
+   terminal shows immediately and its orbit keeps flying
+   while the rest of the hero waits
+   ===================================================== */
+body.is-booting .terminal-orbit .orbit-item{animation-play-state:running;}
+body.is-booting .hero-terminal{opacity:1;animation:none;}
+
+/* =====================================================
+   05. RESPONSIVE + REDUCED MOTION
+   ===================================================== */
+@media (max-width:900px){
+  .terminal-body{font-size:12px;min-height:0;}
+  .terminal-orbit{display:none;}
+}
+@media (prefers-reduced-motion: reduce){
+  .orbit-item{animation:none;opacity:.5;transform:translate(-50%,-50%) translate(calc(var(--tx)*.8), calc(var(--ty)*.8)) scale(.8);}
+}
