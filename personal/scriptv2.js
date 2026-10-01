@@ -242,16 +242,14 @@
 
 
   /* =====================================================
-     HERO TERMINAL — typing code card + boot intro (loader) + tilt
-     [data-el="term-body"] [data-el="hero-terminal"] [data-el="term-card"] [data-el="boot-skip"]
-     The boot intro only plays when the page starts at the very top.
+     HERO TERMINAL — code card that types itself out in place + tilt
+     [data-el="term-body"] [data-el="hero-terminal"] [data-el="term-card"]
+     Typing starts once the page has loaded; the rest of the hero is
+     visible from the first frame (no loading screen).
      ===================================================== */
   function initHeroTerminal(){
     const term = getEl('[data-el="term-body"]');
-    if(!term){
-      document.body.classList.remove('is-booting');
-      return;
-    }
+    if(!term) return;
 
     const T = [
       ['c','// pankaj.config.js\n\n'],
@@ -271,108 +269,49 @@
     const caret = document.createElement('span');
     caret.className = 'terminal-caret';
     const heroTerm = getEl('[data-el="hero-terminal"]');
-
-    // only play the boot intro when the page starts at the very top.
-    // scrollY alone isn't enough: on reload / back-forward the browser restores
-    // the old position AFTER this runs, so remember it ourselves across loads.
-    const BOOT_SCROLL_KEY = 'boot-scroll-y';
-    window.addEventListener('pagehide', ()=>{
-      try{ sessionStorage.setItem(BOOT_SCROLL_KEY, String(window.scrollY)); }catch(e){}
-    });
-    function startsAtTop(){
-      if(window.scrollY !== 0) return false;
-      // deep link to a section further down (#about, #contact…)
-      const id = location.hash.length > 1 ? decodeURIComponent(location.hash.slice(1)) : '';
-      const target = id && document.getElementById(id);
-      if(target && target.getBoundingClientRect().top + window.scrollY > 1) return false;
-      // reload / back-forward to a scrolled position
-      const nav = performance.getEntriesByType ? performance.getEntriesByType('navigation')[0] : null;
-      if(nav && (nav.type === 'reload' || nav.type === 'back_forward')){
-        let saved = 0;
-        try{ saved = Number(sessionStorage.getItem(BOOT_SCROLL_KEY)) || 0; }catch(e){}
-        if(saved > 0) return false;
-      }
-      return true;
-    }
-    const isBooting = document.body.classList.contains('is-booting') && startsAtTop();
-    let bootDone = false;
     let ti=0, ci=0, cur=null;
 
-    function finishBoot(){
-      if(bootDone) return; bootDone = true;
-      const skipHint = getEl('[data-el="boot-skip"]');
-      if(skipHint) skipHint.style.opacity = '0';
-      setTimeout(()=>{
-        if(heroTerm) heroTerm.style.transform = '';
-        document.body.classList.remove('is-booting');
-        document.body.style.overflow = '';
-        setTimeout(()=>{
-          if(heroTerm){ heroTerm.style.transition=''; heroTerm.style.willChange=''; }
-        }, 1200);
-      }, 420);
-    }
+    // An invisible copy of the finished code sits underneath the typed text
+    // (same grid cell, see .terminal-ghost in hero-terminal.css). The card is
+    // therefore its final size from the first frame at every screen width,
+    // so nothing around it shifts while the code types out.
+    const ghost = document.createElement('div');
+    ghost.className = 'terminal-ghost';
+    ghost.setAttribute('aria-hidden', 'true');
+    ghost.textContent = T.map(t=>t[1]).join('');
+    ghost.appendChild(caret.cloneNode());
+    const live = document.createElement('div');
+    live.className = 'terminal-live';
+    term.append(ghost, live);
 
     function flushAll(){
       while(ti < T.length){
         if(!cur){
           cur = document.createElement('span');
           cur.className = 'token-'+TOKEN[T[ti][0]];
-          term.insertBefore(cur, caret);
+          live.insertBefore(cur, caret);
         }
         cur.textContent = T[ti][1];
         ti++; ci=0; cur=null;
       }
     }
 
-    if(prefersReduced || !isBooting || !heroTerm){
-      // no intro: render instantly (reduced motion) or type in place
-      document.body.classList.remove('is-booting');
-      document.body.style.overflow = '';
-      if(prefersReduced){
-        flushAll();
-        term.appendChild(caret);
-      } else {
-        term.appendChild(caret);
-        (function type(){
-          if(ti>=T.length) return;
-          if(!cur){ cur=document.createElement('span'); cur.className='token-'+TOKEN[T[ti][0]]; term.insertBefore(cur, caret); }
-          const txt=T[ti][1];
-          cur.textContent = txt.slice(0, ++ci);
-          if(ci>=txt.length){ ti++; ci=0; cur=null; }
-          setTimeout(type, 14 + Math.random()*26);
-        })();
-      }
+    function type(){
+      if(ti>=T.length) return;
+      if(!cur){ cur=document.createElement('span'); cur.className='token-'+TOKEN[T[ti][0]]; live.insertBefore(cur, caret); }
+      const txt=T[ti][1];
+      cur.textContent = txt.slice(0, ++ci);
+      if(ci>=txt.length){ ti++; ci=0; cur=null; }
+      setTimeout(type, 14 + Math.random()*26);
+    }
+
+    live.appendChild(caret);
+    if(prefersReduced){
+      flushAll();                 // reduced motion: show the code instantly
+    } else if(document.readyState === 'complete'){
+      type();
     } else {
-      // BOOT SEQUENCE: center + enlarge the terminal before anything else exists
-      window.scrollTo(0,0);
-      document.body.style.overflow = 'hidden';
-      const r = heroTerm.getBoundingClientRect();
-      const vw = window.innerWidth, vh = window.innerHeight;
-      const k = Math.min(1.4, Math.max(1, (Math.min(620, vw*0.92)) / r.width));
-      const dx = vw/2 - (r.left + r.width/2);
-      const dy = vh/2 - (r.top + r.height/2);
-      heroTerm.style.willChange = 'transform';
-      heroTerm.style.transition = 'none';
-      heroTerm.style.transform = `translate(${dx}px, ${dy}px) scale(${k})`;
-      void heroTerm.offsetWidth;
-      heroTerm.style.transition = 'transform 1.1s cubic-bezier(.2,.8,.2,1)';
-
-      term.appendChild(caret);
-      (function type(){
-        if(bootDone){ return; }
-        if(ti>=T.length){ finishBoot(); return; }
-        if(!cur){ cur=document.createElement('span'); cur.className='token-'+TOKEN[T[ti][0]]; term.insertBefore(cur, caret); }
-        const txt=T[ti][1];
-        cur.textContent = txt.slice(0, ++ci);
-        if(ci>=txt.length){ ti++; ci=0; cur=null; }
-        setTimeout(type, 7 + Math.random()*15);
-      })();
-
-      // skip: click / key / safety timeout
-      function skipNow(){ if(bootDone) return; flushAll(); finishBoot(); }
-      window.addEventListener('click', skipNow);
-      window.addEventListener('keydown', skipNow);
-      setTimeout(skipNow, 9000);
+      window.addEventListener('load', type, {once:true});
     }
 
     // subtle tilt on the card
@@ -812,8 +751,6 @@
      RUN — switch a section's script off by setting it to false.
      Order matters, keep it as is:
      - scrollReveal before scrubCards (scrub cards opt out of the reveal)
-     - heroTerminal before splitWords (the boot intro measures the
-       terminal before the hero text is split into words)
      ===================================================== */
   const SECTIONS = [
     // name               init function            on?
@@ -836,11 +773,5 @@
   ];
 
   SECTIONS.forEach(([, init, on])=>{ if(on) init(); });
-
-  // the boot intro hides the page until heroTerminal finishes it —
-  // if that section is switched off, make sure the page is never left hidden
-  if(!SECTIONS.some(([name, , on])=>name==='heroTerminal' && on)){
-    document.body.classList.remove('is-booting');
-  }
 
 })();
