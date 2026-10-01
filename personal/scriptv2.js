@@ -49,17 +49,20 @@
       dot.style.display='none'; ring.style.display='none';
       return;
     }
-    let rx=0, ry=0, mx=0, my=0;
-    window.addEventListener('mousemove', e=>{
-      mx = e.clientX; my = e.clientY;
-      dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
-    });
+    let rx=0, ry=0, mx=0, my=0, running=false;
+    // the ring eases toward the mouse; the loop sleeps once it has caught up
+    // and wakes on the next mousemove (no idle 60fps work)
     function loop(){
       rx += (mx-rx)*0.15; ry += (my-ry)*0.15;
       ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+      if(Math.abs(mx-rx) < 0.1 && Math.abs(my-ry) < 0.1){ running = false; return; }
       requestAnimationFrame(loop);
     }
-    loop();
+    window.addEventListener('mousemove', e=>{
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
+      if(!running){ running = true; requestAnimationFrame(loop); }
+    });
     document.querySelectorAll('[data-hover], a').forEach(el=>{
       el.addEventListener('mouseenter', ()=>ring.classList.add('is-hovering'));
       el.addEventListener('mouseleave', ()=>ring.classList.remove('is-hovering'));
@@ -131,14 +134,22 @@
           ctx.fillStyle = influence>0.05 ? `rgba(124,108,240,${0.25+influence*0.55})` : 'rgba(139,144,156,0.18)';
           ctx.fill();
         }
-        if(!prefersReduced) requestAnimationFrame(draw);
+      }
+      // each frame depends only on the mouse position, so redraw when the
+      // mouse moves (once per frame) instead of looping 60fps forever
+      let drawQueued = false;
+      function requestDraw(){
+        if(drawQueued) return;
+        drawQueued = true;
+        requestAnimationFrame(()=>{ drawQueued = false; draw(); });
       }
       window.addEventListener('mousemove', e=>{
         const rect = canvas.getBoundingClientRect();
         mouseX = (e.clientX-rect.left)*devicePixelRatio;
         mouseY = (e.clientY-rect.top)*devicePixelRatio;
+        if(!prefersReduced) requestDraw();
       });
-      window.addEventListener('resize', resize);
+      window.addEventListener('resize', ()=>{ resize(); draw(); });
       resize();
       draw();
     }
@@ -147,16 +158,20 @@
     const hero = getEl('[data-el="hero"]');
     const glow = getEl('[data-el="hero-glow"]');
     if(hero && glow && !isTouch && !prefersReduced){
-      let gx = innerWidth/2, gy = innerHeight*0.4, tx = gx, ty = gy;
+      let gx = innerWidth/2, gy = innerHeight*0.4, tx = gx, ty = gy, glowRunning = false;
+      // eases toward the cursor; sleeps once caught up, wakes on mousemove
+      function glowLoop(){
+        gx += (tx-gx)*0.06; gy += (ty-gy)*0.06;
+        glow.style.left = gx+'px'; glow.style.top = gy+'px';
+        if(Math.abs(tx-gx) < 0.1 && Math.abs(ty-gy) < 0.1){ glowRunning = false; return; }
+        requestAnimationFrame(glowLoop);
+      }
       hero.addEventListener('mousemove', e=>{
         const r = hero.getBoundingClientRect();
         tx = e.clientX - r.left; ty = e.clientY - r.top;
+        if(!glowRunning){ glowRunning = true; requestAnimationFrame(glowLoop); }
       });
-      (function glowLoop(){
-        gx += (tx-gx)*0.06; gy += (ty-gy)*0.06;
-        glow.style.left = gx+'px'; glow.style.top = gy+'px';
-        requestAnimationFrame(glowLoop);
-      })();
+      glowRunning = true; glowLoop();
     }
 
     // gentle parallax + fade of hero content on scroll.
