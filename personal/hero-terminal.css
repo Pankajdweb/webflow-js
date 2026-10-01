@@ -139,6 +139,9 @@ body.is-booting .hero-terminal{opacity:1;animation:none;}
 @media (max-width:900px){
   .terminal-body{font-size:12px;min-height:0;}
   .terminal-orbit{display:none;}
+   /* loader: reserve the finished card's height while it types, so the
+     centred boot terminal doesn't grow downward off-screen */
+  body.is-booting .terminal-body{min-height:370px;}
 }
 @media (prefers-reduced-motion: reduce){
   .orbit-item{animation:none;opacity:.5;transform:translate(-50%,-50%) translate(calc(var(--tx)*.8), calc(var(--ty)*.8)) scale(.8);}
