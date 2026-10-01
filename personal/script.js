@@ -13,11 +13,19 @@
      WEBFLOW: paste this whole block into
      Site Settings -> Custom Code -> Footer (before </body>).
      ===================================================== */
+  // Lookup helpers: shorthand for querySelector / querySelectorAll
+  function getEl(sel, root){
+    return (root || document).querySelector(sel);
+  }
+  function getAll(sel, root){
+    return (root || document).querySelectorAll(sel);
+  }
+
   // Custom cursor
-  const dot = document.querySelector('[data-el="cursor-dot"]');
-  const ring = document.querySelector('[data-el="cursor-ring"]');
+  const dot = getEl('[data-el="cursor-dot"]');
+  const ring = getEl('[data-el="cursor-ring"]');
   const isTouch = window.matchMedia('(pointer:coarse)').matches;
-  if(!isTouch){
+  if(dot && ring && !isTouch){
     let rx=0, ry=0, mx=0, my=0;
     window.addEventListener('mousemove', e=>{
       mx = e.clientX; my = e.clientY;
@@ -33,7 +41,7 @@
       el.addEventListener('mouseenter', ()=>ring.classList.add('is-hovering'));
       el.addEventListener('mouseleave', ()=>ring.classList.remove('is-hovering'));
     });
-  } else {
+  } else if(dot && ring){
     dot.style.display='none'; ring.style.display='none';
   }
 
@@ -46,10 +54,10 @@
       }
     });
   }, {threshold:0.15});
-  document.querySelectorAll('[data-reveal]').forEach(el=>io.observe(el));
+  getAll('[data-reveal]').forEach(el=>io.observe(el));
 
   // Staggered reveal for project + service cards + testimonials
-  document.querySelectorAll('[data-reveal-group]').forEach(group=>{
+  getAll('[data-reveal-group]').forEach(group=>{
     Array.from(group.children).forEach((child, i)=>{
       child.setAttribute('data-reveal', '');
       child.style.transitionDelay = (i*70)+'ms';
@@ -58,8 +66,8 @@
   });
 
   // Hero canvas: soft dot grid with mouse parallax
-  const canvas = document.querySelector('[data-el="grid-canvas"]');
-  const ctx = canvas.getContext('2d');
+  const canvas = getEl('[data-el="grid-canvas"]');
+  const ctx = canvas && canvas.getContext('2d');
   let w,h,dots=[];
   function resize(){
     w = canvas.width = canvas.offsetWidth * devicePixelRatio;
@@ -73,7 +81,7 @@
     }
   }
   let mouseX=-9999, mouseY=-9999;
-  window.addEventListener('mousemove', e=>{
+  if(canvas) window.addEventListener('mousemove', e=>{
     const rect = canvas.getBoundingClientRect();
     mouseX = (e.clientX-rect.left)*devicePixelRatio;
     mouseY = (e.clientY-rect.top)*devicePixelRatio;
@@ -97,234 +105,15 @@
     }
     if(!prefersReduced) requestAnimationFrame(draw);
   }
-  window.addEventListener('resize', resize);
-  resize();
-  draw();
-  if(prefersReduced) draw();
-
-  // ---------- Lottie icons for expertise cards ----------
-  // Animations are built inline (real Lottie JSON, no external files needed).
-  if(window.lottie){
-    const V=[0.486,0.424,0.941,1], C=[0.247,0.878,0.816,1];
-    let IND=0;
-    const st=(c,wd=3.5)=>({ty:'st',c:{a:0,k:c},o:{a:0,k:100},w:{a:0,k:wd},lc:2,lj:2});
-    const fl=c=>({ty:'fl',c:{a:0,k:c},o:{a:0,k:100}});
-    const tr=()=>({ty:'tr',p:{a:0,k:[0,0]},a:{a:0,k:[0,0]},s:{a:0,k:[100,100]},r:{a:0,k:0},o:{a:0,k:100}});
-    const gr=(...it)=>({ty:'gr',it:[...it,tr()]});
-    const rc=(x,y,w2,h2,r=3)=>({ty:'rc',p:{a:0,k:[x,y]},s:{a:0,k:[w2,h2]},r:{a:0,k:r}});
-    const el=(x,y,d)=>({ty:'el',p:{a:0,k:[x,y]},s:{a:0,k:[d,d]}});
-    const sh=v=>({ty:'sh',ks:{a:0,k:{c:false,v:v,i:v.map(()=>[0,0]),o:v.map(()=>[0,0])}}});
-    const shc=v=>({ty:'sh',ks:{a:0,k:{c:true,v:v,i:v.map(()=>[0,0]),o:v.map(()=>[0,0])}}});
-    const std=(c,wd,da,ga)=>({ty:'st',c:{a:0,k:c},o:{a:0,k:100},w:{a:0,k:wd},lc:2,lj:2,d:[{n:'d',v:{a:0,k:da}},{n:'g',v:{a:0,k:ga}}]});
-    const el2=(x,y,w2,h2)=>({ty:'el',p:{a:0,k:[x,y]},s:{a:0,k:[w2,h2]}});
-    const GY=[0.55,0.57,0.62,1], DK=[0.07,0.08,0.1,1];
-    const kf=(...fr)=>({a:1,k:fr.map(f=>({t:f[0],s:f[1],i:{x:[0.35],y:[1]},o:{x:[0.65],y:[0]}}))});
-    const layer=(shapes,ks)=>({ddd:0,ind:++IND,ty:4,sr:1,ao:0,ip:0,op:90,st:0,bm:0,
-      ks:Object.assign({o:{a:0,k:100},r:{a:0,k:0},p:{a:0,k:[50,50,0]},a:{a:0,k:[0,0,0]},s:{a:0,k:[100,100,100]}},ks||{}),
-      shapes:shapes});
-    const anim=layers=>({v:'5.7.4',fr:30,ip:0,op:90,w:100,h:100,nm:'icon',ddd:0,assets:[],layers:layers});
-
-    const ANIMS = {
-      // stacked CMS collection bars, pulsing in sequence
-      cms: anim([
-        layer([gr(rc(0,0,44,12,6),st(V))],{p:{a:0,k:[50,30,0]},s:kf([0,[100,100,100]],[45,[114,114,100]],[90,[100,100,100]])}),
-        layer([gr(rc(0,0,44,12,6),st(C))],{p:{a:0,k:[50,50,0]},s:kf([0,[114,114,100]],[45,[100,100,100]],[90,[114,114,100]])}),
-        layer([gr(rc(0,0,44,12,6),st(V))],{p:{a:0,k:[50,70,0]},s:kf([0,[100,100,100]],[45,[114,114,100]],[90,[100,100,100]])})
-      ]),
-      // speed gauge: arc fills + needle sweeps
-      speed: anim([
-        layer([gr(el(0,4,58),{ty:'tm',s:{a:0,k:0},e:kf([0,[10]],[45,[78]],[90,[10]]),o:{a:0,k:130},m:1},st(C,4))]),
-        layer([gr(sh([[0,4],[0,-22]]),st(V,4))],{p:{a:0,k:[50,54,0]},r:kf([0,[-55]],[45,[55]],[90,[-55]])}),
-        layer([gr(el(0,0,10),fl(V))],{p:{a:0,k:[50,54,0]}})
-      ]),
-      // bouncing ball over a baseline
-      motion: anim([
-        layer([gr(el(0,0,16),fl(C))],{p:kf([0,[50,34,0]],[45,[50,62,0]],[90,[50,34,0]])}),
-        layer([gr(rc(0,0,44,4,2),fl(V))],{p:{a:0,k:[50,76,0]}})
-      ]),
-      // code brackets breathing + blinking cursor
-      code: anim([
-        layer([gr(sh([[9,-11],[-7,0],[9,11]]),st(V,4))],{p:kf([0,[33,50,0]],[45,[27,50,0]],[90,[33,50,0]])}),
-        layer([gr(sh([[-9,-11],[7,0],[-9,11]]),st(V,4))],{p:kf([0,[67,50,0]],[45,[73,50,0]],[90,[67,50,0]])}),
-        layer([gr(rc(0,0,4,24,2),fl(C))],{p:{a:0,k:[50,50,0]},
-          o:{a:1,k:[{t:0,s:[100],h:1},{t:20,s:[0],h:1},{t:45,s:[100],h:1},{t:65,s:[0],h:1},{t:90,s:[100]}]}})
-      ]),
-      // pixel-perfect: inner block snapping to fit the frame
-      pixel: anim([
-        layer([gr(rc(0,0,54,54,10),st(V))]),
-        layer([gr(rc(0,0,22,22,5),fl(C))],{s:kf([0,[55,55,100]],[45,[110,110,100]],[90,[55,55,100]])})
-      ]),
-      // responsive: viewport morphing desktop -> mobile
-      resp: anim([
-        layer([gr(rc(0,-4,58,40,6),st(C))],{s:kf([0,[100,100,100]],[45,[55,115,100]],[90,[100,100,100]])}),
-        layer([gr(rc(0,26,30,4,2),fl(V))])
-      ]),
-      // discovery: full radar scene — dashed ring, crosshairs, sweep wedge, blips with pings
-      radar: anim([
-        layer([gr(el(0,0,92),std(V,1.2,3,6))],{r:kf([0,[0]],[90,[40]])}),
-        layer([gr(el(0,0,66),st(GY,1))]),
-        layer([gr(el(0,0,40),st(GY,1))]),
-        layer([gr(sh([[-46,0],[46,0]]),sh([[0,-46],[0,46]]),st(GY,.8))],{o:{a:0,k:35}}),
-        layer([gr(shc([[0,0],[15,-46],[-15,-46]]),fl(C))],{o:{a:0,k:13},r:kf([0,[0]],[90,[360]])}),
-        layer([gr(sh([[0,0],[0,-46]]),st(C,2))],{r:kf([0,[0]],[90,[360]])}),
-        layer([gr(el(26,-10,6),fl(C))],
-          {o:{a:1,k:[{t:0,s:[0]},{t:20,s:[100]},{t:44,s:[100]},{t:56,s:[0]},{t:90,s:[0]}]}}),
-        layer([gr(el(26,-10,6),st(C,1.5))],
-          {s:kf([20,[100,100,100]],[46,[280,280,100]]),
-           o:{a:1,k:[{t:0,s:[0]},{t:20,s:[80]},{t:46,s:[0]},{t:90,s:[0]}]}}),
-        layer([gr(el(-28,20,5),fl(V))],
-          {o:{a:1,k:[{t:0,s:[0]},{t:55,s:[100]},{t:78,s:[100]},{t:88,s:[0]}]}}),
-        layer([gr(el(-28,20,5),st(V,1.5))],
-          {s:kf([55,[100,100,100]],[82,[260,260,100]]),
-           o:{a:1,k:[{t:0,s:[0]},{t:55,s:[75]},{t:82,s:[0]},{t:90,s:[0]}]}}),
-        layer([gr(el(0,0,16),st(V,1.5))],{s:kf([0,[100,100,100]],[45,[150,150,100]],[90,[100,100,100]]),o:{a:0,k:45}}),
-        layer([gr(el(0,0,8),fl(V))])
-      ]),
-
-      // build: a webpage assembling itself inside a browser window
-      assemble: anim([
-        layer([gr(rc(0,0,86,68,7),st(GY,1.5))]),
-        layer([gr(sh([[-43,-23],[43,-23]]),st(GY,1))],{o:{a:0,k:70}}),
-        layer([gr(el(-35,-28,4),el(-27,-28,4),el(-19,-28,4),fl(GY))],{o:{a:0,k:60}}),
-        layer([gr(rc(-14,-10,48,14,3),st(C,2))],
-          {p:kf([4,[38,50,0]],[18,[50,50,0]]),
-           o:{a:1,k:[{t:0,s:[0]},{t:6,s:[100]},{t:74,s:[100]},{t:88,s:[0]}]}}),
-        layer([gr(rc(-14,6,48,5,2),fl(V))],
-          {p:kf([14,[40,50,0]],[28,[50,50,0]]),
-           o:{a:1,k:[{t:14,s:[0]},{t:20,s:[70]},{t:74,s:[70]},{t:88,s:[0]}]}}),
-        layer([gr(rc(-19,15,38,5,2),fl(V))],
-          {p:kf([22,[41,50,0]],[36,[50,50,0]]),
-           o:{a:1,k:[{t:22,s:[0]},{t:28,s:[70]},{t:74,s:[70]},{t:88,s:[0]}]}}),
-        layer([gr(rc(29,2,20,28,3),st(V,2))],
-          {p:kf([30,[50,58,0]],[44,[50,50,0]]),
-           o:{a:1,k:[{t:30,s:[0]},{t:38,s:[100]},{t:74,s:[100]},{t:88,s:[0]}]}}),
-        layer([gr(rc(31,-10,3,9,1),fl(C))],
-          {o:{a:1,k:[{t:0,s:[0]},{t:44,s:[100],h:1},{t:56,s:[0],h:1},{t:66,s:[100],h:1},{t:76,s:[0]},{t:90,s:[0]}]}}),
-        layer([gr(sh([[-43,26],[43,26]]),st(GY,1.5))],{o:{a:0,k:50}}),
-        layer([gr(sh([[-43,26],[43,26]]),{ty:'tm',s:{a:0,k:0},e:kf([6,[0]],[70,[100]]),o:{a:0,k:0},m:1},st(C,3))],
-          {o:{a:1,k:[{t:0,s:[100]},{t:74,s:[100]},{t:88,s:[0]},{t:90,s:[0]}]}})
-      ]),
-
-      // review & speed: instrument gauge with ticks, whoosh lines and a passing check
-      qa: anim([
-        layer([gr(el(0,2,90),std(GY,1,3,6))],{r:kf([0,[0]],[90,[-30]])}),
-        layer([gr(el(0,4,64),st(GY,1.5))],{o:{a:0,k:40}}),
-        layer([gr(el(0,4,64),{ty:'tm',s:{a:0,k:0},e:kf([0,[8]],[50,[72]],[90,[8]]),o:{a:0,k:130},m:1},st(C,3.5))]),
-        layer([gr(el(-24,-13,3),el(0,-26,3),el(24,-13,3),fl(GY))],{o:{a:0,k:70}}),
-        layer([gr(sh([[0,6],[0,-20]]),st(V,3.5))],{p:{a:0,k:[50,54,0]},r:kf([0,[-58]],[50,[58]],[90,[-58]])}),
-        layer([gr(el(0,0,9),fl(V))],{p:{a:0,k:[50,54,0]}}),
-        layer([gr(sh([[-46,-4],[-32,-4]]),st(C,2))],
-          {o:{a:1,k:[{t:0,s:[0]},{t:12,s:[80]},{t:22,s:[0]},{t:40,s:[0]},{t:50,s:[80]},{t:60,s:[0]},{t:90,s:[0]}]}}),
-        layer([gr(sh([[-48,4],[-36,4]]),st(V,2))],
-          {o:{a:1,k:[{t:6,s:[0]},{t:18,s:[70]},{t:28,s:[0]},{t:46,s:[0]},{t:56,s:[70]},{t:66,s:[0]},{t:90,s:[0]}]}}),
-        layer([gr(el(0,0,26),fl(V))],
-          {p:{a:0,k:[76,72,0]},o:{a:1,k:[{t:0,s:[0]},{t:48,s:[0]},{t:54,s:[22]},{t:80,s:[22]},{t:90,s:[0]}]}}),
-        layer([gr(sh([[-6,0],[-2,4],[7,-7]]),st(C,3))],
-          {p:{a:0,k:[76,72,0]},s:kf([48,[0,0,100]],[58,[115,115,100]],[64,[100,100,100]]),
-           o:{a:1,k:[{t:0,s:[0]},{t:48,s:[100]},{t:80,s:[100]},{t:90,s:[0]}]}})
-      ]),
-
-      // launch: a proper little rocket — body, window, fins, flickering flame, trail and burst
-      launch: anim([
-        layer([gr(el(-34,-30,3),fl(GY))],{o:{a:1,k:[{t:0,s:[20]},{t:22,s:[85]},{t:44,s:[20]},{t:90,s:[20]}]}}),
-        layer([gr(el(36,-18,2.5),fl(GY))],{o:{a:1,k:[{t:10,s:[20]},{t:34,s:[85]},{t:58,s:[20]},{t:90,s:[20]}]}}),
-        layer([gr(el(-24,28,2.5),fl(GY))],{o:{a:1,k:[{t:30,s:[20]},{t:52,s:[85]},{t:74,s:[20]},{t:90,s:[20]}]}}),
-        layer([gr(rc(0,0,44,3,2),fl(GY))],{p:{a:0,k:[50,86,0]},o:{a:0,k:45}}),
-        layer([gr(rc(0,19,3,18,2),fl(V))],
-          {p:kf([8,[50,70,0]],[60,[50,22,0]]),
-           o:{a:1,k:[{t:0,s:[0]},{t:16,s:[60]},{t:56,s:[60]},{t:66,s:[0]},{t:90,s:[0]}]}}),
-        layer([gr(shc([[0,14],[4.5,22],[0,29],[-4.5,22]]),fl(V))],
-          {p:kf([8,[50,70,0]],[60,[50,22,0]]),
-           s:kf([8,[100,100,100]],[16,[100,135,100]],[26,[100,95,100]],[36,[100,130,100]],[46,[100,100,100]],[56,[100,125,100]]),
-           o:{a:1,k:[{t:0,s:[0]},{t:10,s:[95]},{t:58,s:[95]},{t:66,s:[0]},{t:90,s:[0]}]}}),
-        layer([gr(shc([[-7,10],[-14,19],[-7,16]]),shc([[7,10],[14,19],[7,16]]),fl(V))],
-          {p:kf([8,[50,70,0]],[60,[50,22,0]]),
-           o:{a:1,k:[{t:0,s:[0]},{t:10,s:[100]},{t:60,s:[100]},{t:68,s:[0]},{t:90,s:[0]}]}}),
-        layer([gr(rc(0,0,15,28,7),fl(DK),st(C,2.2))],
-          {p:kf([8,[50,70,0]],[60,[50,22,0]]),
-           o:{a:1,k:[{t:0,s:[0]},{t:10,s:[100]},{t:60,s:[100]},{t:68,s:[0]},{t:90,s:[0]}]}}),
-        layer([gr(shc([[0,-22],[7.5,-13],[-7.5,-13]]),fl(C))],
-          {p:kf([8,[50,70,0]],[60,[50,22,0]]),
-           o:{a:1,k:[{t:0,s:[0]},{t:10,s:[100]},{t:60,s:[100]},{t:68,s:[0]},{t:90,s:[0]}]}}),
-        layer([gr(el(0,-4,7),st(C,1.8))],
-          {p:kf([8,[50,70,0]],[60,[50,22,0]]),
-           o:{a:1,k:[{t:0,s:[0]},{t:10,s:[100]},{t:60,s:[100]},{t:68,s:[0]},{t:90,s:[0]}]}}),
-        layer([gr(el(0,0,22),st(C,2))],
-          {p:{a:0,k:[50,22,0]},s:kf([58,[60,60,100]],[86,[200,200,100]]),
-           o:{a:1,k:[{t:0,s:[0]},{t:58,s:[0]},{t:62,s:[90]},{t:88,s:[0]}]}}),
-        layer([gr(el(0,0,4),fl(C))],
-          {p:kf([60,[50,22,0]],[80,[76,4,0]]),
-           o:{a:1,k:[{t:0,s:[0]},{t:60,s:[100]},{t:80,s:[0]},{t:90,s:[0]}]}}),
-        layer([gr(el(0,0,4),fl(V))],
-          {p:kf([60,[50,22,0]],[80,[24,6,0]]),
-           o:{a:1,k:[{t:0,s:[0]},{t:60,s:[100]},{t:80,s:[0]},{t:90,s:[0]}]}})
-      ]),
-
-      // support: planet with ring, orbiting moons, heartbeat pulse and a shooting star
-      orbit: anim([
-        layer([gr(el(0,0,88),std(GY,1,4,7))]),
-        layer([gr(el(0,0,60),st(GY,.8))],{o:{a:0,k:35}}),
-        layer([gr(el(0,0,26),fl(V))],{o:{a:0,k:92}}),
-        layer([gr(el(-5,-6,8),fl([1,1,1,1]))],{o:{a:0,k:22}}),
-        layer([gr(el2(0,2,52,15),st(C,1.8))],{r:{a:0,k:-16},o:{a:0,k:85}}),
-        layer([gr(el(44,0,6),fl(C))],{r:kf([0,[0]],[90,[360]])}),
-        layer([gr(el(-30,0,4),fl(V))],{r:kf([0,[360]],[90,[0]])}),
-        layer([gr(el(0,0,30),st(V,1.5))],
-          {s:kf([10,[100,100,100]],[42,[210,210,100]]),
-           o:{a:1,k:[{t:0,s:[0]},{t:10,s:[70]},{t:42,s:[0]},{t:90,s:[0]}]}}),
-        layer([gr(el(0,0,30),st(V,1.5))],
-          {s:kf([52,[100,100,100]],[84,[210,210,100]]),
-           o:{a:1,k:[{t:0,s:[0]},{t:52,s:[70]},{t:84,s:[0]},{t:90,s:[0]}]}}),
-        layer([gr(sh([[0,0],[13,-7]]),st(C,2))],
-          {p:kf([28,[12,16,0]],[44,[80,50,0]]),
-           o:{a:1,k:[{t:0,s:[0]},{t:28,s:[90]},{t:44,s:[0]},{t:90,s:[0]}]}}),
-        layer([gr(sh([[-3,0],[3,0]]),sh([[0,-3],[0,3]]),st(C,1.5))],
-          {p:{a:0,k:[24,-30,0]},o:{a:1,k:[{t:0,s:[15]},{t:20,s:[90]},{t:40,s:[15]},{t:90,s:[15]}]}}),
-        layer([gr(sh([[-3,0],[3,0]]),sh([[0,-3],[0,3]]),st(V,1.5))],
-          {p:{a:0,k:[-34,26,0]},o:{a:1,k:[{t:24,s:[15]},{t:44,s:[90]},{t:64,s:[15]},{t:90,s:[15]}]}})
-      ]),
-
-      // migration: content dot traveling from old platform box to Webflow box
-      migrate: anim([
-        layer([gr(rc(0,0,24,34,5),st(V))],{p:{a:0,k:[26,50,0]}}),
-        layer([gr(rc(0,0,24,34,5),st(C))],{p:{a:0,k:[74,50,0]}}),
-        layer([gr(el(0,0,10),fl(C))],{
-          p:kf([5,[28,50,0]],[65,[72,50,0]]),
-          o:{a:1,k:[{t:0,s:[0]},{t:12,s:[100]},{t:58,s:[100]},{t:72,s:[0]},{t:90,s:[0]}]}
-        })
-      ])
-    };
-
-    document.querySelectorAll('[data-anim]').forEach(box=>{
-      const data = ANIMS[box.dataset.anim];
-      if(!data) return;
-      const hoverPlay = false;
-      const inst = lottie.loadAnimation({
-        container:box, renderer:'svg', loop:true,
-        autoplay:!prefersReduced && !hoverPlay, animationData:data
-      });
-      if(prefersReduced || hoverPlay) inst.goToAndStop(30, true);
-      if(box.hasAttribute('data-ambient') && !prefersReduced){
-        inst.setSpeed(0.45);
-        const sec = box.closest('section');
-        if(sec){
-          sec.addEventListener('mouseenter', ()=>inst.setSpeed(1));
-          sec.addEventListener('mouseleave', ()=>inst.setSpeed(0.45));
-        }
-        return;
-      }
-      const card = box.closest('[data-scrub-card="service"]');
-      if(card && !prefersReduced){
-        card.addEventListener('mouseenter', ()=>inst.setSpeed(2.2));
-        card.addEventListener('mouseleave', ()=>inst.setSpeed(1));
-      }
-    });
-
+  if(canvas){
+    window.addEventListener('resize', resize);
+    resize();
+    draw();
   }
 
   // ---------- Projects: subtle parallax inside project cards ----------
   (function(){
-    const medias = Array.from(document.querySelectorAll('[data-media] img'));
+    const medias = Array.from(getAll('[data-media] img'));
     if(!medias.length || prefersReduced) return;
     let ticking = false;
     function update(){
@@ -345,12 +134,12 @@
 
   // ---------- Hero: cursor spotlight, magnetic CTAs, count-up stats, parallax ----------
   (function(){
-    const hero = document.querySelector('[data-el="hero"]');
-    const glow = document.querySelector('[data-el="hero-glow"]');
-    const inner = document.querySelector('[data-el="hero-inner"]');
+    const hero = getEl('[data-el="hero"]');
+    const glow = getEl('[data-el="hero-glow"]');
+    const inner = getEl('[data-el="hero-inner"]');
 
     // spotlight lags behind cursor
-    if(glow && !isTouch && !prefersReduced){
+    if(hero && glow && !isTouch && !prefersReduced){
       let gx = innerWidth/2, gy = innerHeight*0.4, tx = gx, ty = gy;
       hero.addEventListener('mousemove', e=>{
         const r = hero.getBoundingClientRect();
@@ -365,7 +154,7 @@
 
     // magnetic buttons
     if(!isTouch && !prefersReduced){
-      document.querySelectorAll('[data-magnetic]').forEach(btn=>{
+      getAll('[data-magnetic]').forEach(btn=>{
         btn.addEventListener('mousemove', e=>{
           const r = btn.getBoundingClientRect();
           const x = e.clientX - r.left - r.width/2;
@@ -377,7 +166,7 @@
     }
 
     // typing terminal + boot intro sequence
-    const term = document.querySelector('[data-el="term-body"]');
+    const term = getEl('[data-el="term-body"]');
     if(term){
       const T = [
         ['c','// pankaj.config.js\n\n'],
@@ -396,7 +185,7 @@
       const TOKEN = {c:'comment', k:'keyword', v:'variable', pr:'punctuation', s:'string', n:'number', b:'boolean'};
       const caret = document.createElement('span');
       caret.className = 'terminal-caret';
-      const heroTerm = document.querySelector('[data-el="hero-terminal"]');
+      const heroTerm = getEl('[data-el="hero-terminal"]');
       // only play the boot intro when the page starts at the very top.
       // scrollY alone isn't enough: on reload / back-forward the browser restores
       // the old position AFTER this runs, so remember it ourselves across loads.
@@ -425,7 +214,7 @@
 
       function finishBoot(){
         if(bootDone) return; bootDone = true;
-        const skipHint = document.querySelector('[data-el="boot-skip"]');
+        const skipHint = getEl('[data-el="boot-skip"]');
         if(skipHint) skipHint.style.opacity = '0';
         setTimeout(()=>{
           if(heroTerm) heroTerm.style.transform = '';
@@ -501,8 +290,8 @@
       }
 
       // subtle tilt on the card
-      const card = document.querySelector('[data-el="term-card"]');
-      const wrap = document.querySelector('[data-el="hero-terminal"]');
+      const card = getEl('[data-el="term-card"]');
+      const wrap = heroTerm;
       if(card && wrap && !isTouch && !prefersReduced){
         wrap.addEventListener('mousemove', e=>{
           const r2 = wrap.getBoundingClientRect();
@@ -535,7 +324,7 @@
 
   // ---------- Abstract background parallax ----------
   (function(){
-    const shapes = document.querySelectorAll('[data-speed]');
+    const shapes = getAll('[data-speed]');
     if(!shapes.length || prefersReduced) return;
     let tick=false;
     function upd(){
@@ -554,8 +343,8 @@
 
   // ---------- 3D tilt on the avatar scene ----------
   (function(){
-    const vis = document.querySelector('[data-el="about-visual"]');
-    const scene = vis && vis.querySelector('[data-el="avatar-scene"]');
+    const vis = getEl('[data-el="about-visual"]');
+    const scene = vis && getEl('[data-el="avatar-scene"]', vis);
     if(!vis || !scene || isTouch || prefersReduced) return;
     vis.addEventListener('mousemove', e=>{
       const r = vis.getBoundingClientRect();
@@ -593,19 +382,19 @@
     const targets = [];
 
     // the about quote: slower scrub + gradient accent words + attribution punchline
-    const quote = document.querySelector('[data-el="quote"]');
+    const quote = getEl('[data-el="quote"]');
     if(quote){
-      const attr = quote.querySelector('[data-el="quote-attr"]');
+      const attr = getEl('[data-el="quote-attr"]', quote);
       targets.push({el:quote, spans:splitWords(quote, ['Passion','ceiling']), attr, start:.88, end:.42});
     }
 
     // every section heading gets the same treatment, on a quicker scrub window
-    document.querySelectorAll('[data-split="heading"]').forEach(h=>{
+    getAll('[data-split="heading"]').forEach(h=>{
       targets.push({el:h, spans:splitWords(h, null), attr:null, start:.94, end:.62});
     });
 
     // soft scrub for prose only — card text stays static, whole cards scrub instead
-    document.querySelectorAll('[data-split="soft"]').forEach(el=>{
+    getAll('[data-split="soft"]').forEach(el=>{
       targets.push({el, spans:splitWords(el, null, true), attr:null, start:.97, end:.72});
     });
 
@@ -641,7 +430,7 @@
 
   // ---------- Whole-card scroll scrub ----------
   (function(){
-    const cards = Array.from(document.querySelectorAll('[data-scrub-card]'));
+    const cards = Array.from(getAll('[data-scrub-card]'));
     if(!cards.length) return;
     // take these cards out of the one-shot reveal system — the scrub drives them now
     cards.forEach(c=>{
@@ -677,10 +466,14 @@
 
   // ---------- Navbar: progress bar, scrolled state, scrollspy ----------
   (function(){
-    const bar = document.querySelector('[data-el="scroll-progress"]');
-    const header = document.querySelector('[data-el="header"]');
-    const links = Array.from(document.querySelectorAll('[data-nav-link]'));
-    const secs = links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+    const bar = getEl('[data-el="scroll-progress"]');
+    const header = getEl('[data-el="header"]');
+    const links = Array.from(getAll('[data-nav-link]'));
+    // keep secs index-aligned with links (a missing target must not shift the highlight)
+    const secs = links.map(a=>{
+      const href = a.getAttribute('href');
+      return href && href.length > 1 && href[0]==='#' ? document.querySelector(href) : null;
+    });
     let tick=false;
     function upd(){
       tick=false;
@@ -690,7 +483,7 @@
       if(header) header.classList.toggle('is-scrolled', y > 40);
       // scrollspy
       let current = -1;
-      secs.forEach((sec,i)=>{ if(sec.getBoundingClientRect().top <= window.innerHeight*0.35) current = i; });
+      secs.forEach((sec,i)=>{ if(sec && sec.getBoundingClientRect().top <= window.innerHeight*0.35) current = i; });
       links.forEach((a,i)=>a.classList.toggle('is-active', i===current));
     }
     window.addEventListener('scroll', ()=>{ if(!tick){tick=true;requestAnimationFrame(upd);} }, {passive:true});
@@ -701,10 +494,10 @@
   // [data-testi] stage, [data-testi-slide] quotes, [data-testi-dot] progress dots.
   // Auto-advances every 7s (matches the dot fill animation), pauses on hover.
   (function(){
-    const stage = document.querySelector('[data-testi]');
+    const stage = getEl('[data-testi]');
     if(!stage) return;
-    const slides = Array.from(stage.querySelectorAll('[data-testi-slide]'));
-    const dots = Array.from(stage.querySelectorAll('[data-testi-dot]'));
+    const slides = Array.from(getAll('[data-testi-slide]', stage));
+    const dots = Array.from(getAll('[data-testi-dot]', stage));
     if(slides.length < 2) return;
     let idx = 0, timer = null, paused = false;
     function show(i){
@@ -730,10 +523,10 @@
   // ---------- FAQ accordion ----------
   // [data-faq] items; one open at a time; height animates via CSS grid rows.
   (function(){
-    const items = Array.from(document.querySelectorAll('[data-faq]'));
+    const items = Array.from(getAll('[data-faq]'));
     if(!items.length) return;
     items.forEach(item=>{
-      const btn = item.querySelector('[data-faq-btn]');
+      const btn = getEl('[data-faq-btn]', item);
       if(!btn) return;
       btn.addEventListener('click', ()=>{
         const isOpen = item.classList.contains('is-open');
@@ -750,30 +543,13 @@
     });
   })();
 
-  // ---------- Mobile menu toggle ----------
-  // [data-el="menu-toggle"] flips the burger; [data-menu-link] closes on navigate.
-  (function(){
-    const toggle = document.querySelector('[data-el="menu-toggle"]');
-    const menu = document.querySelector('[data-el="mobile-menu"]');
-    if(!toggle || !menu) return;
-    function setOpen(open){
-      menu.classList.toggle('is-open', open);
-      toggle.setAttribute('aria-expanded', open);
-      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-      document.body.style.overflow = open ? 'hidden' : '';
-    }
-    toggle.addEventListener('click', ()=>setOpen(!menu.classList.contains('is-open')));
-    menu.querySelectorAll('[data-menu-link]').forEach(a=>a.addEventListener('click', ()=>setOpen(false)));
-    window.addEventListener('keydown', e=>{ if(e.key==='Escape' && menu.classList.contains('is-open')) setOpen(false); });
-  })();
-
   // ---------- Hire drawer ----------
   (function(){
-    const drawer = document.querySelector('[data-el="hire-drawer"]');
-    const overlay = document.querySelector('[data-el="hire-overlay"]');
+    const drawer = getEl('[data-el="hire-drawer"]');
+    const overlay = getEl('[data-el="hire-overlay"]');
     if(!drawer || !overlay) return;
-    const form = document.querySelector('[data-el="hire-form"]');
-    const success = drawer.querySelector('[data-el="drawer-success"]');
+    const form = getEl('[data-el="hire-form"]');
+    const success = getEl('[data-el="drawer-success"]', drawer);
     let lastFocus = null;
 
     // Populate hidden tracking fields (UTMs, page, referrer, timestamp, viewport).
@@ -806,15 +582,16 @@
       document.body.style.overflow = '';
       if(lastFocus) lastFocus.focus();
     }
-    document.querySelectorAll('[data-hire]').forEach(b=>{
+    getAll('[data-hire]').forEach(b=>{
       b.addEventListener('click', e=>{ e.preventDefault(); open(); });
     });
     overlay.addEventListener('click', close);
-    document.querySelector('[data-el="drawer-close"]').addEventListener('click', close);
+    const closeBtn = getEl('[data-el="drawer-close"]');
+    if(closeBtn) closeBtn.addEventListener('click', close);
     window.addEventListener('keydown', e=>{ if(e.key==='Escape' && drawer.classList.contains('is-open')) close(); });
 
     // pill selection (single vs multi)
-    drawer.querySelectorAll('[data-name]').forEach(group=>{
+    getAll('[data-name]', drawer).forEach(group=>{
       const single = group.hasAttribute('data-single');
       group.querySelectorAll('button').forEach(btn=>{
         btn.addEventListener('click', ()=>{
@@ -829,7 +606,7 @@
     });
 
     // submit -> composed mailto with all answers
-    form.addEventListener('submit', e=>{
+    if(form) form.addEventListener('submit', e=>{
       e.preventDefault();
       // honeypot: if a bot filled the invisible field, silently drop the submission
       const hp = form.querySelector('[data-honeypot]');
@@ -862,19 +639,20 @@
       const subject = `New project inquiry \u2014 ${name}`;
       window.location.href = 'mailto:uidevux@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
       form.hidden = true;
-      success.hidden = false;
+      if(success) success.hidden = false;
       setTimeout(()=>{
         close();
-        setTimeout(()=>{ form.hidden = false; success.hidden = true; }, 700);
+        setTimeout(()=>{ form.hidden = false; if(success) success.hidden = true; }, 700);
       }, 3000);
     });
   })();
 
   // ---------- Copy email to clipboard ----------
   (function(){
-    const chip = document.querySelector('[data-el="copy-chip"]');
+    const chip = getEl('[data-el="copy-chip"]');
     if(!chip) return;
-    const txt = chip.querySelector('[data-el="copy-txt"]');
+    const txt = getEl('[data-el="copy-txt"]', chip);
+    if(!txt) return;
     const orig = txt.textContent;
     let busy = false;
     chip.addEventListener('click', ()=>{
@@ -892,9 +670,9 @@
 
   // ---------- Design-flow tabs (choose your starting point) ----------
   (function(){
-    const tabs = Array.from(document.querySelectorAll('[data-flow-tab]'));
-    const panels = Array.from(document.querySelectorAll('[data-flow-panel]'));
-    const ind = document.querySelector('[data-el="flow-indicator"]');
+    const tabs = Array.from(getAll('[data-flow-tab]'));
+    const panels = Array.from(getAll('[data-flow-panel]'));
+    const ind = getEl('[data-el="flow-indicator"]');
     if(!tabs.length || !ind) return;
 
     function moveInd(tab){
